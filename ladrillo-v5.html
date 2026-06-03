@@ -1,0 +1,1016 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>🧱 Ladrillo a Ladrillo — PPG 2026</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{background:#0d0f0b;color:#d4cdb8;font-family:'Arial Narrow',Arial,sans-serif;overscroll-behavior:none}
+:root{
+  --bg:#0d0f0b;--bgCard:#131710;--bgAlt:#0f110d;--border:#1e2419;--borderHot:#3a4a2a;
+  --olive:#6b7c3f;--oliveL:#8fa055;--oliveDim:#3d4a22;
+  --sand:#c8b882;--sandDim:#8a7d52;
+  --red:#c0392b;--redDim:#7a2318;
+  --green:#4a7c3f;--greenBright:#5cb85c;
+  --text:#d4cdb8;--textDim:#7a7560;--textMuted:#3d3c30;--white:#e8e4d4;
+  --blue:#4a7aaa;--purple:#8a6fb8;
+}
+button{font-family:inherit;cursor:pointer}
+textarea{font-family:monospace;resize:none;outline:none}
+
+#app{max-width:430px;margin:0 auto;min-height:100vh;padding-bottom:72px;position:relative}
+
+/* HEADER */
+#hdr{background:linear-gradient(180deg,#161a11 0%,var(--bg) 100%);padding:14px 16px 10px;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:50}
+.hdr-row{display:flex;justify-content:space-between;align-items:center}
+.brand{font-size:18px;font-weight:900;letter-spacing:.08em;color:var(--oliveL);text-transform:uppercase;line-height:1}
+.brand-sub{font-size:9px;color:var(--textDim);font-weight:700;letter-spacing:.18em;text-transform:uppercase;margin-top:2px}
+.week-badge{display:inline-block;padding:3px 9px;border-radius:2px;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;white-space:nowrap}
+
+/* TABS */
+#tabbar{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:var(--bgCard);border-top:1px solid var(--border);display:flex;z-index:100}
+.tab-btn{flex:1;padding:10px 4px 12px;display:flex;flex-direction:column;align-items:center;gap:3px;background:none;border:none;color:var(--textMuted);font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.1em;position:relative;transition:color .12s}
+.tab-btn.active{color:var(--oliveL);font-weight:900}
+.tab-btn.active::after{content:'';position:absolute;bottom:0;left:20%;right:20%;height:2px;background:var(--olive);border-radius:1px}
+.tab-icon{font-size:18px}
+
+/* CONTENT */
+.content{padding:0 16px 16px}
+.sec-title{font-size:10px;font-weight:900;color:var(--olive);text-transform:uppercase;letter-spacing:.2em;margin:18px 0 10px;display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--border);padding-bottom:6px}
+.card{background:var(--bgCard);border-radius:4px;padding:14px 16px;border:1px solid var(--border);margin-bottom:10px}
+
+/* PROGRESS BAR */
+.pbar{height:3px;background:var(--border);border-radius:1px;overflow:hidden;margin-top:8px}
+.pfill{height:100%;border-radius:1px;transition:width .4s ease}
+
+/* SESSION HEADER */
+.sess-hdr{display:flex;align-items:center;gap:12px;border-radius:4px;padding:14px 16px;margin-bottom:10px;border-left-width:3px;border-left-style:solid}
+.sess-emoji{font-size:26px}
+.sess-name{font-size:20px;font-weight:900;text-transform:uppercase;letter-spacing:.05em;line-height:1.1}
+.sess-meta{margin-top:6px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+
+/* BLOCK ITEM */
+.block-item{display:flex;align-items:flex-start;gap:10px;padding:11px 13px;border-radius:3px;margin-bottom:5px;border:1px solid var(--border);cursor:pointer;transition:all .12s ease;background:var(--bgCard)}
+.block-item.done{background:rgba(143,160,85,.05)}
+.checkbox{width:22px;height:22px;border-radius:2px;border:2px solid var(--textMuted);background:transparent;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;transition:all .12s ease}
+.checkbox.done{border-color:currentColor;background:currentColor}
+.block-label{font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;line-height:1.2;color:var(--textDim)}
+.block-label.done{color:var(--text)}
+.block-detail{font-size:11px;color:var(--textDim);margin-top:3px;line-height:1.6;font-family:monospace;white-space:pre-line}
+.block-detail.done{color:var(--textMuted)}
+
+/* QUOTE */
+.quote-card{background:linear-gradient(135deg,#181e10 0%,#111408 100%);border:1px solid var(--oliveDim);border-left:3px solid var(--olive);border-radius:4px;padding:14px 16px;margin:14px 0;position:relative}
+.quote-text{font-style:italic;font-size:14px;font-weight:500;line-height:1.6;color:var(--sand)}
+.quote-author{margin-top:8px;font-size:11px;color:var(--olive);font-weight:700;text-transform:uppercase;letter-spacing:.14em}
+.quote-next{position:absolute;top:10px;right:12px;font-size:14px;color:var(--olive);cursor:pointer;opacity:.5;background:none;border:none}
+
+/* DAY CARD */
+.day-card{display:flex;align-items:center;gap:10px;padding:11px 13px;border-radius:3px;margin-bottom:5px;background:var(--bgCard);border:1px solid var(--border);border-left:3px solid transparent;cursor:pointer}
+.day-card.today{background:#161e0e;border-color:rgba(107,124,63,.4);border-left-color:var(--olive)}
+.day-card.done{background:var(--bgAlt);border-left-color:rgba(107,124,63,.3)}
+.day-name{font-size:10px;font-weight:900;color:var(--textMuted);text-transform:uppercase;letter-spacing:.14em;width:26px;text-align:center;flex-shrink:0}
+.day-name.today{color:var(--oliveL)}
+.day-date{font-size:12px;font-weight:700;color:var(--textDim);flex-shrink:0;width:22px}
+.day-date.today{color:var(--white)}
+.day-expand{background:var(--bgAlt);border:1px solid var(--border);border-top:none;border-radius:0 0 4px 4px;padding:10px 12px;margin-bottom:5px;margin-top:-5px}
+
+/* NOTE */
+.note-input{width:100%;background:var(--bgCard);border:1px solid var(--border);border-radius:3px;padding:10px 12px;color:var(--text);font-size:13px;margin-top:10px}
+.note-input:focus{border-color:var(--olive)}
+
+/* WEEK NAV */
+.week-nav{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:12px}
+.week-nav button{background:var(--bgCard);border:1px solid var(--border);color:var(--textDim);border-radius:3px;padding:6px 14px;font-size:13px;font-weight:700;transition:all .12s}
+.week-nav button:hover{border-color:var(--olive);color:var(--oliveL)}
+.week-nav button:disabled{opacity:.25;cursor:default}
+.week-nav-center{text-align:center;flex:1}
+
+/* PR ROW */
+.pr-row{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border-radius:3px;background:var(--bgCard);border:1px solid var(--border);margin-bottom:5px}
+
+/* CHIP */
+.chip{padding:4px 10px;border-radius:2px;font-size:11px;font-weight:700;border:1px solid var(--border);background:transparent;color:var(--textDim);text-transform:uppercase;letter-spacing:.08em;margin:0 4px 4px 0;transition:all .1s}
+.chip.active{background:rgba(143,160,85,.12);border-color:var(--oliveL);color:var(--oliveL)}
+
+/* EVENT CARD */
+.ev-card{border-radius:4px;padding:14px 16px;margin-bottom:8px;display:flex;align-items:center;gap:14px;border-left-width:3px;border-left-style:solid}
+.ev-days{font-size:34px;font-weight:900;line-height:1;min-width:52px;text-align:center;font-variant-numeric:tabular-nums}
+
+/* LOAD GRID */
+.load-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:5px}
+.load-cell{background:var(--bgAlt);border-radius:3px;padding:7px 9px;border:1px solid var(--border)}
+.load-cell-label{font-size:9px;color:var(--textMuted);text-transform:uppercase;letter-spacing:.1em;font-weight:700}
+.load-cell-val{font-size:15px;font-weight:900;color:var(--oliveL);margin-top:2px}
+
+/* GLOSARY */
+.glos-row{display:flex;gap:10px;margin-bottom:7px;align-items:baseline}
+.glos-term{font-size:11px;font-weight:900;color:var(--oliveL);min-width:70px;text-transform:uppercase;letter-spacing:.06em}
+.glos-def{font-size:11px;color:var(--textDim);line-height:1.5}
+
+/* COMPLETION BANNER */
+.banner-done{background:#0a150a;border:1px solid rgba(74,124,63,.27);border-left:3px solid var(--greenBright);border-radius:4px;padding:14px 16px;text-align:center;margin-top:12px}
+
+/* SIMPLE CHART */
+.chart-wrap{background:var(--bgCard);border:1px solid var(--border);border-radius:4px;padding:14px 8px 8px;margin-bottom:12px;overflow:hidden}
+svg.chart{display:block;width:100%;overflow:visible}
+</style>
+</head>
+<body>
+<div id="app">
+  <div id="hdr">
+    <div class="hdr-row">
+      <div>
+        <div class="brand">🧱 Ladrillo a Ladrillo</div>
+        <div class="brand-sub">Pedro-Pablo Gatica · Atleta Híbrido 2026</div>
+      </div>
+      <div id="hdr-badge" class="week-badge"></div>
+    </div>
+  </div>
+
+  <div id="tabbar">
+    <button class="tab-btn active" data-tab="hoy" onclick="switchTab('hoy')"><span class="tab-icon">🎯</span>Hoy</button>
+    <button class="tab-btn" data-tab="semana" onclick="switchTab('semana')"><span class="tab-icon">📅</span>Semana</button>
+    <button class="tab-btn" data-tab="metas" onclick="switchTab('metas')"><span class="tab-icon">🏁</span>Metas</button>
+  </div>
+
+  <div id="tab-hoy" class="content"></div>
+  <div id="tab-semana" class="content" style="display:none"></div>
+  <div id="tab-metas" class="content" style="display:none"></div>
+</div>
+
+<script>
+"use strict";
+// ─── PALETTE ──────────────────────────────────────────────────────────────────
+const C = {
+  bg:"#0d0f0b",bgCard:"#131710",bgAlt:"#0f110d",border:"#1e2419",
+  olive:"#6b7c3f",oliveL:"#8fa055",oliveDim:"#3d4a22",
+  sand:"#c8b882",sandDim:"#8a7d52",
+  red:"#c0392b",green:"#4a7c3f",greenBright:"#5cb85c",
+  text:"#d4cdb8",textDim:"#7a7560",textMuted:"#3d3c30",white:"#e8e4d4",
+  blue:"#4a7aaa",purple:"#8a6fb8",
+};
+
+// ─── QUOTES ───────────────────────────────────────────────────────────────────
+const QUOTES = [
+  {t:"No te rindas, persiste. El obstáculo es el camino.",a:"Marco Aurelio"},
+  {t:"El dolor presente es el poder futuro.",a:"Séneca"},
+  {t:"Primero dite a ti mismo quién quieres ser, luego haz lo que debes.",a:"Epicteto"},
+  {t:"Sufre el dolor ahora y vive el resto de tu vida como un campeón.",a:"Epicteto"},
+  {t:"Nada es difícil para quien lo practica.",a:"Séneca"},
+  {t:"Eres más valiente de lo que crees, más fuerte de lo que pareces.",a:"Marco Aurelio"},
+  {t:"No lo intentes. Hazlo.",a:"Marco Aurelio"},
+  {t:"El que sufre antes de lo necesario, sufre más de lo necesario.",a:"Séneca"},
+  {t:"Comienza. La mitad de la acción es ya el coraje de empezar.",a:"Séneca"},
+  {t:"Un diamante es un trozo de carbón que aguantó la presión.",a:"Epicteto"},
+  {t:"La virtud no se entrega al azar; hay que aprenderla y practicarla.",a:"Séneca"},
+  {t:"Haz lo que la naturaleza exige. Sal al camino si puedes.",a:"Marco Aurelio"},
+  {t:"Teme la vejez, pues no llega sola.",a:"Epicteto"},
+  {t:"No pidas que lo que sucede suceda como quieres. Desea que sea como es.",a:"Epicteto"},
+];
+
+// ─── RACE EVENTS ──────────────────────────────────────────────────────────────
+const RACES = [
+  {name:"Golden Run 21K", date:"2026-08-02", emoji:"🥇", color:C.sand,     dist:"21K · objetivo A"},
+  {name:"21K Santiago",   date:"2026-08-30", emoji:"🏃", color:C.oliveL,   dist:"21K · objetivo A"},
+  {name:"HYROX Amateur",  date:"2026-10-25", emoji:"⚡", color:C.red,      dist:"Híbrido · objetivo A"},
+];
+
+// ─── PLAN CONFIG ──────────────────────────────────────────────────────────────
+// FIX: fecha con T00:00:00 para parseo local (evita desfase UTC en Chile)
+const PLAN_START = new Date("2026-05-18T00:00:00");
+const PLAN_WEEKS = 26;
+
+const WEEK_TYPES = {
+  4:"normal",5:"pico",6:"descarga",7:"normal",8:"normal",
+  9:"pico",10:"descarga",11:"taper",12:"taper",13:"taper",
+  14:"carrera",15:"recuperacion",16:"normal",17:"taper",
+  18:"carrera",19:"recuperacion",20:"especifico",21:"especifico",
+  22:"especifico",23:"especifico",24:"taper",25:"taper",26:"carrera",
+};
+const WEEK_LABELS = {
+  normal:"Normal",pico:"Pico 🔥",descarga:"Descarga 💤",taper:"Taper 🎯",
+  carrera:"Carrera 🏁",recuperacion:"Recuperación 🌿",especifico:"Específico ⚡",
+};
+const WEEK_COLORS = {
+  normal:C.olive,pico:C.red,descarga:C.blue,taper:C.purple,
+  carrera:C.oliveL,recuperacion:C.green,especifico:C.sand,
+};
+
+// ─── HELPERS ──────────────────────────────────────────────────────────────────
+function parseLocalDate(str){return new Date(str+"T00:00:00");}
+
+function getCurrentWeek(){
+  const now=new Date();
+  const diff=Math.floor((now-PLAN_START)/(1000*60*60*24*7));
+  return Math.max(4,Math.min(PLAN_WEEKS,diff+4));
+}
+
+function getDaysUntil(dateStr){
+  const target=parseLocalDate(dateStr);
+  const now=new Date(); now.setHours(0,0,0,0);
+  return Math.ceil((target-now)/(1000*60*60*24));
+}
+
+function dateKey(d){
+  return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
+}
+function todayKey(){return dateKey(new Date());}
+
+function getWeekDaysFor(weekNum){
+  // Compute the Monday of the given week number
+  const msPerWeek=7*24*60*60*1000;
+  const weekOffset=weekNum-4; // week 4 = week 0 offset
+  const monday=new Date(PLAN_START.getTime()+weekOffset*msPerWeek);
+  return Array.from({length:7},(_,i)=>{const d=new Date(monday);d.setDate(monday.getDate()+i);return d;});
+}
+
+function getWeekClass(w){
+  const wt=WEEK_TYPES[w]||"normal";
+  if(wt==="descarga"||wt==="recuperacion")return"deload";
+  if(wt==="taper"||wt==="carrera")return"taper";
+  return"build";
+}
+
+function getBuildOffset(weekNum){
+  if(weekNum<=5)return 0;
+  let offset=0;
+  for(let w=6;w<=weekNum;w++){if(getWeekClass(w)==="build")offset++;}
+  return offset;
+}
+
+function calcW(base,offset,inc,ceil=null){
+  const bumps=Math.floor(offset/3);
+  let w=base+bumps*inc;
+  if(ceil!==null)w=Math.min(w,ceil);
+  return Math.round(w*2)/2;
+}
+
+function getScheme(offset,wc){
+  if(wc==="deload") return{sets:3,reps:10,note:"–30% · técnica"};
+  if(wc==="taper")  return{sets:2,reps:8, note:"Taper · 2 series · mantener kg"};
+  if(wc==="carrera_week") return{sets:1,reps:5,note:"Activación · sin fatiga"};
+  const cycle=offset%3;
+  if(cycle===0)return{sets:3,reps:8};
+  if(cycle===1)return{sets:3,reps:10};
+  return{sets:3,reps:12};
+}
+
+// ─── LOAD PRESCRIPTION ────────────────────────────────────────────────────────
+function getWeekLoads(weekNum){
+  const wc=getWeekClass(weekNum);
+  const wt=WEEK_TYPES[weekNum]||"normal";
+
+  if(wc==="deload"){
+    // FIX: calcular -30% dinámico sobre cargas reales del build anterior
+    // Buscar la semana build previa más cercana
+    let prevBuild=weekNum-1;
+    while(prevBuild>4&&getWeekClass(prevBuild)!=="build")prevBuild--;
+    const off=getBuildOffset(prevBuild);
+    const deload30=v=>Math.round(v*0.7*2)/2;
+    const s=deload30(calcW(45,off,5));
+    const pd=deload30(calcW(65,off,5));
+    const bn=deload30(calcW(42,off,2.5));
+    const rb=deload30(calcW(35,off,2.5));
+    const zc=deload30(calcW(25,off,2.5));
+    const su=deload30(calcW(10,off,2.5,15));
+    const bs=deload30(calcW(10,off,2.5,15));
+    const pm=deload30(calcW(25,off,2.5));
+    // Curl bíceps: barra olímpica, misma progresión que compuestos
+    const cb=deload30(calcW(30,off,5));
+    return{
+      scheme:{sets:3,reps:10,note:"–30% · foco técnica"},
+      sentadilla:s,pesoMuerto:pd,banca:bn,
+      remoBarra:rb,zancadas:zc,stepUps:su,
+      bulgaraSplit:bs,
+      // FIX: Farmers carry: KB14 → Manc15 (KB16 no existe en progresión)
+      farmersCarry:Math.min(calcW(14,off,1),15),
+      slamBall:6,curlBicep:cb,pressMilitar:pm,
+      amrapMin:0,
+    };
+  }
+
+  const offset=getBuildOffset(weekNum);
+  const scheme=wc==="taper"?getScheme(offset,"taper"):
+               wt==="carrera"?getScheme(offset,"carrera_week"):
+               getScheme(offset,"build");
+  const buildOffset=wc==="build"?offset:getBuildOffset(weekNum);
+
+  // FIX: Farmers carry: KB14 → Manc15kg (KB16 eliminado de la progresión)
+  // Semanas 4-8: KB14; semanas 9+: Manc15kg
+  const farmersKg=weekNum>=9?15:14;
+
+  // FIX: Curl bíceps con barra olímpica, sin techo independiente, misma lógica compuestos
+  const curlBicep=calcW(30,buildOffset,5);
+
+  // FIX: Elevación lateral: progresión escalonada por semana
+  // semanas 4-7: 2.5kg, 8-11: 5kg, 12-15: 10kg, 16+: 15kg
+  let elevLat=2.5;
+  if(weekNum>=16)elevLat=15;
+  else if(weekNum>=12)elevLat=10;
+  else if(weekNum>=8)elevLat=5;
+
+  return{
+    scheme,
+    sentadilla:  calcW(45,buildOffset,5),
+    pesoMuerto:  calcW(65,buildOffset,5),
+    banca:       calcW(42,buildOffset,2.5),
+    remoBarra:   calcW(35,buildOffset,2.5),
+    zancadas:    calcW(25,buildOffset,2.5),
+    stepUps:     calcW(10,buildOffset,2.5,15),
+    bulgaraSplit:calcW(10,buildOffset,2.5,15),
+    farmersCarry:farmersKg,
+    slamBall:6,
+    curlBicep,
+    pressMilitar:calcW(25,buildOffset,2.5),
+    elevLat,
+    amrapMin:wc==="taper"?0:8,
+  };
+}
+
+// ─── COMBA ────────────────────────────────────────────────────────────────────
+function getCombaTarget(w){
+  const wt=WEEK_TYPES[w]||"normal";
+  if(wt==="descarga"||wt==="recuperacion")return{min:2,detail:"Descarga · básico suave · 30s trabajo / 30s pausa"};
+  if(wt==="taper"||wt==="carrera")        return{min:3,detail:"Taper · básico únicamente · sin salteos"};
+  if(w<=8)  return{min:4,detail:"Básico + alternado · 60s trabajo / 15s pausa"};
+  if(w<=13) return{min:5,detail:"Básico + alternado · ritmo estable continuo"};
+  if(w<=19) return{min:5,detail:"Continuo · mantener ritmo"};
+  if(w<=23) return{min:6,detail:"Superpico · 6 min continuos · foco técnica"};
+  return{min:3,detail:"Taper final · básico suave"};
+}
+
+// ─── RUNNING ──────────────────────────────────────────────────────────────────
+function getRunTarget(w){
+  const wt=WEEK_TYPES[w]||"normal";
+  if(wt==="descarga")   return{type:"Tempo suave",    detail:"25 min · FC 140–150ppm · 6:45–7:00 min/km"};
+  if(wt==="taper")      return{type:"Activación",     detail:"20 min · FC 130–140ppm · Z2 suave · sin esfuerzo"};
+  if(wt==="carrera")    return{type:"Pre-carrera",    detail:"15 min suave · FC <140ppm · solo activar piernas"};
+  if(wt==="recuperacion")return{type:"Trote suave",   detail:"20 min · FC <140ppm · descomprimir"};
+  if(wt==="pico")       return{type:"Series",         detail:"10-15 min Z2 activación → 6×800m · pausa 90s · FC 160–170ppm\n⚠ Trote previo de activación OBLIGATORIO antes de las series"};
+  if(wt==="especifico") return{type:"Tempo HYROX",    detail:"4×1000m · pausa 2min · FC 155–165ppm"};
+  if(w<=8)              return{type:"Tempo",          detail:"30 min · FC 145–155ppm · 6:30–6:45 min/km"};
+  if(w<=12)             return{type:"Tempo progresivo",detail:"35 min · últimos 10 min FC 155–165ppm"};
+  if(w<=16)             return{type:"Tempo + Series", detail:"15 min Z2 + 4×1000m · pausa 90s"};
+  return                      {type:"Tempo largo",    detail:"40 min · FC 150–160ppm"};
+}
+
+// FIX: progresión rodaje largo basada en el principio del 10%
+// S4=8km, luego +~10% por semana build, con topes por tipo de semana
+function getLongRunTarget(w){
+  const wt=WEEK_TYPES[w]||"normal";
+  if(wt==="descarga")    return{km:10,detail:"Z2 · FC 130–145ppm · 7:00–7:30 min/km · sin gel"};
+  if(wt==="taper")       return{km:12,detail:"Z2 suave · FC 130–145ppm · sin forzar"};
+  if(wt==="carrera")     return{km:0, detail:"⚠ Día de competencia. Descanso o caminata suave post-carrera."};
+  if(wt==="recuperacion")return{km:8, detail:"Trote suave · FC <140ppm · descomprimir"};
+
+  // FIX: Progresión coherente desde 8km respetando el principio del 10% semanal.
+  // "prevKm" usa el último km real ejecutado (cualquier tipo de semana con km > 0)
+  // para evitar saltos exagerados al volver de recuperación o taper.
+  const progression={4:8};
+  for(let i=5;i<=26;i++){
+    const t=WEEK_TYPES[i]||"normal";
+    const wc=getWeekClass(i);
+    if(t==="carrera"){progression[i]=0;continue;}
+    if(t==="recuperacion"){progression[i]=8;continue;}
+    // Último km real ejecutado (excluye 0km = días de carrera)
+    let prevKm=8;
+    for(let p=i-1;p>=4;p--){
+      if(progression[p]>0){prevKm=progression[p];break;}
+    }
+    if(wc==="deload"){
+      // Descarga: bajar a ~80% del km previo, mínimo 8km
+      progression[i]=Math.max(8,Math.round(prevKm*0.8*2)/2);
+      continue;
+    }
+    if(wc==="taper"){
+      // Taper: reducir a ~80% del km previo build, mínimo 10km, máximo 14km
+      progression[i]=Math.min(14,Math.max(10,Math.round(prevKm*0.8*2)/2));
+      continue;
+    }
+    // Semana build normal: +10% máximo sobre el último km real
+    const maxKm=t==="pico"||t==="especifico"?19:18;
+    progression[i]=Math.min(maxKm,Math.round(prevKm*1.10*2)/2);
+  }
+
+  const result=progression[w]||8;
+  const gelNote=result>=13?" · gel en min 50"+(result>=16?" y min 85":""): "";
+  return{km:result,detail:"Z2 · FC 130–150ppm · 6:45–7:30 min/km"+gelNote};
+}
+
+// ─── SESSION BLOCKS ───────────────────────────────────────────────────────────
+function fmt(sets,reps,kg,note=""){
+  return `${sets}×${reps} · ${kg}kg${note?" · "+note:""}`;
+}
+
+function getDailySessions(weekNum){
+  const L=getWeekLoads(weekNum);
+  const Sc=L.scheme;
+  const wc=getWeekClass(weekNum);
+  const wt=WEEK_TYPES[weekNum]||"normal";
+  const comba=getCombaTarget(weekNum);
+  const run=getRunTarget(weekNum);
+  const lr=getLongRunTarget(weekNum);
+  const hyrox=wt==="especifico";
+  const rdlKg=Math.round(L.pesoMuerto*0.8*2)/2;
+  const ms=`${Sc.sets}×${Sc.reps}${Sc.note?" · "+Sc.note:""}`;
+
+  // FIX: Remo KB reducido en deload (igual que el resto)
+  const remoKBkg=wc==="deload"?12:16;
+  const remoKBscheme=wc==="deload"?"3×10 · –30%":"3×12";
+
+  // Farmers label
+  const farmersLabel=L.farmersCarry>=15?"Manc 15kg c/u":"KB 14kg c/u";
+
+  return{
+    1:{ // Lunes – Comba (antes de salir al trabajo)
+      name:"COMBA",emoji:"🪢",color:C.sand,duration:"15–20 min",
+      blocks:[
+        {id:"warmup",label:"Activación 5 min",detail:"Movilidad dinámica · marcha · círculos cadera"},
+        {id:"main",  label:`Comba · ${comba.min} min objetivo`,
+         detail:comba.detail+"\n⚠ Se hace ANTES de salir de casa (sin ducha gym)"},
+      ],
+    },
+    2:{ // Martes – Piernas
+      name:"PIERNAS + GLÚTEOS",emoji:"🦵",color:C.red,duration:wc==="deload"?"45–55 min":"70–85 min",
+      blocks:[
+        {id:"mob",   label:"Movilidad 5 min",   detail:"Cadera 90-90 · balanceo piernas · sentadilla pausa · círculos tobillo"},
+        {id:"activ", label:"Activación",          detail:"Comba 30s + Goblet KB16 ×8 — 2 biseries"},
+        {id:"squat", label:"Sentadilla",           detail:fmt(Sc.sets,Sc.reps,L.sentadilla)+" · Desc 90s"},
+        {id:"dl",    label:"Peso muerto",          detail:fmt(Sc.sets,Sc.reps,L.pesoMuerto)+" · Desc 2 min · espalda recta"},
+        {id:"bs_legs",label:"Biserie unilateral · Zancadas + Step-ups",
+          detail:`A1) Zancadas ${fmt(3,10,L.zancadas)}\nA2) Step-ups ${fmt(3,10,L.stepUps,"c/u")}\nSin pausa A1–A2 · Desc 60s al terminar`},
+        {id:"bulgara",label:"Búlgara split",       detail:fmt(3,8,L.bulgaraSplit,"c/u")+" · Desc 60s entre piernas"},
+        {id:"farmers",label:"Farmers carry",        detail:`3 series × 5 vueltas 10m · ${farmersLabel} · Desc 90s`},
+        ...(L.amrapMin>0?[{id:"amrap",label:`AMRAP ${L.amrapMin} min`,
+          detail:"Descanso 2–3 min tras farmers, luego:\n10 sent goblet KB16 + 8 step-ups + 8 swings KB16 + 10s plancha"}]:[]),
+      ],
+    },
+    3:{ // Miércoles – Tren superior + carrera
+      name:"TREN SUPERIOR + CARRERA",emoji:"💪",color:C.oliveL,duration:"60–75 min",
+      blocks:[
+        {id:"mob", label:"Movilidad 5 min",        detail:"Foam roller torácico · apertura pecho · rotación hombros · retracción escapular"},
+        ...(wt==="pico"?[{id:"run_pre",label:`⚠ CARRERA PRIMERO · ${run.type}`,
+          detail:"Ejecutar ANTES de la fuerza (calidad de series)\n"+run.detail}]:[]),
+        {id:"activ",label:"Activación",             detail:"Comba 30s + Goblet KB16 ×8 — 2 biseries"},
+        {id:"bs_push",label:"Biserie empuje · Banca + Press militar",
+          detail:`A1) Press banca ${fmt(Sc.sets,Sc.reps,L.banca)}\nA2) Press militar barra ${fmt(Sc.sets,Sc.reps,L.pressMilitar)}\nSin pausa A1–A2 · Desc 90s al terminar`},
+        {id:"bs_pull",label:"Biserie tracción · Jalón + Remo KB",
+          detail:`B1) Jalón multifuncional ${ms} · por RPE (sensación 7–8/10)\nB2) Remo KB${remoKBkg} ${remoKBscheme}\nRetraer escápulas · Sin pausa B1–B2 · Desc 90s`},
+        {id:"acc",  label:"Accesorios",
+          detail:`C1) Curl bíceps barra ${fmt(3,12,L.curlBicep)}\nC2) Ext. tríceps 3×12 · por RPE (sensación 7/10)\nC3) Face pull banda 3×15 · por RPE (sensación 7/10)\nC4) Elev. lateral ${fmt(3,12,L.elevLat)}`},
+        ...(wt!=="pico"?[{id:"run",label:`Carrera · ${run.type}`,
+          detail:"Tras la fuerza (patrón híbrido — correr con piernas cargadas)\n"+run.detail}]:[]),
+      ],
+    },
+    4:{ // Jueves – Comba (antes de salir al trabajo)
+      name:"COMBA",emoji:"🪢",color:C.sand,duration:"15–20 min",
+      blocks:[
+        {id:"warmup",label:"Activación 5 min",detail:"Movilidad dinámica · marcha · círculos cadera"},
+        // FIX: eliminar duplicación de "Continuo · básico + alternado ·"
+        {id:"main",  label:`Comba · ${comba.min} min objetivo`,
+         detail:comba.detail+"\n⚠ Se hace ANTES de salir de casa (sin ducha gym)"},
+      ],
+    },
+    5:{ // Viernes – Todo el cuerpo + finisher
+      name:"TODO EL CUERPO + FINISHER",emoji:"🔥",color:C.red,duration:wc==="taper"?"45–55 min":"65–80 min",
+      blocks:[
+        {id:"mob",   label:"Movilidad 5 min",  detail:"Inchworm · World's Greatest · círculos cadera · tobillo pared · foam roller espalda"},
+        {id:"activ", label:"Activación",        detail:"Comba 30s + Goblet KB16 ×8 — 2 biseries"},
+        {id:"rdl",   label:"Peso muerto RUMANO con barra",
+          detail:`⚠ RDL con barra — cadera atrás, rodilla semifleja (NO peso muerto convencional, rodaje mañana)\n${fmt(Sc.sets,Sc.reps,rdlKg)} · Desc 2 min`},
+        {id:"bench", label:"Press banca",       detail:fmt(Sc.sets,Sc.reps,L.banca)+" · Desc 90s"},
+        {id:"bs_remo",label:"Biserie · Remo barra + Búlgara",
+          detail:`A1) Remo barra ${fmt(Sc.sets,Sc.reps,L.remoBarra)}\nA2) Búlgara split ${fmt(3,8,L.bulgaraSplit,"c/u")}\nSin pausa A1–A2 · Desc 60s`},
+        {id:"farmers",label:"Farmers carry",    detail:`3 series × 5 vueltas 10m · ${farmersLabel} · Desc 90s`},
+        ...(wc!=="taper"&&wc!=="deload"?[{
+          id:"finisher",label:hyrox?"FINISHER HYROX (simulación estaciones)":"FINISHER",
+          detail:hyrox
+            ?`4 rondas, mínima pausa:\n200m bici spinning (esfuerzo equivalente ski/row: FC 160–170ppm)\n10 swings KB16 (sim. sled push)\n10 slam ball 6kg (sim. wall ball — no puede tocar el suelo)\n8 burpee broad jumps`
+            :`4 rondas: 8 swings KB16 + 8 slam ball 6kg al suelo + 8 burpees + 30s comba`,
+        }]:[]),
+      ],
+    },
+    6:{ // Sábado – Descanso
+      name:"DESCANSO",emoji:"😴",color:C.textMuted,duration:"opcional",
+      blocks:[
+        {id:"rest",label:"Recuperación activa",detail:"Caminata suave · foam roller · movilidad ligera · sin intensidad\nNo hay objetivo de tiempo: es un día de descanso real"},
+      ],
+    },
+    0:{ // Domingo – Rodaje largo
+      name:"RODAJE LARGO Z2",emoji:"🏃",color:C.oliveL,duration:lr.km===0?"—":`~${Math.round(lr.km*7)} min`,
+      blocks:lr.km===0
+        ?[{id:"race",label:"⚡ DÍA DE COMPETENCIA",detail:lr.detail}]
+        :[
+          {id:"warmup",label:"Calentamiento 5 min",           detail:"Caminata + movilidad dinámica"},
+          {id:"run",   label:`Rodaje · ${lr.km} km objetivo`, detail:lr.detail},
+          {id:"post",  label:"Post-rodaje",                   detail:"Foam roller piernas · hidratación · proteína en los primeros 30 min"},
+        ],
+    },
+  };
+}
+
+// ─── STORAGE (localStorage) ───────────────────────────────────────────────────
+const KEYS={checks:"ll_v5_checks",notes:"ll_v5_notes",prs:"ll_v5_prs"};
+let STORAGE={checks:{},notes:{},prs:{}};
+
+// FIX: debounce para nota (no guardar en cada keystroke)
+let saveNoteTimer=null;
+
+function loadStorage(){
+  try{
+    const c=localStorage.getItem(KEYS.checks);
+    const n=localStorage.getItem(KEYS.notes);
+    const p=localStorage.getItem(KEYS.prs);
+    if(c)STORAGE.checks=JSON.parse(c);
+    if(n)STORAGE.notes=JSON.parse(n);
+    if(p)STORAGE.prs=JSON.parse(p);
+    else STORAGE.prs=getDefaultPRs();
+  }catch(e){STORAGE.prs=getDefaultPRs();}
+}
+
+function saveChecks(){
+  try{localStorage.setItem(KEYS.checks,JSON.stringify(STORAGE.checks));}catch(e){}
+}
+function saveNotes(){
+  try{localStorage.setItem(KEYS.notes,JSON.stringify(STORAGE.notes));}catch(e){}
+}
+function savePRs(){
+  try{localStorage.setItem(KEYS.prs,JSON.stringify(STORAGE.prs));}catch(e){}
+}
+
+function getDefaultPRs(){
+  return{
+    "Sentadilla":{kg:45,date:"26 May 2026"},
+    "Peso Muerto":{kg:65,date:"26 May 2026"},
+    "Press Banca":{kg:45,date:"27 May 2026"},
+    "Farmers Carry":{kg:15,date:"26 May 2026",note:"Primera vez Manc 15kg"},
+  };
+}
+
+// ─── TOGGLE CHECK ─────────────────────────────────────────────────────────────
+function toggleCheck(dayKey,blockId){
+  if(!STORAGE.checks[dayKey])STORAGE.checks[dayKey]={};
+  STORAGE.checks[dayKey][blockId]=!STORAGE.checks[dayKey][blockId];
+  saveChecks();
+  render();
+}
+
+// ─── STATE ────────────────────────────────────────────────────────────────────
+let STATE={
+  tab:"hoy",
+  weekOffset:0, // semana a mostrar relativa a la actual (0 = esta semana)
+  quoteIdx:Math.floor(Date.now()/86400000)%QUOTES.length,
+  expandedDay:null,
+  editingPR:null,
+};
+
+// ─── RENDER ───────────────────────────────────────────────────────────────────
+function render(){
+  const cw=getCurrentWeek();
+  const wt=WEEK_TYPES[cw]||"normal";
+
+  // Header badge
+  const badge=document.getElementById("hdr-badge");
+  badge.textContent="S"+cw+" · "+WEEK_LABELS[wt];
+  badge.className="week-badge";
+  badge.style.background=WEEK_COLORS[wt]+"18";
+  badge.style.color=WEEK_COLORS[wt];
+  badge.style.border=`1px solid ${WEEK_COLORS[wt]}55`;
+
+  document.getElementById("tab-hoy").style.display=STATE.tab==="hoy"?"block":"none";
+  document.getElementById("tab-semana").style.display=STATE.tab==="semana"?"block":"none";
+  document.getElementById("tab-metas").style.display=STATE.tab==="metas"?"block":"none";
+
+  document.querySelectorAll(".tab-btn").forEach(b=>{
+    b.classList.toggle("active",b.dataset.tab===STATE.tab);
+  });
+
+  if(STATE.tab==="hoy")    renderHoy();
+  if(STATE.tab==="semana") renderSemana();
+  if(STATE.tab==="metas")  renderMetas();
+}
+
+// ─── TAB HOY ──────────────────────────────────────────────────────────────────
+function renderHoy(){
+  const cw=getCurrentWeek();
+  const wt=WEEK_TYPES[cw]||"normal";
+  const dow=new Date().getDay();
+  const sessions=getDailySessions(cw);
+  const session=sessions[dow];
+  const today=new Date();
+  const tk=todayKey();
+  const checks=STORAGE.checks[tk]||{};
+  const note=STORAGE.notes[tk]||"";
+  const doneCount=session.blocks.filter(b=>checks[b.id]).length;
+  const pct=Math.round((doneCount/session.blocks.length)*100);
+  const DAY_NAMES=["DOM","LUN","MAR","MIÉ","JUE","VIE","SÁB"];
+  const q=QUOTES[STATE.quoteIdx];
+  const L=getWeekLoads(cw);
+
+  document.getElementById("tab-hoy").innerHTML=`
+    <div class="quote-card">
+      <button class="quote-next" onclick="nextQuote()">↺</button>
+      <div style="font-size:18px;margin-bottom:6px;opacity:.3;color:${C.sand}">"</div>
+      <div class="quote-text">${q.t}</div>
+      <div class="quote-author">— ${q.a}</div>
+    </div>
+
+    <div class="sess-hdr" style="background:${session.color}0d;border-color:${session.color}2a;border-left-color:${session.color}">
+      <span class="sess-emoji">${session.emoji}</span>
+      <div style="flex:1">
+        <div style="font-size:10px;color:${C.textMuted};text-transform:uppercase;letter-spacing:.16em;font-weight:700;margin-bottom:2px">
+          ${DAY_NAMES[dow]} ${today.getDate()}/${today.getMonth()+1} · SEM ${cw}
+        </div>
+        <div class="sess-name" style="color:${session.color}">${session.name}</div>
+        <div class="sess-meta">
+          <span class="week-badge" style="background:${WEEK_COLORS[wt]||C.olive}18;color:${WEEK_COLORS[wt]||C.olive};border:1px solid ${WEEK_COLORS[wt]||C.olive}55">
+            ${WEEK_LABELS[wt]}
+          </span>
+          <span style="font-size:10px;color:${C.textMuted};font-weight:700;letter-spacing:.1em;text-transform:uppercase">
+            ${L.scheme.sets}×${L.scheme.reps}${L.scheme.note?" · "+L.scheme.note:""}
+          </span>
+          ${session.duration&&session.duration!=="—"?`<span style="font-size:10px;color:${C.sand};font-weight:700;font-family:monospace">⏱ ${session.duration}</span>`:""}
+        </div>
+      </div>
+    </div>
+
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
+      <span style="font-size:10px;color:${C.textMuted};font-weight:700;text-transform:uppercase;letter-spacing:.14em">MISIÓN</span>
+      <span style="font-size:12px;font-weight:900;color:${pct===100?C.greenBright:session.color}">${doneCount}/${session.blocks.length} · ${pct}%</span>
+    </div>
+    <div class="pbar"><div class="pfill" style="width:${pct}%;background:${pct===100?C.greenBright:session.color}"></div></div>
+
+    <div style="margin-top:12px">
+      ${session.blocks.map(b=>{
+        const done=!!checks[b.id];
+        return `<div class="block-item${done?" done":""}" onclick="toggleCheck('${tk}','${b.id}')"
+          style="${done?`border-color:${session.color}40;`:""}">
+          <div class="checkbox${done?" done":""}" style="color:${session.color}">
+            ${done?checkSVG():""}
+          </div>
+          <div style="flex:1;min-width:0">
+            <div class="block-label${done?" done":""}">${b.label}</div>
+            <div class="block-detail${done?" done":""}">${escHtml(b.detail)}</div>
+          </div>
+        </div>`;
+      }).join("")}
+    </div>
+
+    <div class="sec-title">📋 Informe del día</div>
+    <textarea class="note-input" rows="3" placeholder="PRs, sensaciones, ajustes, novedades..."
+      oninput="scheduleNoteHoy(this.value)" id="note-hoy">${escHtml(note)}</textarea>
+    <div id="note-saved" style="text-align:center;color:${C.greenBright};font-size:11px;margin-top:4px;font-weight:700;letter-spacing:.1em;visibility:hidden">✓ GUARDADO</div>
+
+    ${pct===100?`
+    <div class="banner-done">
+      <div style="font-size:24px;margin-bottom:6px">🧱</div>
+      <div style="font-weight:900;font-size:15px;color:${C.greenBright};text-transform:uppercase;letter-spacing:.12em">Ladrillo colocado</div>
+      <div style="font-size:12px;color:${C.textDim};margin-top:4px">Misión completa. El guerrero descansa.</div>
+    </div>`:""}
+  `;
+}
+
+function scheduleNoteHoy(val){
+  clearTimeout(saveNoteTimer);
+  saveNoteTimer=setTimeout(()=>{
+    STORAGE.notes[todayKey()]=val;
+    saveNotes();
+    const el=document.getElementById("note-saved");
+    if(el){el.style.visibility="visible";setTimeout(()=>{if(el)el.style.visibility="hidden";},1500);}
+  },500);
+}
+
+// ─── TAB SEMANA ───────────────────────────────────────────────────────────────
+function renderSemana(){
+  const cw=getCurrentWeek();
+  const viewWeek=Math.max(4,Math.min(PLAN_WEEKS,cw+STATE.weekOffset));
+  const wt=WEEK_TYPES[viewWeek]||"normal";
+  const days=getWeekDaysFor(viewWeek);
+  const sessions=getDailySessions(viewWeek);
+  const DAY_NAMES=["DOM","LUN","MAR","MIÉ","JUE","VIE","SÁB"];
+  const MONTHS=["ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic"];
+  const todK=todayKey();
+
+  let html=`
+    <div class="week-nav">
+      <button onclick="changeWeek(-1)" ${viewWeek<=4?"disabled":""}>◀</button>
+      <div class="week-nav-center">
+        <div style="font-size:18px;font-weight:900;color:${C.white}">Semana ${viewWeek}</div>
+        <div style="margin-top:3px">
+          <span class="week-badge" style="background:${WEEK_COLORS[wt]}18;color:${WEEK_COLORS[wt]};border:1px solid ${WEEK_COLORS[wt]}55">
+            ${WEEK_LABELS[wt]}
+          </span>
+        </div>
+        ${STATE.weekOffset!==0?`<div style="margin-top:4px"><button onclick="changeWeek(${-STATE.weekOffset})" style="background:none;border:none;color:${C.olive};font-size:11px;font-weight:700;text-decoration:underline;cursor:pointer">→ volver a esta semana</button></div>`:""}
+      </div>
+      <button onclick="changeWeek(1)" ${viewWeek>=PLAN_WEEKS?"disabled":""}>▶</button>
+    </div>
+  `;
+
+  // Progreso semanal
+  let weekDone=0,weekTotal=0;
+  days.forEach(d=>{
+    const dow=d.getDay();
+    const s=sessions[dow];
+    const dk=dateKey(d);
+    const c=STORAGE.checks[dk]||{};
+    weekDone+=s.blocks.filter(b=>c[b.id]).length;
+    weekTotal+=s.blocks.length;
+  });
+  const weekPct=weekTotal>0?Math.round((weekDone/weekTotal)*100):0;
+  html+=`
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
+      <span style="font-size:10px;color:${C.textMuted};font-weight:700;text-transform:uppercase;letter-spacing:.14em">PROGRESO SEMANAL</span>
+      <span style="font-size:12px;font-weight:900;color:${weekPct===100?C.greenBright:C.oliveL}">${weekDone}/${weekTotal} · ${weekPct}%</span>
+    </div>
+    <div class="pbar" style="margin-bottom:12px">
+      <div class="pfill" style="width:${weekPct}%;background:${weekPct===100?C.greenBright:C.oliveL}"></div>
+    </div>
+  `;
+
+  days.forEach((d,i)=>{
+    const dow=d.getDay();
+    const s=sessions[dow];
+    const dk=dateKey(d);
+    const c=STORAGE.checks[dk]||{};
+    const done=s.blocks.filter(b=>c[b.id]).length;
+    const total=s.blocks.length;
+    const pct=Math.round((done/total)*100);
+    const isToday=dk===todK;
+    const isPast=d<new Date()&&!isToday;
+    const isExp=STATE.expandedDay===dk;
+
+    html+=`
+      <div>
+        <div class="day-card${isToday?" today":""}${pct===100?" done":""}" onclick="toggleExpand('${dk}')">
+          <div class="day-name${isToday?" today":""}">${DAY_NAMES[dow]}</div>
+          <div class="day-date${isToday?" today":""}" style="min-width:26px">${d.getDate()} ${MONTHS[d.getMonth()]}</div>
+          <div style="flex:1">
+            <div style="display:flex;align-items:center;gap:8px">
+              <span style="font-size:14px">${s.emoji}</span>
+              <span style="font-size:13px;font-weight:700;color:${isToday?C.white:C.textDim};text-transform:uppercase;letter-spacing:.04em">${s.name}</span>
+              ${s.duration&&s.duration!=="—"?`<span style="font-size:9px;color:${C.textMuted};font-family:monospace;margin-left:auto">⏱ ${s.duration}</span>`:""}
+            </div>
+            ${(isToday||isPast)&&total>1?`
+            <div style="margin-top:5px;display:flex;align-items:center;gap:8px">
+              <div class="pbar" style="flex:1;margin-top:0">
+                <div class="pfill" style="width:${pct}%;background:${pct===100?C.greenBright:s.color}"></div>
+              </div>
+              <span style="font-size:10px;color:${pct===100?C.greenBright:C.textMuted};font-weight:700;min-width:28px">${pct}%</span>
+            </div>`:""}
+          </div>
+          ${pct===100?`<span style="font-size:16px">🧱</span>`:""}
+          ${isToday&&pct<100?`<span style="width:6px;height:6px;border-radius:50%;background:${C.oliveL};flex-shrink:0;display:inline-block"></span>`:""}
+          <span style="font-size:10px;color:${C.textMuted};margin-left:4px">${isExp?"▲":"▼"}</span>
+        </div>
+        ${isExp?`
+        <div class="day-expand">
+          ${s.blocks.map(b=>{
+            const bdone=!!(c[b.id]);
+            return `<div style="display:flex;align-items:flex-start;gap:9px;margin-bottom:7px;cursor:pointer"
+              onclick="toggleCheck('${dk}','${b.id}')">
+              <div class="checkbox${bdone?" done":""}" style="width:18px;height:18px;margin-top:1px;color:${s.color}">
+                ${bdone?checkSVG(10):""}
+              </div>
+              <div style="flex:1;min-width:0">
+                <div style="font-size:11px;font-weight:700;color:${bdone?C.text:s.color};text-transform:uppercase;letter-spacing:.06em">${b.label}</div>
+                <div style="font-size:11px;color:${C.textDim};font-family:monospace;line-height:1.5;margin-top:2px;white-space:pre-line">${escHtml(b.detail)}</div>
+              </div>
+            </div>`;
+          }).join("")}
+          <div style="margin-top:8px">
+            <div style="font-size:9px;color:${C.olive};font-weight:700;text-transform:uppercase;letter-spacing:.14em;margin-bottom:4px">📋 Nota</div>
+            <textarea class="note-input" rows="2" placeholder="Sensaciones, ajustes..."
+              oninput="scheduleNoteSemana(this.value,'${dk}')"
+              style="margin-top:0">${escHtml(STORAGE.notes[dk]||"")}</textarea>
+          </div>
+        </div>`:""}
+      </div>
+    `;
+  });
+
+  document.getElementById("tab-semana").innerHTML=html;
+}
+
+function scheduleNoteSemana(val,dk){
+  clearTimeout(saveNoteTimer);
+  saveNoteTimer=setTimeout(()=>{
+    STORAGE.notes[dk]=val;
+    saveNotes();
+  },500);
+}
+
+// ─── TAB METAS ────────────────────────────────────────────────────────────────
+function renderMetas(){
+  const cw=getCurrentWeek();
+  const macropct=Math.max(0,Math.min(100,Math.round(((cw-4)/(PLAN_WEEKS-4))*100)));
+  const wt=WEEK_TYPES[cw]||"normal";
+  const L=getWeekLoads(cw);
+  const farmersLabel=L.farmersCarry>=15?"Manc 15kg":"KB 14kg";
+
+  let html=`
+    <div class="sec-title">🗓 Macrociclo 2026</div>
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px">
+        <div>
+          <span style="font-size:30px;font-weight:900;color:${C.oliveL};line-height:1">S${cw}</span>
+          <span style="font-size:12px;color:${C.textMuted};margin-left:6px">de ${PLAN_WEEKS}</span>
+        </div>
+        <div style="text-align:right">
+          <div style="font-size:16px;font-weight:900;color:${C.white}">${macropct}%</div>
+          <div style="font-size:9px;color:${C.textMuted};text-transform:uppercase;letter-spacing:.12em">completado</div>
+        </div>
+      </div>
+      <div class="pbar"><div class="pfill" style="width:${macropct}%;background:${C.olive}"></div></div>
+      <div style="margin-top:8px;display:flex;justify-content:space-between">
+        <span style="font-size:10px;color:${C.textMuted};font-family:monospace">18 May 2026</span>
+        <span style="font-size:10px;color:${C.textMuted};font-family:monospace">25 Oct 2026</span>
+      </div>
+    </div>
+
+    <div class="card" style="border-color:${WEEK_COLORS[wt]||C.olive}44">
+      <div style="font-size:9px;color:${C.textMuted};text-transform:uppercase;letter-spacing:.18em;font-weight:700;margin-bottom:8px">Semana actual</div>
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap">
+        <span class="week-badge" style="background:${WEEK_COLORS[wt]}18;color:${WEEK_COLORS[wt]};border:1px solid ${WEEK_COLORS[wt]}55">${WEEK_LABELS[wt]}</span>
+        <span style="font-size:11px;color:${C.textDim}">${L.scheme.sets}×${L.scheme.reps}${L.scheme.note?" · "+L.scheme.note:""}</span>
+      </div>
+      <div class="load-grid">
+        ${[
+          ["Sentadilla",L.sentadilla+"kg"],
+          ["Peso muerto",L.pesoMuerto+"kg"],
+          ["Banca",L.banca+"kg"],
+          ["Remo barra",L.remoBarra+"kg"],
+          ["Press mil.",L.pressMilitar+"kg"],
+          ["Zancadas",L.zancadas+"kg"],
+          ["Step-ups",L.stepUps+"kg c/u"],
+          ["Búlgara",L.bulgaraSplit+"kg c/u"],
+          ["Farmers",farmersLabel],
+          ["Curl bíceps","Barra "+L.curlBicep+"kg"],
+          ["Elev. lateral",L.elevLat+"kg"],
+        ].map(([n,v])=>`
+          <div class="load-cell">
+            <div class="load-cell-label">${n}</div>
+            <div class="load-cell-val" style="font-size:13px">${v}</div>
+          </div>
+        `).join("")}
+      </div>
+    </div>
+
+    <div class="sec-title">🏆 Registros personales</div>
+    <div class="card">
+      ${Object.entries(STORAGE.prs).map(([lift,pr])=>`
+        <div class="pr-row" style="margin-bottom:5px">
+          <div>
+            <div style="font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:.06em;color:${C.text}">${lift}</div>
+            <div style="font-size:10px;color:${C.textMuted};margin-top:1px;font-family:monospace">${pr.date}</div>
+            ${pr.note?`<div style="font-size:10px;color:${C.olive};margin-top:2px;font-style:italic">${pr.note}</div>`:""}
+          </div>
+          <div style="display:flex;align-items:center;gap:8px">
+            ${STATE.editingPR===lift?`
+              <input type="number" id="pr-input-${lift.replace(/\s/g,"_")}" value="${pr.kg}"
+                style="width:60px;background:${C.bgAlt};border:1px solid ${C.olive};color:${C.white};padding:4px 8px;border-radius:3px;font-size:16px;font-weight:900;text-align:center;font-family:inherit"
+                onkeydown="prKeydown(event,'${lift}')">
+              <button onclick="savePR('${lift}')" style="background:${C.olive}22;border:1px solid ${C.olive};color:${C.oliveL};padding:4px 10px;border-radius:3px;font-size:11px;font-weight:700">✓</button>
+            `:`
+              <div style="text-align:right">
+                <div style="font-size:22px;font-weight:900;color:${C.oliveL};line-height:1">${pr.kg}</div>
+                <div style="font-size:10px;color:${C.textMuted}">kg</div>
+              </div>
+              <button onclick="editPR('${lift}')" style="background:none;border:1px solid ${C.border};color:${C.textDim};padding:4px 8px;border-radius:3px;font-size:11px;cursor:pointer">✏</button>
+            `}
+          </div>
+        </div>
+      `).join("")}
+      <div style="font-size:10px;color:${C.textMuted};margin-top:6px;font-style:italic">Toca ✏ para actualizar un PR</div>
+    </div>
+
+    <div class="sec-title">🏁 Objetivos</div>
+    ${RACES.map(ev=>{
+      const days=getDaysUntil(ev.date);
+      const passed=days<0;
+      const col=passed?C.textMuted:ev.color;
+      return `<div class="ev-card" style="background:${col}0a;border-color:${col}30;border-left-color:${col}">
+        <div style="text-align:center;min-width:50px">
+          <div class="ev-days" style="color:${col}">${passed?"✓":days}</div>
+          <div style="font-size:9px;color:${C.textMuted};font-weight:700;letter-spacing:.14em;text-transform:uppercase">${passed?"listo":"días"}</div>
+        </div>
+        <div style="flex:1">
+          <div style="font-size:16px;margin-bottom:3px">${ev.emoji}</div>
+          <div style="font-size:15px;font-weight:900;text-transform:uppercase;letter-spacing:.05em;color:${passed?C.textMuted:C.white}">${ev.name}</div>
+          <div style="font-size:11px;color:${C.textDim};margin-top:2px;font-family:monospace">${formatDate(ev.date)}${ev.dist?" · "+ev.dist:""}</div>
+          ${!passed&&days<=14?`<div style="margin-top:5px;font-size:10px;color:${ev.color};font-weight:700;text-transform:uppercase;letter-spacing:.12em">⚠ INMINENTE</div>`:""}
+        </div>
+      </div>`;
+    }).join("")}
+
+    <div class="sec-title">📖 Glosario</div>
+    <div class="card">
+      ${[
+        ["Z2","Zona 2 aeróbica · FC 130–150ppm · ritmo conversable, base aeróbica"],
+        ["FC","Frecuencia cardíaca (ppm = pulsaciones por minuto)"],
+        ["RDL","Peso muerto rumano · cadera atrás, rodilla semifleja · NO desde el suelo"],
+        ["AMRAP","As Many Rounds As Possible · máximas rondas en el tiempo dado"],
+        ["Biserie","Dos ejercicios ejecutados seguidos sin pausa entre ellos (superserie)"],
+        ["Goblet","Sentadilla sosteniendo una pesa rusa (KB) a la altura del pecho"],
+        ["HYROX","Competencia de fitness funcional: 8 estaciones de ejercicio + carrera entre estaciones"],
+        ["Taper","Reducción de volumen pre-carrera manteniendo intensidad"],
+        ["Descarga","Semana de –30% de carga para recuperar y supercompensar"],
+        ["Farmers","Farmers carry · caminar cargando peso en cada mano"],
+        ["RPE","Rate of Perceived Exertion · escala de esfuerzo 1–10 (7 = podría hacer 3 reps más)"],
+      ].map(([t,d])=>`<div class="glos-row"><span class="glos-term">${t}</span><span class="glos-def">${d}</span></div>`).join("")}
+    </div>
+
+    <div class="card" style="text-align:center;margin-top:4px;border-color:${C.oliveDim}">
+      <div style="font-size:28px;margin-bottom:6px">🧱</div>
+      <div style="font-size:12px;color:${C.textDim};line-height:1.7;font-style:italic">
+        "Ladrillo a ladrillo,<br>se construye la muralla."
+      </div>
+    </div>
+  `;
+
+  document.getElementById("tab-metas").innerHTML=html;
+}
+
+// ─── PR EDITING ───────────────────────────────────────────────────────────────
+function editPR(lift){
+  STATE.editingPR=lift;
+  render();
+  setTimeout(()=>{
+    const id="pr-input-"+lift.replace(/\s/g,"_");
+    const el=document.getElementById(id);
+    if(el){el.focus();el.select();}
+  },50);
+}
+
+function savePR(lift){
+  const id="pr-input-"+lift.replace(/\s/g,"_");
+  const el=document.getElementById(id);
+  if(!el)return;
+  const val=parseFloat(el.value);
+  if(isNaN(val)||val<=0)return;
+  const today=new Date();
+  const MONTHS_ES=["ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic"];
+  STORAGE.prs[lift].kg=val;
+  STORAGE.prs[lift].date=today.getDate()+" "+MONTHS_ES[today.getMonth()]+" "+today.getFullYear();
+  savePRs();
+  STATE.editingPR=null;
+  render();
+}
+
+function prKeydown(e,lift){
+  if(e.key==="Enter")savePR(lift);
+  if(e.key==="Escape"){STATE.editingPR=null;render();}
+}
+
+// ─── ACTIONS ──────────────────────────────────────────────────────────────────
+function switchTab(t){
+  STATE.tab=t;
+  if(t==="semana")STATE.weekOffset=0;
+  STATE.expandedDay=null;
+  render();
+}
+
+function changeWeek(delta){
+  const cw=getCurrentWeek();
+  const newView=cw+STATE.weekOffset+delta;
+  if(newView<4||newView>PLAN_WEEKS)return;
+  STATE.weekOffset+=delta;
+  STATE.expandedDay=null;
+  render();
+}
+
+function toggleExpand(dk){
+  STATE.expandedDay=STATE.expandedDay===dk?null:dk;
+  render();
+}
+
+function nextQuote(){
+  STATE.quoteIdx=(STATE.quoteIdx+1)%QUOTES.length;
+  render();
+}
+
+// ─── UTILS ────────────────────────────────────────────────────────────────────
+function escHtml(s){
+  return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+}
+
+function checkSVG(size=12){
+  return `<svg width="${size}" height="${size}" viewBox="0 0 14 14" fill="none" style="display:block">
+    <path d="M2 7L5.5 10.5L12 3.5" stroke="${C.bg}" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>`;
+}
+
+function formatDate(dateStr){
+  const d=parseLocalDate(dateStr);
+  const MONTHS_ES=["enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre"];
+  return d.getDate()+" de "+MONTHS_ES[d.getMonth()]+" "+d.getFullYear();
+}
+
+// ─── INIT ─────────────────────────────────────────────────────────────────────
+loadStorage();
+render();
+</script>
+</body>
+</html>
