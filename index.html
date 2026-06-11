@@ -84,10 +84,12 @@ textarea{font-family:monospace;resize:none;outline:none}
     <button class="tab-btn active" data-tab="hoy" onclick="switchTab('hoy')"><span class="tab-icon">🎯</span>Hoy</button>
     <button class="tab-btn" data-tab="semana" onclick="switchTab('semana')"><span class="tab-icon">📅</span>Semana</button>
     <button class="tab-btn" data-tab="metas" onclick="switchTab('metas')"><span class="tab-icon">🏁</span>Metas</button>
+    <button class="tab-btn" data-tab="suplementos" onclick="switchTab('suplementos')"><span class="tab-icon">💊</span>Supp</button>
   </div>
   <div id="tab-hoy" class="content"></div>
   <div id="tab-semana" class="content" style="display:none"></div>
   <div id="tab-metas" class="content" style="display:none"></div>
+  <div id="tab-suplementos" class="content" style="display:none"></div>
 </div>
 <script>
 "use strict";
@@ -103,6 +105,21 @@ const QUOTES=[
  {t:"Comienza. La mitad de la acción es el coraje de empezar.",a:"Séneca"},
  {t:"Ladrillo a ladrillo se construye la muralla.",a:"Tata Jorge"},
  {t:"No pidas que las cosas sean como quieres. Desea que sean como son.",a:"Epicteto"},
+ {t:"Ningún ser humano tiene límites.",a:"Eliud Kipchoge"},
+ {t:"Solo los disciplinados son libres. El indisciplinado es esclavo de su estado de ánimo.",a:"Eliud Kipchoge"},
+ {t:"Dar menos que tu mejor esfuerzo es desperdiciar el don.",a:"Steve Prefontaine"},
+ {t:"Quizá me ganen, pero van a tener que sangrar para lograrlo.",a:"Steve Prefontaine"},
+ {t:"He fallado una y otra vez en mi vida; por eso tengo éxito.",a:"Michael Jordan"},
+ {t:"Fallas el 100% de los tiros que no intentas.",a:"Wayne Gretzky"},
+ {t:"Siempre parece imposible hasta que se hace.",a:"Nelson Mandela"},
+ {t:"No importa lo lento que vayas, mientras no te detengas.",a:"Confucio"},
+ {t:"Nuestra mayor gloria no está en no caer, sino en levantarnos cada vez que caemos.",a:"Confucio"},
+ {t:"Cree que puedes y ya estás a medio camino.",a:"Theodore Roosevelt"},
+ {t:"Un viaje de mil millas comienza con un solo paso.",a:"Lao Tzu"},
+ {t:"El éxito es la suma de pequeños esfuerzos repetidos día tras día.",a:"Robert Collier"},
+ {t:"No temo al que practicó 10.000 patadas una vez, sino al que practicó una patada 10.000 veces.",a:"Bruce Lee"},
+ {t:"No importa cuántas veces caigas, sino cuántas te levantas.",a:"Vince Lombardi"},
+ {t:"Cada ladrillo cuenta, aunque hoy no veas la muralla.",a:"Tata Jorge"},
 ];
 function parseLocalDate(s){return new Date(s+"T00:00:00");}
 const PLAN_START=new Date("2026-05-18T00:00:00");
@@ -162,7 +179,7 @@ const WEEKS={
    jue:"4 min continuos · anota si llegas sin parar",
    mar:[["Sentadilla barra","4×6","50kg","Desc 90s"],["Peso muerto convencional","3×5","72kg","Desc 2min"],["Zancadas barra + Ext. cuádriceps","3×10 c/l + 3×15","35kg + ext. cuádriceps por RPE","Sin pausa"],["Sent. sumo KB16 + Step-ups manc","3×12 + 3×8 c/l","KB16 + 2×15kg","15kg nuevo → 8 reps"],["Búlgara split manc","3×8 c/l","2×15kg","15kg nuevo"],["Farmers carry","3 series × 5 vueltas 10m","Manc 15kg c/u"]],
    amrap:"10 sentadillas · 8 step-ups · 8 swings KB16 · 10seg plancha · 8 min · meta: 7+ rondas",
-   mie:[["Press banca barra","4×6","50kg","Desc 90s"],["Jalón al pecho","4×8","por RPE 7-8 · banda, TRX o máquina"],["Press militar manc","3×10","2×5kg","Sin pausa → face pull"],["Face pull en polea","3×15","banda · por RPE 7"],["Curl bíceps barra","3×12","27kg"],["Ext. tríceps en polea","3×15","banda · por RPE 7"],["Elevación lateral manc","3×15","2×2.5kg"],["Remo KB16","3×12","KB16"]],
+   mie:[["Press banca barra","4×6","50kg","Desc 90s"],["Jalón al pecho","4×8","por RPE 7-8 · banda, TRX o máquina"],["Press militar barra","3×8","20kg","Clean a hombros · estricto · sin pausa → face pull"],["Face pull en polea","3×15","banda · por RPE 7"],["Curl bíceps barra","3×12","27kg"],["Ext. tríceps en polea","3×15","banda · por RPE 7"],["Elevación lateral manc","3×15","2×2.5kg"],["Remo KB16","3×12","KB16"]],
    run:"6 series × 2 min corriendo · 5:40-5:50/km · desc 60s · FC 150-160",
    vie:[["Peso muerto convencional","3×5","72kg","Desc 2min"],["Press banca barra","4×6","50kg","Desc 90s"],["Remo barra + Búlgara manc","3×10 + 3×8 c/l","40kg + 2×15kg","15kg en búlgara nuevo → 8 reps"],["Farmers carry","3 series × 5 vueltas 10m","Manc 15kg c/u"],["Wall balls slam ball","4×15","6kg","Sentadilla + overhead"]],
    fin:"4 rondas (desc 90s) · 8 swings KB16 · 8 wall balls 6kg · 8 burpees · 30seg comba · meta <7:15",
@@ -172,7 +189,7 @@ const WEEKS={
    jue:"4 min continuos · semana pico",
    mar:[["Sentadilla barra","4×6","55kg","Desc 90s"],["Peso muerto convencional","3×4","77kg","Desc 2min"],["Zancadas barra + Ext. cuádriceps","3×10 c/l + 3×15","37kg + ext. cuádriceps por RPE","Sin pausa"],["Sent. sumo KB16 + Step-ups manc","3×12 + 3×10 c/l","KB16 + 2×15kg","Dominaste el 15kg"],["Búlgara split manc","3×10 c/l","2×15kg"],["Farmers carry","3 series × 5 vueltas 10m","Manc 15kg c/u"]],
    amrap:"10 sentadillas · 8 step-ups · 8 swings KB16 · 10seg plancha · 8 min · meta: 8+ rondas — PICO",
-   mie:[["Press banca barra","4×6","52kg","Desc 90s"],["Jalón al pecho","4×8","por RPE 7-8 · banda, TRX o máquina"],["Press militar manc","3×10","2×5kg","Sin pausa → face pull"],["Face pull en polea","3×15","banda · por RPE 7"],["Curl bíceps barra","3×12","27kg"],["Ext. tríceps en polea","3×15","banda · por RPE 7"],["Elevación lateral manc","3×15","2×2.5kg"],["Remo KB16","3×12","KB16"]],
+   mie:[["Press banca barra","4×6","52kg","Desc 90s"],["Jalón al pecho","4×8","por RPE 7-8 · banda, TRX o máquina"],["Press militar barra","3×10","20kg","Clean a hombros · estricto · sin pausa → face pull"],["Face pull en polea","3×15","banda · por RPE 7"],["Curl bíceps barra","3×12","27kg"],["Ext. tríceps en polea","3×15","banda · por RPE 7"],["Elevación lateral manc","3×15","2×2.5kg"],["Remo KB16","3×12","KB16"]],
    run:"5 series × 1 km · 5:30-5:40/km · desc 2 min · FC 155-165",
    vie:[["Peso muerto convencional","3×4","77kg","Desc 2min"],["Press banca barra","4×6","52kg","Desc 90s"],["Remo barra + Búlgara manc","3×10 + 3×10 c/l","42kg + 2×15kg","Sin pausa"],["Farmers carry","3 series × 5 vueltas 10m","Manc 15kg c/u"],["Wall balls slam ball","4×18","6kg","Sentadilla + overhead"]],
    fin:"4 rondas (desc 90s) · 8 swings KB16 · 8 wall balls 6kg · 8 burpees · 30seg comba · meta <7:00 — PICO",
@@ -182,7 +199,7 @@ const WEEKS={
    jue:"2 min muy suave básico + alternado · sin presión",
    mar:[["Sentadilla barra","3×6","42kg","Desc 90s"],["Peso muerto convencional","3×6","62kg","Desc 2min"],["Zancadas barra + Ext. cuádriceps","3×8 c/l + 3×15","27kg + ext. cuádriceps por RPE","Sin pausa"],["Step-ups manc","3×8 c/l","2×5kg","Controlar la bajada"],["Búlgara split manc","3×8 c/l","2×5kg"],["Farmers carry","2 series × 5 vueltas 10m","Manc 15kg c/u","Descarga: se reduce volumen, no la herramienta"]],
    amrap:"10 sentadillas · 8 step-ups · 8 swings KB16 · 10seg plancha · 6 min SUAVE · solo mantener (descarga)",
-   mie:[["Press banca barra","3×6","42kg","Desc 90s"],["Jalón al pecho","3×8","por RPE 7-8 · banda, TRX o máquina"],["Superset -30% (sin pausa en cada par)","3 series","—","Press mil 2×2.5kg + face pull · Curl barra 20kg + ext. tríceps · Elev. lateral 2×2.5kg + Remo KB14"]],
+   mie:[["Press banca barra","3×6","42kg","Desc 90s"],["Jalón al pecho","3×8","por RPE 7-8 · banda, TRX o máquina"],["Superset -30% (sin pausa en cada par)","3 series","—","Press mil barra 20kg + face pull · Curl barra 20kg + ext. tríceps · Elev. lateral 2×2.5kg + Remo KB14"]],
    run:"Correr 22 min ZONA 1 · ~7:30-8:15/km · FC <130 · muy suave",
    vie:[["Peso muerto convencional","3×5","62kg","Desc 2min"],["Press banca barra","3×5","42kg","Desc 90s"],["Remo barra + Búlgara manc","3×8 + 3×8 c/l","35kg + 2×5kg","-30%"],["Farmers carry","2 series × 5 vueltas 10m","Manc 15kg c/u","Volumen reducido, misma herramienta"],["Wall balls slam ball","3×12","6kg","Sentadilla + overhead"]],
    fin:"3 rondas SUAVE (desc 90s) · 8 swings KB16 · 8 wall balls 6kg · 8 burpees · 30seg comba · sin presión (descarga)",
@@ -192,7 +209,7 @@ const WEEKS={
    jue:"5 min continuos a ritmo cómodo",
    mar:[["Sentadilla barra","3×6","57kg","Desc 90s"],["Peso muerto convencional","3×5","80kg","Desc 2min"],["Zancadas barra + Ext. cuádriceps","3×10 c/l + 3×15","40kg + ext. cuádriceps por RPE","Sin pausa"],["Step-ups manc","3×10 c/l","2×15kg","Controlar la bajada"],["Búlgara split manc","3×10 c/l","2×15kg"],["Farmers carry","3 series × 5 vueltas 10m","Manc 15kg c/u"]],
    amrap:"10 sentadillas · 8 step-ups · 8 swings KB16 · 10seg plancha · 8 min · meta: 8+ rondas",
-   mie:[["Press banca barra","3×6","55kg","Desc 90s"],["Jalón al pecho","3×8","por RPE 7-8 · banda, TRX o máquina"],["Press militar manc","3×10","2×5kg","Sin pausa → face pull"],["Face pull en polea","3×15","banda · por RPE 7"],["Curl bíceps barra","3×12","27kg"],["Ext. tríceps en polea","3×15","banda · por RPE 7"],["Elevación lateral manc","3×15","2×2.5kg"],["Remo KB16","3×12","KB16"]],
+   mie:[["Press banca barra","3×6","55kg","Desc 90s"],["Jalón al pecho","3×8","por RPE 7-8 · banda, TRX o máquina"],["Press militar barra","3×8","22.5kg","Clean a hombros · estricto · sin pausa → face pull"],["Face pull en polea","3×15","banda · por RPE 7"],["Curl bíceps barra","3×12","27kg"],["Ext. tríceps en polea","3×15","banda · por RPE 7"],["Elevación lateral manc","3×15","2×2.5kg"],["Remo KB16","3×12","KB16"]],
    run:"5 series × 1 km · 5:25-5:35/km · desc 2 min · FC 155-165",
    vie:[["Peso muerto convencional","3×4","80kg","Desc 2min"],["Press banca barra","3×6","55kg","Desc 90s"],["Remo barra + Búlgara manc","3×10 + 3×10 c/l","45kg + 2×15kg","Sin pausa"],["Farmers carry","3 series × 5 vueltas 10m","Manc 15kg c/u"],["Wall balls slam ball","4×20","6kg","Sentadilla + overhead"]],
    fin:"EMOM 10 min · min IMPAR: 8 swings KB16 · min PAR: 8 wall balls 6kg · cada minuto arranca en el minuto",
@@ -202,7 +219,7 @@ const WEEKS={
    jue:"5 min continuos · anota si llegas sin parar",
    mar:[["Sentadilla barra","3×6","60kg","Desc 90s"],["Peso muerto convencional","3×4","82kg","Desc 2min"],["Zancadas barra + Ext. cuádriceps","3×10 c/l + 3×15","42kg + ext. cuádriceps por RPE","Sin pausa"],["Step-ups manc","3×10 c/l","2×15kg"],["Búlgara split manc","3×10 c/l","2×15kg"],["Farmers carry","3 series × 5 vueltas 10m","Manc 15kg c/u"]],
    amrap:"10 sentadillas · 8 step-ups · 8 swings KB16 · 10seg plancha · 8 min · meta: 8+ rondas",
-   mie:[["Press banca barra","3×5","57kg","Desc 90s"],["Jalón al pecho","3×8","por RPE 7-8 · banda, TRX o máquina"],["Press militar manc","3×10","2×5kg","Sin pausa → face pull"],["Face pull en polea","3×15","banda · por RPE 7"],["Curl bíceps barra","3×12","30kg"],["Ext. tríceps en polea","3×15","banda · por RPE 7"],["Elevación lateral manc","3×15","2×2.5kg"],["Remo KB16","3×12","KB16"]],
+   mie:[["Press banca barra","3×5","57kg","Desc 90s"],["Jalón al pecho","3×8","por RPE 7-8 · banda, TRX o máquina"],["Press militar barra","3×10","22.5kg","Clean a hombros · estricto · sin pausa → face pull"],["Face pull en polea","3×15","banda · por RPE 7"],["Curl bíceps barra","3×12","30kg"],["Ext. tríceps en polea","3×15","banda · por RPE 7"],["Elevación lateral manc","3×15","2×2.5kg"],["Remo KB16","3×12","KB16"]],
    run:"6 series × 1 km · 5:20-5:30/km · desc 90s · FC 155-165",
    vie:[["Peso muerto convencional","3×4","82kg","Desc 2min"],["Press banca barra","3×5","57kg","Desc 90s"],["Remo barra + Búlgara manc","3×10 + 3×10 c/l","45kg + 2×15kg","Sin pausa"],["Farmers carry","3 series × 5 vueltas 10m","Manc 15kg c/u"],["Wall balls slam ball","4×22","6kg","Sentadilla + overhead"]],
    fin:"4 rondas (desc 90s) · 8 swings KB16 · 8 wall balls 6kg · 8 burpees · 30seg comba · meta <6:45",
@@ -212,7 +229,7 @@ const WEEKS={
    jue:"6 min continuos · SUPERPICO · anota el tiempo exacto sin parar",
    mar:[["Sentadilla barra","4×5","62kg","Desc 90s"],["Peso muerto convencional","3×4","85kg","Desc 2min"],["Zancadas barra + Ext. cuádriceps","3×10 c/l + 3×15","45kg + ext. cuádriceps por RPE","Sin pausa"],["Step-ups manc","4×10 c/l","2×15kg"],["Búlgara split manc","4×10 c/l","2×15kg"],["Farmers carry","3 series × 5 vueltas 10m","Manc 15kg c/u"]],
    amrap:"10 sentadillas · 8 step-ups · 8 swings KB16 · 10seg plancha · 8 min · meta: 9+ rondas — SUPERPICO",
-   mie:[["Press banca barra","3×5","60kg","Desc 90s"],["Jalón al pecho","3×8","por RPE 7-8 · banda, TRX o máquina"],["Press militar manc","3×10","2×5kg","Sin pausa → face pull"],["Face pull en polea","3×15","banda · por RPE 7"],["Curl bíceps barra","3×12","30kg"],["Ext. tríceps en polea","3×15","banda · por RPE 7"],["Elevación lateral manc","3×15","2×2.5kg"],["Remo KB16","3×12","KB16"]],
+   mie:[["Press banca barra","3×5","60kg","Desc 90s"],["Jalón al pecho","3×8","por RPE 7-8 · banda, TRX o máquina"],["Press militar barra","3×8","25kg","Clean a hombros · estricto · sin pausa → face pull"],["Face pull en polea","3×15","banda · por RPE 7"],["Curl bíceps barra","3×12","30kg"],["Ext. tríceps en polea","3×15","banda · por RPE 7"],["Elevación lateral manc","3×15","2×2.5kg"],["Remo KB16","3×12","KB16"]],
    run:"Tempo largo trotadora · 5' + 40' + 5' · 9 km/h (~6:40/km) · FC 150-160 (si llegas a 170, bajar a 8.5)",
    vie:[["Peso muerto convencional","4×3","85kg","Desc 2min"],["Press banca barra","3×5","60kg","Desc 90s"],["Remo barra + Búlgara manc","3×10 + 4×10 c/l","47kg + 2×15kg","Sin pausa"],["Farmers carry","3 series × 5 vueltas 10m","Manc 15kg c/u"],["Wall balls slam ball","5×20","6kg","Sentadilla + overhead"]],
    fin:"EMOM 10 min · min IMPAR: 10 swings KB16 · min PAR: 10 wall balls 6kg · SUPERPICO — mantener todo el EMOM",
@@ -222,7 +239,7 @@ const WEEKS={
    jue:"3 min muy suave básico + alternado",
    mar:[["Sentadilla barra","3×6","47kg","Desc 90s"],["Peso muerto convencional","3×6","67kg","Desc 2min"],["Zancadas barra + Ext. cuádriceps","3×8 c/l + 3×15","35kg + ext. cuádriceps por RPE","Sin pausa"],["Step-ups manc","3×8 c/l","2×5kg"],["Búlgara split manc","3×8 c/l","2×5kg"],["Farmers carry","2 series × 5 vueltas 10m","Manc 15kg c/u","Descarga: volumen reducido, misma herramienta"]],
    amrap:null,
-   mie:[["Press banca barra","3×6","47kg","Desc 90s"],["Jalón al pecho","3×8","por RPE 7-8 · banda, TRX o máquina"],["Superset -30% (sin pausa en cada par)","3 series","—","Press mil 2×2.5kg + face pull · Curl barra 22kg + ext. tríceps · Elev. lateral 2×2.5kg + Remo KB14"]],
+   mie:[["Press banca barra","3×6","47kg","Desc 90s"],["Jalón al pecho","3×8","por RPE 7-8 · banda, TRX o máquina"],["Superset -30% (sin pausa en cada par)","3 series","—","Press mil barra 20kg + face pull · Curl barra 22kg + ext. tríceps · Elev. lateral 2×2.5kg + Remo KB14"]],
    run:"Correr 22 min ZONA 1 · ~7:30-8:15/km · FC <130 · muy suave",
    vie:[["Peso muerto convencional","3×5","67kg","Desc 2min"],["Press banca barra","3×6","47kg","Desc 90s"],["Remo barra + Búlgara manc","3×8 + 3×8 c/l","40kg + 2×5kg","-30%"],["Farmers carry","2 series × 5 vueltas 10m","Manc 15kg c/u"],["Wall balls slam ball","3×15","6kg","Sentadilla + overhead"]],
    fin:"3 rondas SUAVE (desc 90s) · 8 swings KB16 · 8 wall balls 6kg · 8 burpees · 30seg comba · sin presión (descarga)",
@@ -232,7 +249,7 @@ const WEEKS={
    jue:"5 min muy suave básico + alternado",
    mar:[["Sentadilla barra","3×5","55kg","Desc 90s"],["Peso muerto convencional","3×4","72kg","Desc 2min"],["Zancadas barra + Ext. cuádriceps","3×8 c/l + 3×15","37kg + ext. cuádriceps por RPE","Sin pausa"],["Step-ups manc","3×8 c/l","2×10kg"],["Búlgara split manc","3×8 c/l","2×10kg"],["Farmers carry","3 series × 5 vueltas 10m","Manc 15kg c/u"]],
    amrap:"10 sentadillas · 8 step-ups · 8 swings KB16 · 10seg plancha · 8 min · RPE 6 · no al límite (taper)",
-   mie:[["Press banca barra","3×5","52kg","Desc 90s"],["Jalón al pecho","3×8","por RPE 7-8 · banda, TRX o máquina"],["Superset -20% (sin pausa en cada par)","3 series","—","Press mil 2×2.5kg + face pull · Curl barra 25kg + ext. tríceps · Elev. lateral 2×2.5kg + Remo KB14"]],
+   mie:[["Press banca barra","3×5","52kg","Desc 90s"],["Jalón al pecho","3×8","por RPE 7-8 · banda, TRX o máquina"],["Superset -20% (sin pausa en cada par)","3 series","—","Press mil barra 20kg + face pull · Curl barra 25kg + ext. tríceps · Elev. lateral 2×2.5kg + Remo KB14"]],
    run:"Tempo trotadora · 5' + 18' + 5' · 8.5 km/h (~7:05/km) · FC 145-155",
    vie:[["Peso muerto convencional","3×4","72kg","Desc 2min"],["Press banca barra","3×5","52kg","Desc 90s"],["Remo barra + Búlgara manc","3×8 + 3×8 c/l","45kg + 2×10kg","-20%"],["Farmers carry","3 series × 5 vueltas 10m","Manc 15kg c/u"],["Wall balls slam ball","3×15","6kg","Sentadilla + overhead"]],
    fin:"3 rondas (desc 90s) · 8 swings KB16 · 8 wall balls 6kg · 8 burpees · 30seg comba · RPE 6 · no al máximo (taper)",
@@ -242,7 +259,7 @@ const WEEKS={
    jue:"5 min muy suave básico + alternado",
    mar:[["Sentadilla barra","3×4","47kg","Desc 90s"],["Peso muerto convencional","2×4","62kg","Desc 2min"],["Zancadas barra + Ext. cuádriceps","3×6 c/l + 3×15","35kg + ext. cuádriceps por RPE","Sin pausa"],["Step-ups manc","2×8 c/l","2×10kg"],["Búlgara split manc","2×8 c/l","2×10kg"]],
    amrap:null,
-   mie:[["Press banca barra","2×5","47kg","Desc 90s"],["Jalón al pecho","2×8","por RPE 7-8 · banda, TRX o máquina"],["Superset -30% (sin pausa en cada par)","2 series","—","Press mil 2×2.5kg + face pull · Curl manc 2×10kg + ext. tríceps"]],
+   mie:[["Press banca barra","2×5","47kg","Desc 90s"],["Jalón al pecho","2×8","por RPE 7-8 · banda, TRX o máquina"],["Superset -30% (sin pausa en cada par)","2 series","—","Press mil barra 20kg + face pull · Curl manc 2×10kg + ext. tríceps"]],
    run:"3 series × 1 km · 5:30-5:40/km · desc 90s · FC 155-165",
    vie:[["Peso muerto convencional","2×4","62kg","Desc 2min"],["Press banca barra","2×4","47kg","Desc 90s"],["Remo barra + Búlgara manc","2×8 + 2×8 c/l","40kg + 2×10kg","-30%"],["Farmers carry","2 series × 5 vueltas 10m","Manc 15kg c/u","Misma herramienta, volumen reducido"]],
    fin:null,
@@ -329,7 +346,9 @@ function dateKey(d){return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2
 function todayKey(){return dateKey(new Date());}
 function getWeekDaysFor(w){const monday=new Date(PLAN_START.getTime()+(w-4)*7*86400000);return Array.from({length:7},(_,i)=>{const d=new Date(monday);d.setDate(monday.getDate()+i);return d;});}
 function rowsToBlocks(rows,prefix){return rows.map((r,i)=>({id:prefix+i,label:r[0],detail:r.slice(1).filter(Boolean).join(" · ")}));}
-function combaSession(detail){return{name:"COMBA",emoji:"🪢",color:C.sand,dur:"15-20 min",blocks:[{id:"w",label:"Activación 5 min",detail:"Movilidad dinámica · marcha · círculos cadera"},{id:"m",label:"Comba",detail:detail+"\n⚠ Antes de salir a La Dehesa (sin ducha gym)"}]};}
+function coreBlock(day,t){if(t==="carrera")return null;let tier;if(t==="pico")tier="pico";else if(t==="descarga"||t==="taper")tier="light";else tier="normal";const CORE={lun:{pico:"3 rondas · holds largos:\n• Plancha 45s\n• Pallof press banda 12 c/l\n• Dead bug 10 c/l\n• Bird dog 10 c/l",normal:"2-3 rondas:\n• Plancha 30-40s\n• Pallof press banda 10 c/l\n• Dead bug 8 c/l\n• Bird dog 8 c/l",light:"1-2 rondas suave:\n• Plancha 25s\n• Pallof press banda 8 c/l\n• Dead bug 6 c/l\n• Bird dog 6 c/l"},jue:{pico:"3 rondas · holds largos:\n• Plancha lateral 40s c/l\n• Hollow hold 35s\n• Lanzamiento rotacional slam ball 6kg 12 c/l\n• Suitcase carry KB16 25m c/l",normal:"2-3 rondas:\n• Plancha lateral 25-35s c/l\n• Hollow hold 20-30s\n• Russian twist / lanz. rotacional slam ball 6kg 10 c/l\n• Suitcase carry KB16 20m c/l",light:"1-2 rondas suave:\n• Plancha lateral 20s c/l\n• Hollow hold 20s\n• Russian twist slam ball 6kg 8 c/l\n• Suitcase carry KB16 15m c/l"}};return{id:"core",label:day==="lun"?"Core · anti-movimiento":"Core · endurance + HYROX",detail:CORE[day][tier]};}
+const CORE_START_WEEK=8;
+function combaSession(detail,day,t,week){const blocks=[{id:"w",label:"Activación 5 min",detail:"Movilidad dinámica · marcha · círculos cadera"},{id:"m",label:"Comba",detail:detail+"\n⚠ Antes de salir a La Dehesa (sin ducha gym)"}];const core=(week>=CORE_START_WEEK)?coreBlock(day,t):null;if(core)blocks.push(core);return{name:core?"COMBA + CORE":"COMBA",emoji:"🪢",color:C.sand,dur:core?"20-30 min":"15-20 min",blocks:blocks};}
 function restSession(){return{name:"DESCANSO",emoji:"😴",color:C.textMuted,dur:"opcional",blocks:[{id:"r",label:"Recuperación activa",detail:"Caminata suave · foam roller · movilidad ligera · sin intensidad"}]};}
 function runSession(detail){return{name:"RODAJE LARGO",emoji:"🏃",color:C.oliveL,dur:"",blocks:[{id:"w",label:"Calentamiento 5 min",detail:"Caminata + movilidad dinámica"},{id:"run",label:"Rodaje",detail:detail},{id:"p",label:"Post-rodaje",detail:"Foam roller piernas · hidratación · proteína en los primeros 30 min"}]};}
 function getSession(week,dow){
@@ -346,8 +365,8 @@ function getSession(week,dow){
     if(dow===0)return runSession(W.dom);
     return restSession();
   }
-  if(dow===1)return combaSession(W.lun);
-  if(dow===4)return combaSession(W.jue);
+  if(dow===1)return combaSession(W.lun,"lun",W.t,week);
+  if(dow===4)return combaSession(W.jue,"jue",W.t,week);
   if(dow===6)return restSession();
   if(dow===0){if(W.domRace)return{name:W.domRace.name,emoji:W.domRace.emoji,color:W.domRace.color,dur:"",blocks:[{id:"race",label:W.domRace.name,detail:W.domRace.detail}]};return runSession(W.dom);}
   if(dow===2){const b=[{id:"mov",label:"Movilidad 5 min",detail:MOV_LEG},{id:"act",label:"Activación",detail:ACT},...rowsToBlocks(W.mar,"e")];if(W.marNote)b.push({id:"note",label:"⏱ Tope de sesión",detail:W.marNote});if(W.amrap)b.push({id:"amrap",label:"AMRAP",detail:W.amrap});return{name:"PIERNAS Y GLÚTEOS",emoji:"🦵",color:C.red,dur:(W.t==="descarga"||W.t==="taper")?"45-60 min":"70-85 min",blocks:b};}
@@ -355,12 +374,15 @@ function getSession(week,dow){
   if(dow===5){const b=[{id:"mov",label:"Movilidad 5 min",detail:MOV_FULL},{id:"act",label:"Activación",detail:ACT},...rowsToBlocks(W.vie,"e")];if(W.vieNote)b.push({id:"note",label:"⏱ Tope de sesión",detail:W.vieNote});if(W.fin)b.push({id:"fin",label:"Finisher",detail:W.fin});return{name:W.fin?"TODO EL CUERPO + FINISHER":"TODO EL CUERPO",emoji:"🔥",color:C.red,dur:W.t==="taper"?"45-55 min":"65-80 min",blocks:b};}
   return restSession();
 }
-const KEYS={checks:"ll_v6_checks",notes:"ll_v6_notes"};
-let STORAGE={checks:{},notes:{}};
+const KEYS={checks:"ll_v6_checks",notes:"ll_v6_notes",supps:"ll_v6_supps"};
+let STORAGE={checks:{},notes:{},supps:{}};
 let saveTimer=null;
-function loadStorage(){try{const c=localStorage.getItem(KEYS.checks),n=localStorage.getItem(KEYS.notes);if(c)STORAGE.checks=JSON.parse(c);if(n)STORAGE.notes=JSON.parse(n);}catch(e){}}
+function loadStorage(){try{const c=localStorage.getItem(KEYS.checks),n=localStorage.getItem(KEYS.notes),sp=localStorage.getItem(KEYS.supps);if(c)STORAGE.checks=JSON.parse(c);if(n)STORAGE.notes=JSON.parse(n);if(sp)STORAGE.supps=JSON.parse(sp);}catch(e){}}
 function saveChecks(){try{localStorage.setItem(KEYS.checks,JSON.stringify(STORAGE.checks));}catch(e){}}
 function saveNotes(){try{localStorage.setItem(KEYS.notes,JSON.stringify(STORAGE.notes));}catch(e){}}
+function saveSupps(){try{localStorage.setItem(KEYS.supps,JSON.stringify(STORAGE.supps));}catch(e){}}
+function toggleSupp(dk,id){if(!STORAGE.supps[dk])STORAGE.supps[dk]={};STORAGE.supps[dk][id]=!STORAGE.supps[dk][id];saveSupps();render();}
+const SUPPS={AM:[["am_multi","Multivitamínico"],["am_crea","Creatina"],["am_omega","Omega-3"]],PM:[["pm_mag","Magnesio"],["pm_omega","Omega-3"]]};
 function toggleCheck(dk,bid){if(!STORAGE.checks[dk])STORAGE.checks[dk]={};STORAGE.checks[dk][bid]=!STORAGE.checks[dk][bid];saveChecks();render();}
 // PRs automáticos: el mayor peso COMPLETADO (bloque marcado) hasta hoy. No se editan a mano.
 const LIFTS=[
@@ -414,10 +436,12 @@ function render(){
   document.getElementById("tab-hoy").style.display=STATE.tab==="hoy"?"block":"none";
   document.getElementById("tab-semana").style.display=STATE.tab==="semana"?"block":"none";
   document.getElementById("tab-metas").style.display=STATE.tab==="metas"?"block":"none";
+  document.getElementById("tab-suplementos").style.display=STATE.tab==="suplementos"?"block":"none";
   document.querySelectorAll(".tab-btn").forEach(b=>b.classList.toggle("active",b.dataset.tab===STATE.tab));
   if(STATE.tab==="hoy")renderHoy();
   if(STATE.tab==="semana")renderSemana();
   if(STATE.tab==="metas")renderMetas();
+  if(STATE.tab==="suplementos")renderSupps();
 }
 function renderHoy(){
   const cw=getCurrentWeek();const W=WEEKS[cw];const dow=new Date().getDay();
@@ -482,6 +506,21 @@ function renderMetas(){
   ].map(function(g){return '<div class="glos-row"><span class="glos-term">'+g[0]+'</span><span class="glos-def">'+g[1]+'</span></div>';}).join("")+'</div>';
   html+='<div class="card" style="text-align:center;margin-top:4px;border-color:'+C.oliveDim+'"><div style="font-size:28px;margin-bottom:6px">🧱</div><div style="font-size:12px;color:'+C.textDim+';line-height:1.7;font-style:italic">"Ladrillo a ladrillo,<br>se construye la muralla."</div></div>';
   document.getElementById("tab-metas").innerHTML=html;
+}
+function renderSupps(){
+  const tk=todayKey();const sp=STORAGE.supps[tk]||{};const today=new Date();const dow=today.getDay();
+  const all=SUPPS.AM.concat(SUPPS.PM);const tot=all.length;const done=all.filter(function(x){return sp[x[0]];}).length;const pct=Math.round(done/tot*100);
+  function group(title,emoji,items,col){
+    return '<div class="sec-title">'+emoji+' '+title+'</div>'+items.map(function(it){const d=!!sp[it[0]];return '<div class="block-item'+(d?" done":"")+'" onclick="toggleSupp(\''+tk+'\',\''+it[0]+'\')" style="'+(d?"border-color:"+col+"40;":"")+'"><div class="checkbox'+(d?" done":"")+'" style="color:'+col+'">'+(d?checkSVG():"")+'</div><div style="flex:1;min-width:0"><div class="block-label'+(d?" done":"")+'">'+escHtml(it[1])+'</div></div></div>';}).join("");
+  }
+  let strip="";
+  for(let i=6;i>=0;i--){const d=new Date(today);d.setDate(today.getDate()-i);const dk=dateKey(d);const dsp=STORAGE.supps[dk]||{};const dn=all.filter(function(x){return dsp[x[0]];}).length;const full=dn===tot;const some=dn>0&&!full;const isT=dk===tk;const bg=full?C.greenBright:(some?C.olive:C.textMuted);strip+='<div style="flex:1;text-align:center"><div style="height:26px;border-radius:3px;background:'+bg+(full?"":"22")+';border:1px solid '+(isT?C.oliveL:C.border)+';display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:900;color:'+(full?C.bg:C.textDim)+'">'+(full?"✓":(some?dn:""))+'</div><div style="font-size:8px;color:'+(isT?C.oliveL:C.textMuted)+';margin-top:3px;font-weight:700">'+DAY_NAMES[d.getDay()]+'</div></div>';}
+  let html='<div class="sess-hdr" style="background:'+C.purple+'0d;border-color:'+C.purple+'2a;border-left-color:'+C.purple+'"><span class="sess-emoji">💊</span><div style="flex:1"><div style="font-size:10px;color:'+C.textMuted+';text-transform:uppercase;letter-spacing:.14em;font-weight:700;margin-bottom:2px">'+DAY_NAMES[dow]+' '+today.getDate()+' '+MONTHS[today.getMonth()]+'</div><div class="sess-name" style="color:'+C.purple+'">Suplementos</div></div></div>';
+  html+='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px"><span style="font-size:10px;color:'+C.textMuted+';font-weight:700;text-transform:uppercase;letter-spacing:.14em">HOY</span><span style="font-size:12px;font-weight:900;color:'+(pct===100?C.greenBright:C.purple)+'">'+done+'/'+tot+' · '+pct+'%</span></div><div class="pbar"><div class="pfill" style="width:'+pct+'%;background:'+(pct===100?C.greenBright:C.purple)+'"></div></div>';
+  html+='<div style="margin-top:12px">'+group("Mañana","🌅",SUPPS.AM,C.sand)+group("Noche","🌙",SUPPS.PM,C.blue)+'</div>';
+  html+='<div class="sec-title">📊 Últimos 7 días</div><div class="card"><div style="display:flex;gap:4px">'+strip+'</div></div>';
+  html+=(pct===100?'<div class="banner-done"><div style="font-size:24px;margin-bottom:6px">💊</div><div style="font-weight:900;font-size:15px;color:'+C.greenBright+';text-transform:uppercase;letter-spacing:.12em">Stack completo</div></div>':"");
+  document.getElementById("tab-suplementos").innerHTML=html;
 }
 function switchTab(t){STATE.tab=t;if(t==="semana")STATE.weekOffset=0;STATE.expandedDay=null;render();}
 function changeWeek(delta){const cw=getCurrentWeek();const nv=cw+STATE.weekOffset+delta;if(nv<4||nv>PLAN_WEEKS)return;STATE.weekOffset+=delta;STATE.expandedDay=null;render();}
