@@ -520,12 +520,48 @@ function renderSupps(){
   html+='<div style="margin-top:12px">'+group("Mañana","🌅",SUPPS.AM,C.sand)+group("Noche","🌙",SUPPS.PM,C.blue)+'</div>';
   html+='<div class="sec-title">📊 Últimos 7 días</div><div class="card"><div style="display:flex;gap:4px">'+strip+'</div></div>';
   html+=(pct===100?'<div class="banner-done"><div style="font-size:24px;margin-bottom:6px">💊</div><div style="font-weight:900;font-size:15px;color:'+C.greenBright+';text-transform:uppercase;letter-spacing:.12em">Stack completo</div></div>':"");
+  html+='<div class="sec-title">💾 Backup</div><div class="card"><div style="font-size:11px;color:'+C.textDim+';line-height:1.6;margin-bottom:12px">Exporta tu data antes de reinstalar la app o cambiar de dispositivo. Guarda el archivo JSON y luego impórtalo para restaurar todo.</div><div style="display:flex;gap:8px"><button onclick="exportData()" style="flex:1;background:'+C.olive+';color:'+C.bg+';border:none;border-radius:3px;padding:10px 8px;font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:.1em">⬇ Exportar</button><button onclick="document.getElementById(\'importFile\').click()" style="flex:1;background:'+C.bgAlt+';color:'+C.oliveL+';border:1px solid '+C.olive+';border-radius:3px;padding:10px 8px;font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:.1em">⬆ Importar</button></div><input type="file" id="importFile" accept=".json" style="display:none" onchange="importData(event)"><div id="backupMsg" style="margin-top:8px;font-size:11px;font-weight:700;text-align:center;color:'+C.greenBright+';display:none"></div></div>';
   document.getElementById("tab-suplementos").innerHTML=html;
 }
 function switchTab(t){STATE.tab=t;if(t==="semana")STATE.weekOffset=0;STATE.expandedDay=null;render();}
 function changeWeek(delta){const cw=getCurrentWeek();const nv=cw+STATE.weekOffset+delta;if(nv<4||nv>PLAN_WEEKS)return;STATE.weekOffset+=delta;STATE.expandedDay=null;render();}
 function toggleExpand(dk){STATE.expandedDay=STATE.expandedDay===dk?null:dk;render();}
 function nextQuote(){STATE.quoteIdx=(STATE.quoteIdx+1)%QUOTES.length;render();}
+function exportData(){
+  const data={checks:STORAGE.checks,notes:STORAGE.notes,supps:STORAGE.supps,exportedAt:new Date().toISOString()};
+  const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement("a");
+  const d=new Date();
+  a.href=url;
+  a.download="ladrillo-backup-"+d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")+".json";
+  a.click();
+  URL.revokeObjectURL(url);
+  const msg=document.getElementById("backupMsg");
+  if(msg){msg.textContent="✓ Backup exportado";msg.style.display="block";setTimeout(function(){msg.style.display="none";},3000);}
+}
+function importData(e){
+  const file=e.target.files[0];
+  if(!file)return;
+  const reader=new FileReader();
+  reader.onload=function(ev){
+    try{
+      const data=JSON.parse(ev.target.result);
+      if(data.checks)STORAGE.checks=data.checks;
+      if(data.notes)STORAGE.notes=data.notes;
+      if(data.supps)STORAGE.supps=data.supps;
+      saveChecks();saveNotes();saveSupps();
+      render();
+      const msg=document.getElementById("backupMsg");
+      if(msg){msg.textContent="✓ Data restaurada correctamente";msg.style.display="block";setTimeout(function(){msg.style.display="none";},3000);}
+    }catch(err){
+      const msg=document.getElementById("backupMsg");
+      if(msg){msg.style.color="#c0392b";msg.textContent="✗ Archivo inválido";msg.style.display="block";}
+    }
+  };
+  reader.readAsText(file);
+  e.target.value="";
+}
 loadStorage();
 render();
 </script>
