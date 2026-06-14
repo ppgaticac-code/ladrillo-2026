@@ -488,8 +488,8 @@ function renderSemana(){
 }
 function renderMetas(){
   const cw=getCurrentWeek();const W=WEEKS[cw];const col=W?WEEK_COLORS[W.t]:C.olive;
-  const macropct=Math.max(0,Math.min(100,Math.round((cw-4)/(PLAN_WEEKS-4)*100)));
-  let html='<div class="sec-title">🗓 Macrociclo 2026</div><div class="card"><div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px"><div><span style="font-size:30px;font-weight:900;color:'+C.oliveL+';line-height:1">S'+cw+'</span><span style="font-size:12px;color:'+C.textMuted+';margin-left:6px">de '+PLAN_WEEKS+'</span></div><div style="text-align:right"><div style="font-size:16px;font-weight:900;color:'+C.white+'">'+macropct+'%</div><div style="font-size:9px;color:'+C.textMuted+';text-transform:uppercase;letter-spacing:.12em">completado</div></div></div><div class="pbar"><div class="pfill" style="width:'+macropct+'%;background:'+C.olive+'"></div></div><div style="margin-top:8px;display:flex;justify-content:space-between"><span style="font-size:10px;color:'+C.textMuted+';font-family:monospace">18 May 2026</span><span style="font-size:10px;color:'+C.textMuted+';font-family:monospace">25 Oct 2026</span></div></div>';
+  const macropct=Math.max(0,Math.min(100,Math.round(cw/PLAN_WEEKS*100)));
+  let html='<div class="sec-title">🗓 Macrociclo 2026</div><div class="card"><div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px"><div><span style="font-size:30px;font-weight:900;color:'+C.oliveL+';line-height:1">S'+cw+'</span><span style="font-size:12px;color:'+C.textMuted+';margin-left:6px">de '+PLAN_WEEKS+'</span></div><div style="text-align:right"><div style="font-size:16px;font-weight:900;color:'+C.white+'">'+macropct+'%</div><div style="font-size:9px;color:'+C.textMuted+';letter-spacing:.08em">Semana '+cw+' de '+PLAN_WEEKS+'</div></div></div><div class="pbar"><div class="pfill" style="width:'+macropct+'%;background:'+C.olive+'"></div></div><div style="margin-top:8px;display:flex;justify-content:space-between"><span style="font-size:10px;color:'+C.textMuted+';font-family:monospace">18 May 2026</span><span style="font-size:10px;color:'+C.textMuted+';font-family:monospace">25 Oct 2026</span></div></div>';
   if(W&&W.mar){
     html+='<div class="card" style="border-color:'+col+'44"><div style="font-size:9px;color:'+C.textMuted+';text-transform:uppercase;letter-spacing:.18em;font-weight:700;margin-bottom:8px">Cargas clave · S'+cw+' ('+W.lbl+')</div><div class="load-grid">'+W.mar.map(function(r){return '<div class="load-cell"><div class="load-cell-label">'+escHtml(r[0])+'</div><div class="load-cell-val">'+escHtml(r[2]||"—")+'</div></div>';}).join("")+'</div></div>';
   }
@@ -635,7 +635,27 @@ function restoreAutoBackup(){
   alert("\u2705 Auto-guardado restaurado.");
 }
 
+// Relleno inicial UNA SOLA VEZ: marca como completados todos los días ESTRICTAMENTE anteriores a hoy.
+// La bandera ll_v6_backfill_done evita que vuelva a correr y pise marcados/desmarcados manuales posteriores.
+function runBackfillOnce(){
+  try{ if(localStorage.getItem("ll_v6_backfill_done")) return; }catch(e){ return; }
+  const todK=todayKey();
+  for(let w=4;w<=PLAN_WEEKS;w++){
+    getWeekDaysFor(w).forEach(function(d){
+      const dk=dateKey(d);
+      if(dk>=todK) return; // estrictamente anteriores a hoy: excluye hoy y días futuros
+      const s=getSession(w,d.getDay());
+      if(!s||!s.blocks||!s.blocks.length) return;
+      if(!STORAGE.checks[dk]) STORAGE.checks[dk]={};
+      s.blocks.forEach(function(b){ STORAGE.checks[dk][b.id]=true; });
+    });
+  }
+  try{ localStorage.setItem("ll_v6_backfill_done","1"); }catch(e){}
+  saveChecks();
+  render();
+}
 loadStorage();
+runBackfillOnce();
 render();
 </script>
 </body>
