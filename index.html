@@ -85,11 +85,13 @@ textarea{font-family:monospace;resize:none;outline:none}
     <button class="tab-btn" data-tab="semana" onclick="switchTab('semana')"><span class="tab-icon">📅</span>Semana</button>
     <button class="tab-btn" data-tab="metas" onclick="switchTab('metas')"><span class="tab-icon">🏁</span>Metas</button>
     <button class="tab-btn" data-tab="suplementos" onclick="switchTab('suplementos')"><span class="tab-icon">💊</span>Supp</button>
+    <button class="tab-btn" data-tab="datos" onclick="switchTab('datos')"><span class="tab-icon">💾</span>Datos</button>
   </div>
   <div id="tab-hoy" class="content"></div>
   <div id="tab-semana" class="content" style="display:none"></div>
   <div id="tab-metas" class="content" style="display:none"></div>
   <div id="tab-suplementos" class="content" style="display:none"></div>
+  <div id="tab-datos" class="content" style="display:none"></div>
 </div>
 <script>
 "use strict";
@@ -378,12 +380,14 @@ const KEYS={checks:"ll_v6_checks",notes:"ll_v6_notes",supps:"ll_v6_supps"};
 let STORAGE={checks:{},notes:{},supps:{}};
 let saveTimer=null;
 function loadStorage(){try{const c=localStorage.getItem(KEYS.checks),n=localStorage.getItem(KEYS.notes),sp=localStorage.getItem(KEYS.supps);if(c)STORAGE.checks=JSON.parse(c);if(n)STORAGE.notes=JSON.parse(n);if(sp)STORAGE.supps=JSON.parse(sp);}catch(e){}}
-function saveChecks(){try{localStorage.setItem(KEYS.checks,JSON.stringify(STORAGE.checks));}catch(e){}}
-function saveNotes(){try{localStorage.setItem(KEYS.notes,JSON.stringify(STORAGE.notes));}catch(e){}}
-function saveSupps(){try{localStorage.setItem(KEYS.supps,JSON.stringify(STORAGE.supps));}catch(e){}}
+function saveChecks(){try{localStorage.setItem(KEYS.checks,JSON.stringify(STORAGE.checks));autoBackup();}catch(e){}}
+function saveNotes(){try{localStorage.setItem(KEYS.notes,JSON.stringify(STORAGE.notes));autoBackup();}catch(e){}}
+function saveSupps(){try{localStorage.setItem(KEYS.supps,JSON.stringify(STORAGE.supps));autoBackup();}catch(e){}}
 function toggleSupp(dk,id){if(!STORAGE.supps[dk])STORAGE.supps[dk]={};STORAGE.supps[dk][id]=!STORAGE.supps[dk][id];saveSupps();render();}
 const SUPPS={AM:[["am_multi","Multivitamínico"],["am_crea","Creatina"],["am_omega","Omega-3"]],PM:[["pm_mag","Magnesio"],["pm_omega","Omega-3"]]};
 function toggleCheck(dk,bid){if(!STORAGE.checks[dk])STORAGE.checks[dk]={};STORAGE.checks[dk][bid]=!STORAGE.checks[dk][bid];saveChecks();render();}
+// Checkbox a nivel día: si todos los ejercicios están marcados → los desmarca todos; si falta alguno → los marca todos. El estado "día completo" NO se guarda: se deriva de los bloques.
+function toggleDay(dk,wk,dow){const s=getSession(wk,dow);if(!s||!s.blocks||!s.blocks.length)return;if(!STORAGE.checks[dk])STORAGE.checks[dk]={};const cur=STORAGE.checks[dk];const allDone=s.blocks.every(function(b){return cur[b.id];});s.blocks.forEach(function(b){cur[b.id]=!allDone;});saveChecks();render();}
 // PRs automáticos: el mayor peso COMPLETADO (bloque marcado) hasta hoy. No se editan a mano.
 const LIFTS=[
   {key:"Sentadilla", re:/^Sentadilla barra$/},
@@ -437,17 +441,19 @@ function render(){
   document.getElementById("tab-semana").style.display=STATE.tab==="semana"?"block":"none";
   document.getElementById("tab-metas").style.display=STATE.tab==="metas"?"block":"none";
   document.getElementById("tab-suplementos").style.display=STATE.tab==="suplementos"?"block":"none";
+  document.getElementById("tab-datos").style.display=STATE.tab==="datos"?"block":"none";
   document.querySelectorAll(".tab-btn").forEach(b=>b.classList.toggle("active",b.dataset.tab===STATE.tab));
   if(STATE.tab==="hoy")renderHoy();
   if(STATE.tab==="semana")renderSemana();
   if(STATE.tab==="metas")renderMetas();
   if(STATE.tab==="suplementos")renderSupps();
+  if(STATE.tab==="datos")renderDatos();
 }
 function renderHoy(){
   const cw=getCurrentWeek();const W=WEEKS[cw];const dow=new Date().getDay();
   const s=getSession(cw,dow);const today=new Date();const tk=todayKey();
   const checks=STORAGE.checks[tk]||{};const note=STORAGE.notes[tk]||"";
-  const done=s.blocks.filter(b=>checks[b.id]).length;const pct=Math.round(done/s.blocks.length*100);
+  const done=s.blocks.filter(b=>checks[b.id]).length;const pct=Math.round(done/s.blocks.length*100);const dayDone=s.blocks.length>0&&done===s.blocks.length;
   const q=QUOTES[STATE.quoteIdx];const col=W?WEEK_COLORS[W.t]:C.olive;
   document.getElementById("tab-hoy").innerHTML=
     '<div class="quote-card"><button class="quote-next" onclick="nextQuote()">↺</button><div class="quote-text">'+q.t+'</div><div class="quote-author">— '+q.a+'</div></div>'+
@@ -455,6 +461,7 @@ function renderHoy(){
     (W&&W.note?'<div style="font-size:11px;color:'+C.textDim+';font-style:italic;margin:-4px 2px 10px;line-height:1.5">'+W.note+'</div>':"")+
     '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px"><span style="font-size:10px;color:'+C.textMuted+';font-weight:700;text-transform:uppercase;letter-spacing:.14em">MISIÓN</span><span style="font-size:12px;font-weight:900;color:'+(pct===100?C.greenBright:s.color)+'">'+done+'/'+s.blocks.length+' · '+pct+'%</span></div>'+
     '<div class="pbar"><div class="pfill" style="width:'+pct+'%;background:'+(pct===100?C.greenBright:s.color)+'"></div></div>'+
+    '<div onclick="event.stopPropagation();toggleDay(\''+tk+'\','+cw+','+dow+')" style="display:flex;align-items:center;gap:9px;margin-top:11px;padding:10px 12px;border:1px solid '+(dayDone?C.greenBright:s.color)+'4d;border-radius:9px;background:'+(dayDone?C.greenBright+'14':"transparent")+';cursor:pointer;user-select:none"><div class="checkbox'+(dayDone?" done":"")+'" style="color:'+(dayDone?C.greenBright:s.color)+'">'+(dayDone?checkSVG():"")+'</div><span style="font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:'+(dayDone?C.greenBright:C.textDim)+'">'+(dayDone?"Día completo":"Completar día")+'</span></div>'+
     '<div style="margin-top:12px">'+s.blocks.map(b=>{const d=!!checks[b.id];return '<div class="block-item'+(d?" done":"")+'" onclick="toggleCheck(\''+tk+'\',\''+b.id+'\')" style="'+(d?'border-color:'+s.color+'40;':"")+'"><div class="checkbox'+(d?" done":"")+'" style="color:'+s.color+'">'+(d?checkSVG():"")+'</div><div style="flex:1;min-width:0"><div class="block-label'+(d?" done":"")+'">'+escHtml(b.label)+'</div>'+(b.detail?'<div class="block-detail'+(d?" done":"")+'">'+escHtml(b.detail)+'</div>':"")+'</div></div>';}).join("")+'</div>'+
     '<div class="sec-title">📋 Informe del día</div><textarea class="note-input" rows="3" placeholder="PRs, sensaciones, ajustes..." oninput="schedNote(this.value,\''+tk+'\')">'+escHtml(note)+'</textarea><div id="note-saved" style="text-align:center;color:'+C.greenBright+';font-size:11px;margin-top:4px;font-weight:700;letter-spacing:.1em;visibility:hidden">✓ GUARDADO</div>'+
     (pct===100?'<div class="banner-done"><div style="font-size:24px;margin-bottom:6px">🧱</div><div style="font-weight:900;font-size:15px;color:'+C.greenBright+';text-transform:uppercase;letter-spacing:.12em">Ladrillo colocado</div><div style="font-size:12px;color:'+C.textDim+';margin-top:4px">Misión completa.</div></div>':"");
@@ -472,10 +479,10 @@ function renderSemana(){
   html+='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px"><span style="font-size:10px;color:'+C.textMuted+';font-weight:700;text-transform:uppercase;letter-spacing:.14em">PROGRESO SEMANAL</span><span style="font-size:12px;font-weight:900;color:'+(wp===100?C.greenBright:C.oliveL)+'">'+wd+'/'+wt+' · '+wp+'%</span></div><div class="pbar" style="margin-bottom:12px"><div class="pfill" style="width:'+wp+'%;background:'+(wp===100?C.greenBright:C.oliveL)+'"></div></div>';
   days.forEach(function(d){
     const dow=d.getDay();const s=getSession(vw,dow);const dk=dateKey(d);const c=STORAGE.checks[dk]||{};
-    const done=s.blocks.filter(b=>c[b.id]).length;const tot=s.blocks.length;const pct=Math.round(done/tot*100);
+    const done=s.blocks.filter(b=>c[b.id]).length;const tot=s.blocks.length;const pct=Math.round(done/tot*100);const dayDoneW=tot>0&&done===tot;
     const isToday=dk===todK;const isPast=d<new Date()&&!isToday;const isExp=STATE.expandedDay===dk;
     html+='<div><div class="day-card'+(isToday?" today":"")+(pct===100?" done":"")+'" onclick="toggleExpand(\''+dk+'\')"><div class="day-name'+(isToday?" today":"")+'">'+DAY_NAMES[dow]+'</div><div class="day-date'+(isToday?" today":"")+'">'+d.getDate()+' '+MONTHS[d.getMonth()]+'</div><div style="flex:1"><div style="display:flex;align-items:center;gap:8px"><span style="font-size:14px">'+s.emoji+'</span><span style="font-size:12px;font-weight:700;color:'+(isToday?C.white:C.textDim)+';text-transform:uppercase;letter-spacing:.03em">'+s.name+'</span>'+(s.dur?'<span style="font-size:9px;color:'+C.textMuted+';font-family:monospace;margin-left:auto">⏱ '+s.dur+'</span>':"")+'</div>'+(((isToday||isPast)&&tot>1)?'<div style="margin-top:5px;display:flex;align-items:center;gap:8px"><div class="pbar" style="flex:1;margin-top:0"><div class="pfill" style="width:'+pct+'%;background:'+(pct===100?C.greenBright:s.color)+'"></div></div><span style="font-size:10px;color:'+(pct===100?C.greenBright:C.textMuted)+';font-weight:700;min-width:28px">'+pct+'%</span></div>':"")+'</div>'+(pct===100?'<span style="font-size:16px">🧱</span>':"")+((isToday&&pct<100)?'<span style="width:6px;height:6px;border-radius:50%;background:'+C.oliveL+';flex-shrink:0;display:inline-block"></span>':"")+'<span style="font-size:10px;color:'+C.textMuted+';margin-left:4px">'+(isExp?"▲":"▼")+'</span></div>'+
-    (isExp?'<div class="day-expand">'+s.blocks.map(function(b){const bd=!!c[b.id];return '<div style="display:flex;align-items:flex-start;gap:9px;margin-bottom:7px" onclick="toggleCheck(\''+dk+'\',\''+b.id+'\')"><div class="checkbox'+(bd?" done":"")+'" style="width:18px;height:18px;margin-top:1px;color:'+s.color+'">'+(bd?checkSVG(10):"")+'</div><div style="flex:1;min-width:0"><div style="font-size:11px;font-weight:700;color:'+(bd?C.text:s.color)+';text-transform:uppercase;letter-spacing:.05em">'+escHtml(b.label)+'</div>'+(b.detail?'<div style="font-size:11px;color:'+C.textDim+';font-family:monospace;line-height:1.5;margin-top:2px;white-space:pre-line">'+escHtml(b.detail)+'</div>':"")+'</div></div>';}).join("")+'<div style="margin-top:8px"><div style="font-size:9px;color:'+C.olive+';font-weight:700;text-transform:uppercase;letter-spacing:.14em;margin-bottom:4px">📋 Nota</div><textarea class="note-input" rows="2" placeholder="Sensaciones, ajustes..." oninput="schedNote(this.value,\''+dk+'\')" style="margin-top:0">'+escHtml(STORAGE.notes[dk]||"")+'</textarea></div></div>':"")+'</div>';
+    (isExp?'<div class="day-expand"><div onclick="event.stopPropagation();toggleDay(\''+dk+'\','+vw+','+dow+')" style="display:flex;align-items:center;gap:9px;margin-bottom:11px;padding:8px 10px;border:1px solid '+(dayDoneW?C.greenBright:s.color)+'4d;border-radius:8px;background:'+(dayDoneW?C.greenBright+'14':"transparent")+';cursor:pointer;user-select:none"><div class="checkbox'+(dayDoneW?" done":"")+'" style="width:18px;height:18px;color:'+(dayDoneW?C.greenBright:s.color)+'">'+(dayDoneW?checkSVG(10):"")+'</div><span style="font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:'+(dayDoneW?C.greenBright:C.textDim)+'">'+(dayDoneW?"Día completo":"Completar día")+'</span></div>'+s.blocks.map(function(b){const bd=!!c[b.id];return '<div style="display:flex;align-items:flex-start;gap:9px;margin-bottom:7px" onclick="toggleCheck(\''+dk+'\',\''+b.id+'\')"><div class="checkbox'+(bd?" done":"")+'" style="width:18px;height:18px;margin-top:1px;color:'+s.color+'">'+(bd?checkSVG(10):"")+'</div><div style="flex:1;min-width:0"><div style="font-size:11px;font-weight:700;color:'+(bd?C.text:s.color)+';text-transform:uppercase;letter-spacing:.05em">'+escHtml(b.label)+'</div>'+(b.detail?'<div style="font-size:11px;color:'+C.textDim+';font-family:monospace;line-height:1.5;margin-top:2px;white-space:pre-line">'+escHtml(b.detail)+'</div>':"")+'</div></div>';}).join("")+'<div style="margin-top:8px"><div style="font-size:9px;color:'+C.olive+';font-weight:700;text-transform:uppercase;letter-spacing:.14em;margin-bottom:4px">📋 Nota</div><textarea class="note-input" rows="2" placeholder="Sensaciones, ajustes..." oninput="schedNote(this.value,\''+dk+'\')" style="margin-top:0">'+escHtml(STORAGE.notes[dk]||"")+'</textarea></div></div>':"")+'</div>';
   });
   document.getElementById("tab-semana").innerHTML=html;
 }
@@ -520,48 +527,114 @@ function renderSupps(){
   html+='<div style="margin-top:12px">'+group("Mañana","🌅",SUPPS.AM,C.sand)+group("Noche","🌙",SUPPS.PM,C.blue)+'</div>';
   html+='<div class="sec-title">📊 Últimos 7 días</div><div class="card"><div style="display:flex;gap:4px">'+strip+'</div></div>';
   html+=(pct===100?'<div class="banner-done"><div style="font-size:24px;margin-bottom:6px">💊</div><div style="font-weight:900;font-size:15px;color:'+C.greenBright+';text-transform:uppercase;letter-spacing:.12em">Stack completo</div></div>':"");
-  html+='<div class="sec-title">💾 Backup</div><div class="card"><div style="font-size:11px;color:'+C.textDim+';line-height:1.6;margin-bottom:12px">Exporta tu data antes de reinstalar la app o cambiar de dispositivo. Guarda el archivo JSON y luego impórtalo para restaurar todo.</div><div style="display:flex;gap:8px"><button onclick="exportData()" style="flex:1;background:'+C.olive+';color:'+C.bg+';border:none;border-radius:3px;padding:10px 8px;font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:.1em">⬇ Exportar</button><button onclick="document.getElementById(\'importFile\').click()" style="flex:1;background:'+C.bgAlt+';color:'+C.oliveL+';border:1px solid '+C.olive+';border-radius:3px;padding:10px 8px;font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:.1em">⬆ Importar</button></div><input type="file" id="importFile" accept=".json" style="display:none" onchange="importData(event)"><div id="backupMsg" style="margin-top:8px;font-size:11px;font-weight:700;text-align:center;color:'+C.greenBright+';display:none"></div></div>';
   document.getElementById("tab-suplementos").innerHTML=html;
+}
+function renderDatos(){
+  let last="sin auto-guardado aún";
+  try{const raw=localStorage.getItem(BACKUP_AUTO_KEY);if(raw){const p=JSON.parse(raw);if(p&&p.savedAt){const d=new Date(p.savedAt);last=d.toLocaleDateString("es-CL")+" · "+d.toLocaleTimeString("es-CL",{hour:"2-digit",minute:"2-digit"});}}}catch(e){}
+  const btn="display:flex;align-items:center;justify-content:center;gap:8px;width:100%;font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;padding:12px;border-radius:6px;cursor:pointer";
+  const hint="font-size:10px;color:"+C.textMuted+";line-height:1.5;margin:6px 2px 0";
+  document.getElementById("tab-datos").innerHTML=
+    '<div class="sec-title">💾 Respaldo de datos</div>'+
+    '<div class="card"><div style="font-size:11px;color:'+C.textDim+';line-height:1.6;margin-bottom:14px">Tu progreso se guarda solo en este dispositivo. Llévate una copia o restaurala cuando quieras.</div>'+
+      '<button onclick="exportBackup()" style="'+btn+';background:'+C.olive+'1a;border:1px solid '+C.olive+';color:'+C.oliveL+'">⬇ Exportar respaldo</button>'+
+      '<div style="'+hint+';margin-bottom:14px">Descarga un archivo .json con todo tu progreso, con la fecha en el nombre. Guárdalo donde quieras.</div>'+
+      '<button onclick="document.getElementById(\'import-file\').click()" style="'+btn+';background:'+C.olive+'1a;border:1px solid '+C.olive+';color:'+C.oliveL+'">⬆ Importar respaldo</button>'+
+      '<div style="'+hint+'">Carga un .json exportado antes y reemplaza tu progreso actual. Te pide confirmación primero.</div>'+
+      '<input type="file" id="import-file" accept=".json,application/json" style="display:none" onchange="importBackup(this.files[0]); this.value=\'\';">'+
+    '</div>'+
+    '<div class="sec-title">🛟 Emergencia</div>'+
+    '<div class="card" style="border-color:'+C.red+'44">'+
+      '<div style="font-size:10px;color:'+C.textMuted+';line-height:1.6;margin-bottom:12px">La app guarda una copia interna cada vez que marcas algo.<br>Último auto-guardado: <span style="color:'+C.sand+';font-family:monospace">'+last+'</span></div>'+
+      '<button onclick="restoreAutoBackup()" style="'+btn+';background:'+C.red+'14;border:1px solid '+C.red+'66;color:'+C.sand+'">↩ Recuperar auto-guardado</button>'+
+      '<div style="'+hint+'">Vuelve al último estado auto-guardado. Útil si importaste algo por error o desmarcaste sin querer.</div>'+
+    '</div>';
 }
 function switchTab(t){STATE.tab=t;if(t==="semana")STATE.weekOffset=0;STATE.expandedDay=null;render();}
 function changeWeek(delta){const cw=getCurrentWeek();const nv=cw+STATE.weekOffset+delta;if(nv<4||nv>PLAN_WEEKS)return;STATE.weekOffset+=delta;STATE.expandedDay=null;render();}
 function toggleExpand(dk){STATE.expandedDay=STATE.expandedDay===dk?null:dk;render();}
 function nextQuote(){STATE.quoteIdx=(STATE.quoteIdx+1)%QUOTES.length;render();}
-function exportData(){
-  const data={checks:STORAGE.checks,notes:STORAGE.notes,supps:STORAGE.supps,exportedAt:new Date().toISOString()};
-  const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});
-  const url=URL.createObjectURL(blob);
-  const a=document.createElement("a");
-  const d=new Date();
-  a.href=url;
-  a.download="ladrillo-backup-"+d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")+".json";
-  a.click();
-  URL.revokeObjectURL(url);
-  const msg=document.getElementById("backupMsg");
-  if(msg){msg.textContent="✓ Backup exportado";msg.style.display="block";setTimeout(function(){msg.style.display="none";},3000);}
+
+// ===================== RESPALDO (export / import / auto / emergencia) =====================
+const BACKUP_AUTO_KEY="ladrillo_backup_auto";
+const BACKUP_VERSION=1;
+const LL_PREFIX="ll_v6_";
+
+// Reúne TODO el estado: claves canónicas de KEYS + barrido de cualquier ll_v6_* futura.
+function collectBackup(){
+  const data={};
+  Object.values(KEYS).forEach(function(k){const v=localStorage.getItem(k);if(v!==null)data[k]=v;});
+  for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k&&k.indexOf(LL_PREFIX)===0&&!(k in data))data[k]=localStorage.getItem(k);}
+  return {app:"ladrillo-2026",version:BACKUP_VERSION,savedAt:new Date().toISOString(),keys:data};
 }
-function importData(e){
-  const file=e.target.files[0];
+// Copia interna en cada cambio. NO descarga archivo.
+function autoBackup(){try{localStorage.setItem(BACKUP_AUTO_KEY,JSON.stringify(collectBackup()));}catch(e){}}
+// Descarga manual del .json con fecha en el nombre.
+function exportBackup(){
+  try{
+    const blob=new Blob([JSON.stringify(collectBackup(),null,2)],{type:"application/json"});
+    const d=new Date();
+    const stamp=d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
+    const a=document.createElement("a");
+    a.href=URL.createObjectURL(blob);
+    a.download="ladrillo-respaldo-"+stamp+".json";
+    document.body.appendChild(a);a.click();document.body.removeChild(a);
+    setTimeout(function(){URL.revokeObjectURL(a.href);},1000);
+  }catch(e){alert("No se pudo exportar: "+e.message);}
+}
+// Aplica un objeto keys{} restaurado al localStorage (limpia el namespace ll_v6_ primero).
+function applyRestore(keys){
+  const borrar=[];
+  for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k&&k.indexOf(LL_PREFIX)===0)borrar.push(k);}
+  borrar.forEach(function(k){localStorage.removeItem(k);});
+  Object.keys(keys).forEach(function(k){if(k.indexOf(LL_PREFIX)===0)localStorage.setItem(k,keys[k]);});
+}
+// Refresca memoria + pantalla sin recargar la página.
+function refreshFromStorage(){
+  STORAGE.checks={};STORAGE.notes={};STORAGE.supps={}; // limpia memoria antes de releer (loadStorage solo sobrescribe si la clave existe)
+  loadStorage();
+  render();
+}
+// Importar (selector + validación + confirmación + refresco).
+function importBackup(file){
   if(!file)return;
   const reader=new FileReader();
+  reader.onerror=function(){alert("\u274c No se pudo leer el archivo. Tu progreso actual no se tocó.");};
   reader.onload=function(ev){
+    let parsed;
+    try{parsed=JSON.parse(ev.target.result);}
+    catch(e){alert("\u274c Archivo inválido: no es un JSON válido. No se tocó nada.");return;}
+    if(!parsed||typeof parsed!=="object"||!parsed.keys||typeof parsed.keys!=="object"){
+      alert("\u274c El archivo no tiene la estructura de un respaldo Ladrillo. No se tocó nada.");return;}
+    if(!Object.values(KEYS).some(function(k){return k in parsed.keys;})){
+      alert("\u274c El respaldo no contiene datos reconocibles de Ladrillo. No se tocó nada.");return;}
+    let ok=true;
+    Object.keys(parsed.keys).forEach(function(k){try{JSON.parse(parsed.keys[k]);}catch(e){ok=false;}});
+    if(!ok){alert("\u274c El respaldo está corrupto (valores ilegibles). No se tocó nada.");return;}
+    if(!confirm("Esto reemplazará tu progreso actual con el del respaldo ("+(parsed.savedAt||"fecha desconocida")+"). ¿Continuar?"))return;
     try{
-      const data=JSON.parse(ev.target.result);
-      if(data.checks)STORAGE.checks=data.checks;
-      if(data.notes)STORAGE.notes=data.notes;
-      if(data.supps)STORAGE.supps=data.supps;
-      saveChecks();saveNotes();saveSupps();
-      render();
-      const msg=document.getElementById("backupMsg");
-      if(msg){msg.textContent="✓ Data restaurada correctamente";msg.style.display="block";setTimeout(function(){msg.style.display="none";},3000);}
-    }catch(err){
-      const msg=document.getElementById("backupMsg");
-      if(msg){msg.style.color="#c0392b";msg.textContent="✗ Archivo inválido";msg.style.display="block";}
-    }
+      autoBackup(); // snapshot del estado ACTUAL antes de pisarlo
+      applyRestore(parsed.keys);
+    }catch(e){alert("Error al restaurar: "+e.message);return;}
+    refreshFromStorage();
+    alert("\u2705 Respaldo restaurado.");
   };
   reader.readAsText(file);
-  e.target.value="";
 }
+// Botón de emergencia: recuperar el último auto-guardado. NO hace autoBackup antes (pisaría lo que se quiere recuperar).
+function restoreAutoBackup(){
+  let raw;
+  try{raw=localStorage.getItem(BACKUP_AUTO_KEY);}catch(e){raw=null;}
+  if(!raw){alert("No hay auto-guardado disponible todavía.");return;}
+  let parsed;
+  try{parsed=JSON.parse(raw);}catch(e){alert("El auto-guardado está corrupto y no se puede leer.");return;}
+  if(!parsed||!parsed.keys||typeof parsed.keys!=="object"){alert("El auto-guardado no tiene un formato válido.");return;}
+  if(!confirm("Esto reemplazará tu progreso actual con el ÚLTIMO auto-guardado ("+(parsed.savedAt||"fecha desconocida")+"). ¿Continuar?"))return;
+  try{applyRestore(parsed.keys);}catch(e){alert("Error al restaurar: "+e.message);return;}
+  refreshFromStorage();
+  alert("\u2705 Auto-guardado restaurado.");
+}
+
 loadStorage();
 render();
 </script>
