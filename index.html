@@ -3,6 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="theme-color" content="#0d0f0b">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Ladrillo">
+<link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧱</text></svg>">
 <title>🧱 Ladrillo a Ladrillo — PPG 2026</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
@@ -11,7 +16,7 @@ html,body{background:#0d0f0b;color:#d4cdb8;font-family:'Arial Narrow',Arial,sans
 button{font-family:inherit;cursor:pointer}
 textarea{font-family:monospace;resize:none;outline:none}
 #app{max-width:430px;margin:0 auto;min-height:100vh;padding-bottom:72px;position:relative}
-#hdr{background:linear-gradient(180deg,#161a11 0%,var(--bg) 100%);padding:14px 16px 10px;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:50}
+#hdr{background:linear-gradient(180deg,#161a11 0%,var(--bg) 100%);padding:14px 16px 10px;border-top:3px solid var(--week-color,var(--olive));border-bottom:1px solid var(--border);position:sticky;top:0;z-index:50;transition:border-color .4s}
 .hdr-row{display:flex;justify-content:space-between;align-items:center}
 .brand{font-size:18px;font-weight:900;letter-spacing:.08em;color:var(--oliveL);text-transform:uppercase;line-height:1}
 .brand-sub{font-size:9px;color:var(--textDim);font-weight:700;letter-spacing:.18em;text-transform:uppercase;margin-top:2px}
@@ -67,6 +72,11 @@ textarea{font-family:monospace;resize:none;outline:none}
 .glos-term{font-size:11px;font-weight:900;color:var(--oliveL);min-width:78px;text-transform:uppercase;letter-spacing:.04em}
 .glos-def{font-size:11px;color:var(--textDim);line-height:1.5}
 .banner-done{background:#0a150a;border:1px solid rgba(74,124,63,.27);border-left:3px solid var(--greenBright);border-radius:4px;padding:14px 16px;text-align:center;margin-top:12px}
+.supp-mini-item{display:flex;align-items:center;gap:8px;padding:7px 10px;border-radius:3px;cursor:pointer;background:var(--bgCard);border:1px solid var(--border);margin-bottom:4px;transition:background .2s}
+.supp-mini-item.done{background:rgba(90,184,92,.06);border-color:rgba(90,184,92,.2)}
+.toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%);color:#fff;padding:10px 20px;border-radius:6px;font-weight:800;font-size:13px;letter-spacing:.05em;z-index:9999;pointer-events:none;animation:toastIn .25s ease}
+@keyframes checkPop{0%{transform:scale(1)}40%{transform:scale(1.3)}100%{transform:scale(1)}}
+@keyframes toastIn{from{opacity:0;transform:translateX(-50%) translateY(12px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
 </style>
 </head>
 <body>
@@ -84,7 +94,7 @@ textarea{font-family:monospace;resize:none;outline:none}
     <button class="tab-btn active" data-tab="hoy" onclick="switchTab('hoy')"><span class="tab-icon">🎯</span>Hoy</button>
     <button class="tab-btn" data-tab="semana" onclick="switchTab('semana')"><span class="tab-icon">📅</span>Semana</button>
     <button class="tab-btn" data-tab="metas" onclick="switchTab('metas')"><span class="tab-icon">🏁</span>Metas</button>
-    <button class="tab-btn" data-tab="suplementos" onclick="switchTab('suplementos')"><span class="tab-icon">💊</span>Supp</button>
+    <button class="tab-btn" data-tab="suplementos" onclick="switchTab('suplementos')"><span class="tab-icon">💊</span>Supl</button>
     <button class="tab-btn" data-tab="datos" onclick="switchTab('datos')"><span class="tab-icon">💾</span>Datos</button>
   </div>
   <div id="tab-hoy" class="content"></div>
@@ -174,7 +184,7 @@ const WEEKS={
    mie:[["Press banca barra","3×8","47kg","Desc 90s"],["Jalón al pecho","3×10","por RPE 7-8 · banda, TRX o máquina"],["Press militar manc","3×10","2×5kg","Sin pausa → face pull"],["Face pull en polea","3×15","banda · por RPE 7"],["Curl bíceps barra","3×12","25kg"],["Ext. tríceps en polea","3×15","banda · por RPE 7"],["Elevación lateral manc","3×12","2×5kg"],["Remo KB16","3×12","KB16"]],
    run:"Tempo trotadora · 5' + 20' + 5' · 8.5 km/h (~7:05/km) · FC 145-155",
    vie:[["Peso muerto convencional","3×6","70kg","Desc 2min"],["Press banca barra","3×8","47kg","Desc 90s"],["Remo barra + Búlgara manc","3×10 + 3×10 c/l","37kg + 2×10kg","Sin pausa"],["Farmers carry","3 series × 5 vueltas 10m","Manc 15kg c/u"],["Wall balls slam ball","4×12","6kg","Sentadilla + overhead"]],
-   fin:"4 rondas (desc 90s) · 8 swings KB16 · 8 wall balls 6kg · 8 burpees · 30seg comba · meta <7:30",
+   fin:"Pirámide · desc 90s: 10→8→6→4 reps de swings KB16 + wall balls 6kg · termina con 40seg comba ininterrumpida · meta: no parar la comba al final",
    dom:"Rodaje 75 min · FC 130-150 manda · ritmo ref ~7:00-7:35/km (no perseguir)"},
  8:{t:"normal",lbl:"Construcción HM",note:"Step-ups y búlgara suben a 15kg c/u por primera vez → empezar 3×8.",mode:"std",
    lun:"1 min básico (desc 30s) → 4 min continuos básico + alternado",
@@ -184,7 +194,7 @@ const WEEKS={
    mie:[["Press banca barra","4×6","50kg","Desc 90s"],["Jalón al pecho","4×8","por RPE 7-8 · banda, TRX o máquina"],["Press militar barra","3×8","20kg","Clean a hombros · estricto · sin pausa → face pull"],["Face pull en polea","3×15","banda · por RPE 7"],["Curl bíceps barra","3×12","27kg"],["Ext. tríceps en polea","3×15","banda · por RPE 7"],["Elevación lateral manc","3×12","2×5kg · pausa 1s arriba (TUT)"],["Remo KB16","3×12","KB16"]],
    run:"6 series × 2 min corriendo · 5:40-5:50/km · desc 60s · FC 150-160",
    vie:[["Peso muerto convencional","3×5","72kg","Desc 2min"],["Press banca barra","4×6","50kg","Desc 90s"],["Remo barra + Búlgara manc","3×10 + 3×8 c/l","40kg + 2×15kg","15kg en búlgara nuevo → 8 reps"],["Farmers carry","3 series × 5 vueltas 10m","Manc 15kg c/u"],["Wall balls slam ball","4×15","6kg","Sentadilla + overhead"]],
-   fin:"4 rondas (desc 90s) · 8 swings KB16 · 8 wall balls 6kg · 8 burpees · 30seg comba · meta <7:15",
+   fin:"EMOM 8 min · min IMPAR: 10 swings KB16 + 5 burpees · min PAR: 10 wall balls 6kg + 30seg comba · arranca en el minuto",
    dom:"Rodaje 80 min · FC 130-150 manda · ritmo ref ~6:55-7:30/km (no perseguir)"},
  9:{t:"pico",lbl:"Pico Fase 2",note:"Pico fase 2.",mode:"std",
    lun:"4 min continuos (desc 1min) + 1 min básico ritmo algo más rápido",
@@ -194,7 +204,7 @@ const WEEKS={
    mie:[["Press banca barra","4×6","52kg","Desc 90s"],["Jalón al pecho","4×8","por RPE 7-8 · banda, TRX o máquina"],["Press militar barra","3×10","20kg","Clean a hombros · estricto · sin pausa → face pull"],["Face pull en polea","3×15","banda · por RPE 7"],["Curl bíceps barra","3×12","27kg"],["Ext. tríceps en polea","3×15","banda · por RPE 7"],["Elevación lateral manc","3×15","2×5kg"],["Remo KB16","3×12","KB16"]],
    run:"5 series × 1 km · 5:30-5:40/km · desc 2 min · FC 155-165",
    vie:[["Peso muerto convencional","3×4","77kg","Desc 2min"],["Press banca barra","4×6","52kg","Desc 90s"],["Remo barra + Búlgara manc","3×10 + 3×10 c/l","42kg + 2×15kg","Sin pausa"],["Farmers carry","3 series × 5 vueltas 10m","Manc 15kg c/u"],["Wall balls slam ball","4×18","6kg","Sentadilla + overhead"]],
-   fin:"4 rondas (desc 90s) · 8 swings KB16 · 8 wall balls 6kg · 8 burpees · 30seg comba · meta <7:00 — PICO",
+   fin:"3 rondas (desc 60s) · 12 swings KB16 · 10 wall balls 6kg · 10 burpees · 45seg comba · meta <6:30 — PICO",
    dom:"Rodaje PICO 85 min · FC 130-150 manda · ritmo ref ~6:50-7:25/km (no perseguir) · gel a los 45 min"},
  10:{t:"descarga",lbl:"Descarga",note:"-30% de todo. Obligatorio.",mode:"std",
    lun:"2 min muy suave básico",
@@ -214,7 +224,7 @@ const WEEKS={
    mie:[["Press banca barra","3×6","55kg","Desc 90s"],["Jalón al pecho","3×8","por RPE 7-8 · banda, TRX o máquina"],["Press militar barra","3×8","22.5kg","Clean a hombros · estricto · sin pausa → face pull"],["Face pull en polea","3×15","banda · por RPE 7"],["Curl bíceps barra","3×12","27kg"],["Ext. tríceps en polea","3×15","banda · por RPE 7"],["Elevación lateral manc","3×12","2×5kg · pausa 2s arriba"],["Remo KB16","3×12","KB16"]],
    run:"5 series × 1 km · 5:25-5:35/km · desc 2 min · FC 155-165",
    vie:[["Peso muerto convencional","3×4","80kg","Desc 2min"],["Press banca barra","3×6","55kg","Desc 90s"],["Remo barra + Búlgara manc","3×10 + 3×10 c/l","45kg + 2×15kg","Sin pausa"],["Farmers carry","3 series × 5 vueltas 10m","Manc 15kg c/u"],["Wall balls slam ball","4×20","6kg","Sentadilla + overhead"]],
-   fin:"EMOM 10 min · min IMPAR: 8 swings KB16 · min PAR: 8 wall balls 6kg · cada minuto arranca en el minuto",
+   fin:"Chipper: 30 swings KB16 · 20 wall balls 6kg · 10 burpees · 60seg comba · 10 burpees · 20 wall balls · 30 swings · tiempo total anotado",
    dom:"Rodaje 90 min · FC 130-160 (Z2-Z3) manda · ritmo ref ~6:45-7:20/km (no perseguir) · gel a los 45 min"},
  12:{t:"normal",lbl:"Velocidad HM",note:"",mode:"std",
    lun:"5 min continuos básico + alternado",
@@ -224,17 +234,17 @@ const WEEKS={
    mie:[["Press banca barra","3×5","57kg","Desc 90s"],["Jalón al pecho","3×8","por RPE 7-8 · banda, TRX o máquina"],["Press militar barra","3×10","22.5kg","Clean a hombros · estricto · sin pausa → face pull"],["Face pull en polea","3×15","banda · por RPE 7"],["Curl bíceps barra","3×12","30kg"],["Ext. tríceps en polea","3×15","banda · por RPE 7"],["Elevación lateral manc","3×15","2×5kg · última serie drop 5→2.5kg al fallo"],["Remo KB16","3×12","KB16"]],
    run:"6 series × 1 km · 5:20-5:30/km · desc 90s · FC 155-165",
    vie:[["Peso muerto convencional","3×4","82kg","Desc 2min"],["Press banca barra","3×5","57kg","Desc 90s"],["Remo barra + Búlgara manc","3×10 + 3×10 c/l","45kg + 2×15kg","Sin pausa"],["Farmers carry","3 series × 5 vueltas 10m","Manc 15kg c/u"],["Wall balls slam ball","4×22","6kg","Sentadilla + overhead"]],
-   fin:"4 rondas (desc 90s) · 8 swings KB16 · 8 wall balls 6kg · 8 burpees · 30seg comba · meta <6:45",
+   fin:"Tabata x3 bloques (8 rondas × 20s on / 10s off) · bloque 1: swings KB16 · bloque 2: wall balls 6kg · bloque 3: comba · desc 90s entre bloques",
    dom:"Rodaje 90 min · FC 130-160 (Z2-Z3) manda · ritmo ref ~6:40-7:15/km (no perseguir) · gel a los 45 min"},
  13:{t:"pico",lbl:"Superpico",note:"La semana más exigente del plan. Dar todo — esta es la cumbre.",mode:"std",
    lun:"5 min continuos (desc 1min) + 1 min a ritmo más rápido",
    jue:"6 min continuos · SUPERPICO · anota el tiempo exacto sin parar",
-   mar:[["Sentadilla barra","4×5","62kg","Desc 90s"],["Peso muerto convencional","3×4","85kg","Desc 2min"],["Zancadas barra + Ext. cuádriceps","3×10 c/l + 3×15","45kg + ext. cuádriceps por RPE","Sin pausa"],["Step-ups manc","4×10 c/l","2×15kg"],["Búlgara split manc","4×10 c/l","2×15kg"],["Farmers carry","3 series × 5 vueltas 10m","Manc 15kg c/u"]],
+   mar:[["Sentadilla barra","4×5","62kg","Desc 90s"],["Peso muerto convencional","3×4","85kg","Desc 2min"],["Zancadas barra + Ext. cuádriceps","3×10 c/l + 3×15","45kg + ext. cuádriceps por RPE","Sin pausa"],["Step-ups manc","4×10 c/l","2×15kg"],["Búlgara split manc","4×10 c/l","2×15kg"],["Farmers carry","3 series × 5 vueltas 10m","Manc 15kg c/u"],["Cable pull-through","3×15","polea baja · por RPE 7","Bisagra cadera — empuje con glúteos al frente, no hiperextensión lumbar"]],
    amrap:"10 sentadillas · 8 step-ups · 8 swings KB16 · 10seg plancha · 8 min · meta: 9+ rondas — SUPERPICO",
-   mie:[["Press banca barra","3×5","60kg","Desc 90s"],["Jalón al pecho","3×8","por RPE 7-8 · banda, TRX o máquina"],["Press militar barra","3×8","25kg","Clean a hombros · estricto · sin pausa → face pull"],["Face pull en polea","3×15","banda · por RPE 7"],["Curl bíceps barra","3×12","30kg"],["Ext. tríceps en polea","3×15","banda · por RPE 7"],["Elevación lateral manc","4×12","2×5kg · última serie drop set 5→2.5kg"],["Remo KB16","3×12","KB16"]],
+   mie:[["Press banca barra","3×5","60kg","Desc 90s"],["Jalón agarre supino","3×8","polea alta · RPE 7-8","Agarre a ancho de hombros, pronación → supinación · codos hacia cadera"],["Press militar barra","3×8","25kg","Clean a hombros · estricto · sin pausa → face pull"],["Face pull en polea alta","3×15","polea alta · por RPE 7","Codos arriba, tirar a la cara, pausa 1s"],["Curl en polea baja","3×12","polea baja · por RPE 7","Tensión constante todo el recorrido · sin pausa → ext. tríceps"],["Ext. tríceps con cuerda","3×15","polea alta · por RPE 7","Abrir la cuerda al final · codo fijo"],["Elevación lateral manc","4×12","2×5kg · última serie drop set 5→2.5kg"],["Remo de pie en polea baja","3×12","polea baja · por RPE 7-8","1 brazo · codo al cuerpo · rotación leve de tronco"]],
    run:"Tempo largo trotadora · 5' + 40' + 5' · 9 km/h (~6:40/km) · FC 150-160 (si llegas a 170, bajar a 8.5)",
    vie:[["Peso muerto convencional","4×3","85kg","Desc 2min"],["Press banca barra","3×5","60kg","Desc 90s"],["Remo barra + Búlgara manc","3×10 + 4×10 c/l","47kg + 2×15kg","Sin pausa"],["Farmers carry","3 series × 5 vueltas 10m","Manc 15kg c/u"],["Wall balls slam ball","5×20","6kg","Sentadilla + overhead"]],
-   fin:"EMOM 10 min · min IMPAR: 10 swings KB16 · min PAR: 10 wall balls 6kg · SUPERPICO — mantener todo el EMOM",
+   fin:"SUPERPICO · 5 rondas (desc 60s): 10 swings KB16 · 10 wall balls 6kg · 8 burpees · 45seg comba · meta: mantener pace sem 1 — SUPERPICO",
    dom:"Rodaje SUPERPICO 95 min · FC 130-150 manda · ritmo ref ~6:35-7:10/km (no perseguir) · gel a los 45 y a los 75 min"},
  14:{t:"descarga",lbl:"Descarga + Carrera B",note:"Descarga -30%. El domingo: Golden Run 21K (carrera B).",mode:"std",
    lun:"3 min muy suave básico + alternado",
@@ -251,9 +261,9 @@ const WEEKS={
    jue:"5 min muy suave básico + alternado",
    mar:[["Sentadilla barra","3×5","55kg","Desc 90s"],["Peso muerto convencional","3×4","72kg","Desc 2min"],["Zancadas barra + Ext. cuádriceps","3×8 c/l + 3×15","37kg + ext. cuádriceps por RPE","Sin pausa"],["Step-ups manc","3×8 c/l","2×10kg"],["Búlgara split manc","3×8 c/l","2×10kg"],["Farmers carry","3 series × 5 vueltas 10m","Manc 15kg c/u"]],
    amrap:"10 sentadillas · 8 step-ups · 8 swings KB16 · 10seg plancha · 8 min · RPE 6 · no al límite (taper)",
-   mie:[["Press banca barra","3×5","52kg","Desc 90s"],["Jalón al pecho","3×8","por RPE 7-8 · banda, TRX o máquina"],["Superset -20% (sin pausa en cada par)","3 series","—","Press mil barra 20kg + face pull · Curl barra 25kg + ext. tríceps · Elev. lateral 2×2.5kg + Remo KB14"]],
+   mie:[["Press banca barra","3×5","52kg","Desc 90s"],["Jalón agarre neutro cerrado","3×8","polea alta · RPE 7-8","Agarre neutro · codos muy pegados al cuerpo al bajar"],["Press militar barra","3×8","20kg","Clean a hombros · sin pausa → face pull"],["Face pull en polea alta","3×15","polea alta · por RPE 7"],["Curl en polea baja","3×8","polea baja · por RPE 7","Tensión constante · sin pausa → ext. tríceps"],["Ext. tríceps con cuerda","3×12","polea alta · por RPE 7"],["Pallof press con banda","3×12 c/l","banda anclada a la altura del pecho · por RPE 7","Anti-rotación · brazo extendido, aguantar 2s · taper: control > carga"],["Remo de pie en polea baja","3×10","polea baja · por RPE 7","2 brazos · espalda neutra"]],
    run:"Tempo trotadora · 5' + 18' + 5' · 8.5 km/h (~7:05/km) · FC 145-155",
-   vie:[["Peso muerto convencional","3×4","72kg","Desc 2min"],["Press banca barra","3×5","52kg","Desc 90s"],["Remo barra + Búlgara manc","3×8 + 3×8 c/l","45kg + 2×10kg","-20%"],["Farmers carry","3 series × 5 vueltas 10m","Manc 15kg c/u"],["Wall balls slam ball","3×15","6kg","Sentadilla + overhead"]],
+   vie:[["Peso muerto convencional","3×4","72kg","Desc 2min"],["Press banca barra","3×5","52kg","Desc 90s"],["Remo barra + Búlgara manc","3×8 + 3×8 c/l","45kg + 2×10kg","-20%"],["Farmers carry","3 series × 5 vueltas 10m","Manc 15kg c/u"],["Cable pull-through","2×15","polea baja · por RPE 7","Bisagra cadera suave — taper"],["Wall balls slam ball","3×15","6kg","Sentadilla + overhead"]],
    fin:"3 rondas (desc 90s) · 8 swings KB16 · 8 wall balls 6kg · 8 burpees · 30seg comba · RPE 6 · no al máximo (taper)",
    dom:"Rodaje 75 min · FC 130-150 manda · ritmo ref ~6:35-7:05/km (no perseguir) · gel a los 45 min"},
  16:{t:"taper",lbl:"Taper HM 2",note:"Taper -30%. Ya no construimos nada. Solo mantener.",mode:"std",
@@ -261,7 +271,7 @@ const WEEKS={
    jue:"5 min muy suave básico + alternado",
    mar:[["Sentadilla barra","3×4","47kg","Desc 90s"],["Peso muerto convencional","2×4","62kg","Desc 2min"],["Zancadas barra + Ext. cuádriceps","3×6 c/l + 3×15","35kg + ext. cuádriceps por RPE","Sin pausa"],["Step-ups manc","2×8 c/l","2×10kg"],["Búlgara split manc","2×8 c/l","2×10kg"]],
    amrap:null,
-   mie:[["Press banca barra","2×5","47kg","Desc 90s"],["Jalón al pecho","2×8","por RPE 7-8 · banda, TRX o máquina"],["Superset -30% (sin pausa en cada par)","2 series","—","Press mil barra 20kg + face pull · Curl manc 2×10kg + ext. tríceps"]],
+   mie:[["Press banca barra","2×5","47kg","Desc 90s"],["Jalón agarre ancho pronado","2×8","polea alta · RPE 7-8","Vuelta al grip clásico · retraer escápulas"],["Superset -30% cable (sin pausa en cada par)","2 series","—","Press mil barra 20kg + face pull polea alta · Curl polea baja + ext. tríceps cuerda · Pallof press banda 8 c/l"]],
    run:"3 series × 1 km · 5:30-5:40/km · desc 90s · FC 155-165",
    vie:[["Peso muerto convencional","2×4","62kg","Desc 2min"],["Press banca barra","2×4","47kg","Desc 90s"],["Remo barra + Búlgara manc","2×8 + 2×8 c/l","40kg + 2×10kg","-30%"],["Farmers carry","2 series × 5 vueltas 10m","Manc 15kg c/u","Misma herramienta, volumen reducido"]],
    fin:null,
@@ -297,25 +307,25 @@ const WEEKS={
     0:{n:"Trote suave",e:"🏃",c:C.green,d:"Trote suave 30-40 min · ~7:00-7:45/km · FC <140 · si te sientes bien, adelante; si no, caminata"}}},
  20:{t:"especifico",lbl:"HYROX Específico 1",note:"Empieza la fase HYROX. Wall balls = estación clave.",mode:"hyrox",
    lun:"Caminata activa 30 min + foam roller",
-   mar:[["Sentadilla barra","3×5","50kg","Desc 90s"],["Peso muerto convencional","3×4","70kg","Desc 2min"],["Press banca barra","3×5","50kg","Desc 90s"],["Wall balls slam ball","100 reps (4×25)","6kg","Sentadilla profunda + empuje overhead — estación más importante"],["Farmers carry","3 series × 5 vueltas 10m","Manc 15kg c/u","Espalda recta"]],
+   mar:[["Sentadilla barra","3×5","50kg","Desc 90s"],["Peso muerto convencional","3×4","70kg","Desc 2min"],["Press banca barra","3×5","50kg","Desc 90s"],["Wall balls slam ball","100 reps (4×25)","6kg","Sentadilla profunda + empuje overhead — estación más importante"],["Farmers carry","3 series × 5 vueltas 10m","Manc 15kg c/u","Espalda recta"],["Cable pull-through","3×15","polea baja · por RPE 7","Bisagra cadera — complementa el peso muerto HYROX"],["Elevación lateral en polea baja","3×12 c/l","polea baja · RPE 7","Mismo movimiento que manc pero tensión constante · brazo casi recto"]],
    mie:"COMPROMISED RUN 40-45 min: estaciones (wall balls 4×25 + farmers 2 series) → correr 1km → estaciones (burpees 20 + bici 3min) → correr 1km · ritmo 6:00/km · FC 150-165 · simula correr cansado",
    vie:[["1 · Bici spinning 5min + comba 60s","6 min","—","Estación 1"],["2 · Empuje barra baja 10 + zancadas 20m","3 series","Barra 50kg","Estación 2"],["3 · Remo barra baja 15 + jalón 12","3 series","Barra 50kg","Estación 3"],["4 · Burpees con salto adelante","80 reps","—","Estación 4"],["5 · Bici spinning 5min + remo KB 15","6 min","KB16","Estación 5"],["6 · Farmers carry 200m","4 series × 5 vueltas 10m","Manc 15kg c/u","Estación 6"],["7 · Zancadas barra 100m","50 pasos c/l","Barra 20kg","Estación 7"],["8 · Wall balls slam ball","100 reps (5×20)","6kg","Estación 8 · CRONOMETRAR tiempo total"]],
    dom:"Rodaje HYROX 60-65 min · 5:45-6:00/km · FC 140-155 · este es el ritmo entre estaciones"},
  21:{t:"especifico",lbl:"HYROX Específico 2",note:"Subir intensidad. Intentar bajar 2 min del tiempo de sem 20.",mode:"hyrox",
    lun:"Caminata activa 30 min + foam roller",
-   mar:[["Sentadilla barra","3×5","50kg","Desc 90s"],["Peso muerto convencional","3×4","70kg","Desc 2min"],["Press banca barra","3×5","50kg","Desc 90s"],["Wall balls slam ball","100 reps (5×20)","6kg","Cronometrar · bajar tiempo vs sem 20"],["Farmers carry","3 series × 5 vueltas 10m","Manc 15kg c/u"],["Burpees broad jump","3×20","—","Ritmo sostenible"]],
+   mar:[["Sentadilla barra","3×5","50kg","Desc 90s"],["Peso muerto convencional","3×4","70kg","Desc 2min"],["Press banca barra","3×5","50kg","Desc 90s"],["Wall balls slam ball","100 reps (5×20)","6kg","Cronometrar · bajar tiempo vs sem 20"],["Farmers carry","3 series × 5 vueltas 10m","Manc 15kg c/u"],["Burpees broad jump","3×20","—","Ritmo sostenible"],["Remo de pie en polea baja","3×15","polea baja · por RPE 7-8","2 brazos · simula tirón de sled — clave HYROX"]],
    mie:"COMPROMISED RUN · FC 150-165: wall balls 5×20 + farmers 2 series → correr 2km @6:00/km → burpees 20 + bici 3min → correr 2km @5:55/km",
    vie:[["1 · Bici spinning 5min alta + comba 60s","6 min","—","Estación 1"],["2 · Empuje barra baja 10 + zancadas explosivas 20m","3 series","Barra 50kg","Estación 2"],["3 · Remo barra baja 15 + jalón banda/TRX 12","3 series","Barra 50kg","Estación 3"],["4 · Burpees con salto adelante","80 reps","—","Estación 4"],["5 · Bici spinning 5min + remo KB 15","6 min","KB16","Estación 5"],["6 · Farmers carry 200m","4 series × 5 vueltas 10m","Manc 15kg c/u","Estación 6"],["7 · Zancadas barra 100m","50 pasos c/l","Barra 20kg","Estación 7"],["8 · Wall balls slam ball","100 reps (5×20)","6kg","Estación 8 · CRONOMETRAR"]],
    dom:"Rodaje 65-70 min · 5:45-6:00/km · FC 130-150"},
  22:{t:"especifico",lbl:"HYROX Pico",note:"Semana más exigente de la fase HYROX. Circuito completo + compromised run.",mode:"hyrox",
    lun:"Caminata activa 30 min",
-   mar:[["Sentadilla barra","3×5","52kg","Desc 90s"],["Peso muerto convencional","3×4","72kg","Desc 2min"],["Press banca barra","3×5","52kg","Desc 90s"],["Wall balls slam ball","100 reps (5×20)","6kg","Meta: bajar tiempo vs sem 21"],["Farmers carry","3 series × 5 vueltas 10m","Manc 15kg c/u"],["Burpees broad jump","3×25","—","—"]],
+   mar:[["Sentadilla barra","3×5","52kg","Desc 90s"],["Peso muerto convencional","3×4","72kg","Desc 2min"],["Press banca barra","3×5","52kg","Desc 90s"],["Wall balls slam ball","100 reps (5×20)","6kg","Meta: bajar tiempo vs sem 21"],["Farmers carry","3 series × 5 vueltas 10m","Manc 15kg c/u"],["Burpees broad jump","3×25","—","—"],["Cable pull-through","3×15","polea baja · por RPE 7","Bisagra cadera"],["Elevación lateral en polea baja","3×12 c/l","polea baja · RPE 7","Mismo movimiento que manc pero tensión constante"]],
    mie:"COMPROMISED RUN LARGO · FC 150-165: wall balls 5×20 + farmers 2 + burpees 25 → correr 2km @5:55/km → remo KB 15 + bici 4min + zancadas barra 50m → correr 2km @5:50/km",
    vie:[["1 · Bici spinning 5min + comba 60s","6 min","—","Estación 1"],["2 · Empuje barra baja 10 + zancadas 20m","3 series","Barra 50kg","Estación 2"],["3 · Remo barra baja 15 + jalón banda/TRX 12","3 series","Barra 50kg","Estación 3"],["4 · Burpees con salto adelante","80 reps","—","Estación 4 — PICO"],["5 · Bici spinning 5min + remo KB 15","6 min","KB16","Estación 5"],["6 · Farmers carry 200m","4 series × 5 vueltas 10m","Manc 15kg c/u","Estación 6"],["7 · Zancadas barra 100m","50 pasos c/l","Barra 20kg","Estación 7"],["8 · Wall balls slam ball","100 reps (5×20)","6kg","Estación 8 · meta: bajar 3 min vs sem 21"]],
    dom:"Rodaje PICO 70 min · 5:45-5:55/km · FC 140-155 · gel a los 45 min"},
  23:{t:"especifico",lbl:"Último Pico HYROX",note:"Última semana de alta intensidad. La que viene empieza el taper.",mode:"hyrox",
    lun:"Caminata activa 30 min",
-   mar:[["Sentadilla barra","3×5","52kg","Desc 90s"],["Peso muerto convencional","3×4","72kg","Desc 2min"],["Press banca barra","3×5","52kg","Desc 90s"],["Wall balls slam ball","100 reps (5×20)","6kg","Última vez a máxima intensidad"],["Farmers carry","3 series × 5 vueltas 10m","Manc 15kg c/u"]],
+   mar:[["Sentadilla barra","3×5","52kg","Desc 90s"],["Peso muerto convencional","3×4","72kg","Desc 2min"],["Press banca barra","3×5","52kg","Desc 90s"],["Wall balls slam ball","100 reps (5×20)","6kg","Última vez a máxima intensidad"],["Farmers carry","3 series × 5 vueltas 10m","Manc 15kg c/u"],["Remo de pie en polea baja","3×12","polea baja · por RPE 7-8","Último bloque de tirón funcional antes del taper"]],
    mie:"COMPROMISED RUN · FC 150-165: wall balls 4×20 + farmers 2 → correr 2km @5:50/km → burpees 20 + bici 3min → correr 2km @5:45/km · último esfuerzo fuerte de la fase",
    vie:[["1 · Bici spinning 5min + comba 60s","6 min","—","Estación 1"],["2 · Empuje barra baja 10 + zancadas 20m","3 series","Barra 50kg","Estación 2"],["3 · Remo barra baja 15 + jalón banda/TRX 12","3 series","Barra 50kg","Estación 3"],["4 · Burpees con salto adelante","80 reps","—","Estación 4"],["5 · Bici spinning 5min + remo KB 15","6 min","KB16","Estación 5"],["6 · Farmers carry 200m","4 series × 5 vueltas 10m","Manc 15kg c/u","Estación 6"],["7 · Zancadas barra 100m","50 pasos c/l","Barra 20kg","Estación 7"],["8 · Wall balls slam ball","100 reps (5×20)","6kg","Estación 8 · ÚLTIMO CIRCUITO COMPLETO antes del taper"]],
    dom:"Rodaje 65-70 min · 5:50-6:00/km · FC 140-155"},
@@ -350,6 +360,32 @@ function getWeekDaysFor(w){const monday=new Date(PLAN_START.getTime()+(w-4)*7*86
 function rowsToBlocks(rows,prefix){return rows.map((r,i)=>({id:prefix+i,label:r[0],detail:r.slice(1).filter(Boolean).join(" · ")}));}
 function coreBlock(day,t){if(t==="carrera")return null;let tier;if(t==="pico")tier="pico";else if(t==="descarga"||t==="taper")tier="light";else tier="normal";const CORE={lun:{pico:"3 rondas · holds largos:\n• Plancha 45s\n• Pallof press banda 12 c/l\n• Dead bug 10 c/l\n• Bird dog 10 c/l",normal:"2-3 rondas:\n• Plancha 30-40s\n• Pallof press banda 10 c/l\n• Dead bug 8 c/l\n• Bird dog 8 c/l",light:"1-2 rondas suave:\n• Plancha 25s\n• Pallof press banda 8 c/l\n• Dead bug 6 c/l\n• Bird dog 6 c/l"},jue:{pico:"3 rondas · holds largos:\n• Plancha lateral 40s c/l\n• Hollow hold 35s\n• Lanzamiento rotacional slam ball 6kg 12 c/l\n• Suitcase carry KB16 25m c/l",normal:"2-3 rondas:\n• Plancha lateral 25-35s c/l\n• Hollow hold 20-30s\n• Russian twist / lanz. rotacional slam ball 6kg 10 c/l\n• Suitcase carry KB16 20m c/l",light:"1-2 rondas suave:\n• Plancha lateral 20s c/l\n• Hollow hold 20s\n• Russian twist slam ball 6kg 8 c/l\n• Suitcase carry KB16 15m c/l"}};return{id:"core",label:day==="lun"?"Core · anti-movimiento":"Core · endurance + HYROX",detail:CORE[day][tier]};}
 const CORE_START_WEEK=8;
+function plioBlocks(t){
+  const light=t==="descarga"||t==="taper"||t==="carrera";
+  const pico=t==="pico";
+  const sets=light?"1×":pico?"3×":"2×";
+  const reps20=light?"15":pico?"25":"20";
+  const reps5=light?"4":pico?"6":"5";
+  const time=light?"15s":pico?"25s":"20s";
+  return [
+    {id:"coord",label:"Coordinación 2 min",
+     detail:"• Equilibrio en un pie — 30s c/lado\n• Saltitos suaves 2 pies en el sitio — 30s"},
+    {id:"plio",label:"Pliometría · desc 45s entre ejercicios",
+     detail:"• Pogo hops — "+sets+reps20+"\n  (solo tobillos, contacto corto, talón casi no toca)\n• Squat jump con stick — "+sets+reps5+"\n  (aterriza suave, congela 2s)\n• Salto lateral con stick — "+sets+reps5+" c/lado\n  (un pie, congela 2s)\n• Line hops adelante-atrás — "+sets+time+"\n  (rápido y silencioso)\n⚠ Aterrizajes SILENCIOSOS siempre. Técnica > cardio."},
+  ];
+}
+function lunJueSession(combaDetail,day,t){
+  const light=t==="descarga"||t==="taper"||t==="carrera";
+  const core=coreBlock(day,t);
+  const blocks=[
+    {id:"mov",label:"Movilidad 5 min",
+     detail:"• Marcha en el sitio, rodillas arriba — 1 min\n• Círculos de cadera — 10 c/lado\n• Balanceos de pierna adelante-atrás — 10 c/lado\n• Balanceos de tobillo + puntillas — 10 c/lado\n• Sentadilla profunda sostenida — 2×20s"},
+    {id:"m",label:"Comba",detail:combaDetail},
+    ...plioBlocks(t),
+  ];
+  if(core)blocks.push(core);
+  return{name:"COMBA + PLIO + CORE",emoji:"🪢",color:C.sand,dur:light?"25-30 min":"35-40 min",blocks:blocks};
+}
 function combaSession(detail,day,t,week){const blocks=[{id:"w",label:"Activación 5 min",detail:"Movilidad dinámica · marcha · círculos cadera"},{id:"m",label:"Comba",detail:detail}];const core=(week>=CORE_START_WEEK)?coreBlock(day,t):null;if(core)blocks.push(core);return{name:core?"COMBA + CORE":"COMBA",emoji:"🪢",color:C.sand,dur:core?"20-30 min":"15-20 min",blocks:blocks};}
 function restSession(){return{name:"DESCANSO",emoji:"😴",color:C.textMuted,dur:"opcional",blocks:[{id:"r",label:"Recuperación activa",detail:"Caminata suave · foam roller · movilidad ligera · sin intensidad"}]};}
 function runSession(detail){return{name:"RODAJE LARGO",emoji:"🏃",color:C.oliveL,dur:"",blocks:[{id:"w",label:"Calentamiento 5 min",detail:"Caminata + movilidad dinámica"},{id:"run",label:"Rodaje",detail:detail},{id:"p",label:"Post-rodaje",detail:"Foam roller piernas · hidratación · proteína en los primeros 30 min"}]};}
@@ -367,8 +403,18 @@ function getSession(week,dow){
     if(dow===0)return runSession(W.dom);
     return restSession();
   }
-  if(dow===1)return combaSession(W.lun,"lun",W.t,week);
-  if(dow===4)return combaSession(W.jue,"jue",W.t,week);
+  if(dow===1){
+    if(W.lun&&W.lun.includes("sin comba"))
+      return{name:"MOVILIDAD",emoji:"🧘",color:C.green,dur:"15 min",
+             blocks:[{id:"mov",label:"Movilidad dinámica",detail:W.lun}]};
+    return lunJueSession(W.lun,"lun",W.t);
+  }
+  if(dow===4){
+    if(W.jue&&W.jue.includes("sin comba"))
+      return{name:"MOVILIDAD",emoji:"🧘",color:C.green,dur:"15 min",
+             blocks:[{id:"mov",label:"Movilidad dinámica",detail:W.jue}]};
+    return lunJueSession(W.jue,"jue",W.t);
+  }
   if(dow===6)return restSession();
   if(dow===0){if(W.domRace)return{name:W.domRace.name,emoji:W.domRace.emoji,color:W.domRace.color,dur:"",blocks:[{id:"race",label:W.domRace.name,detail:W.domRace.detail}]};return runSession(W.dom);}
   if(dow===2){const b=[{id:"mov",label:"Movilidad 5 min",detail:MOV_LEG},{id:"act",label:"Activación",detail:ACT},...rowsToBlocks(W.mar,"e")];if(W.marNote)b.push({id:"note",label:"⏱ Tope de sesión",detail:W.marNote});if(W.amrap)b.push({id:"amrap",label:"AMRAP",detail:W.amrap});return{name:"PIERNAS Y GLÚTEOS",emoji:"🦵",color:C.red,dur:(W.t==="descarga"||W.t==="taper")?"45-60 min":"70-85 min",blocks:b};}
@@ -380,12 +426,33 @@ const KEYS={checks:"ll_v6_checks",notes:"ll_v6_notes",supps:"ll_v6_supps"};
 let STORAGE={checks:{},notes:{},supps:{}};
 let saveTimer=null;
 function loadStorage(){try{const c=localStorage.getItem(KEYS.checks),n=localStorage.getItem(KEYS.notes),sp=localStorage.getItem(KEYS.supps);if(c)STORAGE.checks=JSON.parse(c);if(n)STORAGE.notes=JSON.parse(n);if(sp)STORAGE.supps=JSON.parse(sp);}catch(e){}}
-function saveChecks(){try{localStorage.setItem(KEYS.checks,JSON.stringify(STORAGE.checks));autoBackup();}catch(e){}}
-function saveNotes(){try{localStorage.setItem(KEYS.notes,JSON.stringify(STORAGE.notes));autoBackup();}catch(e){}}
-function saveSupps(){try{localStorage.setItem(KEYS.supps,JSON.stringify(STORAGE.supps));autoBackup();}catch(e){}}
+function saveChecks(){try{localStorage.setItem(KEYS.checks,JSON.stringify(STORAGE.checks));autoBackup();}catch(e){showToast("⚠ Almacenamiento lleno — exporta un backup",C.red);}}
+function saveNotes(){try{localStorage.setItem(KEYS.notes,JSON.stringify(STORAGE.notes));autoBackup();}catch(e){showToast("⚠ Almacenamiento lleno",C.red);}}
+function saveSupps(){try{localStorage.setItem(KEYS.supps,JSON.stringify(STORAGE.supps));autoBackup();}catch(e){showToast("⚠ Almacenamiento lleno",C.red);}}
 function toggleSupp(dk,id){if(!STORAGE.supps[dk])STORAGE.supps[dk]={};STORAGE.supps[dk][id]=!STORAGE.supps[dk][id];saveSupps();render();}
 const SUPPS={AM:[["am_multi","Multivitamínico"],["am_crea","Creatina"],["am_omega","Omega-3"]],PM:[["pm_mag","Magnesio"],["pm_omega","Omega-3"]]};
-function toggleCheck(dk,bid){if(!STORAGE.checks[dk])STORAGE.checks[dk]={};STORAGE.checks[dk][bid]=!STORAGE.checks[dk][bid];saveChecks();render();}
+function showToast(msg,color){
+  const old=document.querySelector(".toast");if(old)old.remove();
+  const t=document.createElement("div");t.className="toast";
+  t.style.background=color||C.olive;t.textContent=msg;
+  document.body.appendChild(t);
+  clearTimeout(_toastTimer);_toastTimer=setTimeout(()=>{if(t.parentNode)t.remove();},2200);
+}
+function haptic(p){try{if(navigator.vibrate)navigator.vibrate(p||50);}catch(e){}}
+function toggleCheck(dk,bid){
+  if(!STORAGE.checks[dk])STORAGE.checks[dk]={};
+  const wasOff=!STORAGE.checks[dk][bid];
+  STORAGE.checks[dk][bid]=wasOff;
+  saveChecks();
+  if(wasOff){
+    haptic(40);
+    const d=parseLocalDate(dk);const w=weekFromDate(d);
+    const s=getSession(w,d.getDay());const ck=STORAGE.checks[dk]||{};
+    const done=s.blocks.filter(b=>ck[b.id]).length;
+    if(done===s.blocks.length){haptic([60,30,100]);showToast("🧱 ¡Ladrillo colocado!",C.greenBright);}
+  }
+  render();
+}
 // Checkbox a nivel día: si todos los ejercicios están marcados → los desmarca todos; si falta alguno → los marca todos. El estado "día completo" NO se guarda: se deriva de los bloques.
 function toggleDay(dk,wk,dow){const s=getSession(wk,dow);if(!s||!s.blocks||!s.blocks.length)return;if(!STORAGE.checks[dk])STORAGE.checks[dk]={};const cur=STORAGE.checks[dk];const allDone=s.blocks.every(function(b){return cur[b.id];});s.blocks.forEach(function(b){cur[b.id]=!allDone;});saveChecks();render();}
 // PRs automáticos: el mayor peso COMPLETADO (bloque marcado) hasta hoy. No se editan a mano.
@@ -425,18 +492,46 @@ function computePRs(){
   return prs;
 }
 function shortDate(dk){const d=parseLocalDate(dk);return d.getDate()+" "+MONTHS[d.getMonth()];}
-let STATE={tab:"hoy",weekOffset:0,quoteIdx:Math.floor(Date.now()/86400000)%QUOTES.length,expandedDay:null};
+let STATE={tab:"hoy",weekOffset:0,suppOffset:0,quoteIdx:Math.floor(Date.now()/86400000)%QUOTES.length,expandedDay:null};
+let _toastTimer;
 function escHtml(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");}
 function checkSVG(sz){sz=sz||12;return '<svg width="'+sz+'" height="'+sz+'" viewBox="0 0 14 14" fill="none" style="display:block"><path d="M2 7L5.5 10.5L12 3.5" stroke="'+C.bg+'" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';}
 function fmtDate(s){const d=parseLocalDate(s);const M=["enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre"];return d.getDate()+" de "+M[d.getMonth()]+" "+d.getFullYear();}
 const DAY_NAMES=["DOM","LUN","MAR","MIÉ","JUE","VIE","SÁB"];
 const MONTHS=["ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic"];
+function computeStreak(){
+  let streak=0;
+  const today=new Date();today.setHours(0,0,0,0);
+  for(let i=0;i<365;i++){
+    const d=new Date(today);d.setDate(d.getDate()-i);
+    const dk=dateKey(d);
+    const w=weekFromDate(d);
+    if(w<4||w>PLAN_WEEKS)break;
+    const s=getSession(w,d.getDay());
+    if(!s||!s.blocks||s.blocks.length===0)continue;// día de descanso: no rompe racha
+    const ck=STORAGE.checks[dk]||{};
+    const done=s.blocks.filter(function(b){return ck[b.id];}).length;
+    if(done===s.blocks.length){streak++;}
+    else if(i===0){break;}// hoy incompleto: racha termina en ayer
+    else{break;}
+  }
+  return streak;
+}
+function getTomorrowSession(){
+  const tom=new Date();tom.setDate(tom.getDate()+1);
+  const w=weekFromDate(tom);
+  if(w<4||w>PLAN_WEEKS)return null;
+  const W=WEEKS[w];if(!W)return null;
+  return getSession(w,tom.getDay());
+}
 function render(){
   const cw=getCurrentWeek();const W=WEEKS[cw];
   const badge=document.getElementById("hdr-badge");
   badge.textContent="S"+cw+" · "+(W?W.lbl:"");
   const col=W?WEEK_COLORS[W.t]:C.olive;
   badge.style.background=col+"18";badge.style.color=col;badge.style.border="1px solid "+col+"55";
+  const hdr=document.getElementById("hdr");
+  if(hdr)hdr.style.setProperty("--week-color",col);
   document.getElementById("tab-hoy").style.display=STATE.tab==="hoy"?"block":"none";
   document.getElementById("tab-semana").style.display=STATE.tab==="semana"?"block":"none";
   document.getElementById("tab-metas").style.display=STATE.tab==="metas"?"block":"none";
@@ -455,8 +550,18 @@ function renderHoy(){
   const checks=STORAGE.checks[tk]||{};const note=STORAGE.notes[tk]||"";
   const done=s.blocks.filter(b=>checks[b.id]).length;const pct=Math.round(done/s.blocks.length*100);const dayDone=s.blocks.length>0&&done===s.blocks.length;
   const q=QUOTES[STATE.quoteIdx];const col=W?WEEK_COLORS[W.t]:C.olive;
+  const streak=computeStreak();
+  // Supplement status for today
+  const sp=STORAGE.supps[tk]||{};
+  const allSupps=SUPPS.AM.concat(SUPPS.PM);
+  const suppDone=allSupps.filter(function(x){return sp[x[0]];}).length;
+  const suppTotal=allSupps.length;
+  const suppPct=Math.round(suppDone/suppTotal*100);
+  // Tomorrow preview
+  const tomS=getTomorrowSession();
   document.getElementById("tab-hoy").innerHTML=
     '<div class="quote-card"><button class="quote-next" onclick="nextQuote()">↺</button><div class="quote-text">'+q.t+'</div><div class="quote-author">— '+q.a+'</div></div>'+
+    (streak>0?'<div style="display:flex;align-items:center;gap:10px;padding:9px 13px;background:'+C.oliveDim+'22;border:1px solid '+C.oliveDim+';border-radius:4px;margin-bottom:10px"><span style="font-size:20px">🔥</span><div><div style="font-size:13px;font-weight:900;color:'+C.oliveL+'">'+streak+' día'+(streak>1?'s':'')+' seguido'+(streak>1?'s':'')+'</div><div style="font-size:10px;color:'+C.textMuted+'">No rompas la racha</div></div></div>':"")+
     '<div class="sess-hdr" style="background:'+s.color+'0d;border-color:'+s.color+'2a;border-left-color:'+s.color+'"><span class="sess-emoji">'+s.emoji+'</span><div style="flex:1"><div style="font-size:10px;color:'+C.textMuted+';text-transform:uppercase;letter-spacing:.14em;font-weight:700;margin-bottom:2px">'+DAY_NAMES[dow]+' '+today.getDate()+' '+MONTHS[today.getMonth()]+' · SEM '+cw+'</div><div class="sess-name" style="color:'+s.color+'">'+s.name+'</div><div class="sess-meta"><span class="week-badge" style="background:'+col+'18;color:'+col+';border:1px solid '+col+'55">'+(W?W.lbl:"")+'</span>'+(s.dur?'<span style="font-size:10px;color:'+C.sand+';font-weight:700;font-family:monospace">⏱ '+s.dur+'</span>':"")+'</div></div></div>'+
     (W&&W.note?'<div style="font-size:11px;color:'+C.textDim+';font-style:italic;margin:-4px 2px 10px;line-height:1.5">'+W.note+'</div>':"")+
     '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px"><span style="font-size:10px;color:'+C.textMuted+';font-weight:700;text-transform:uppercase;letter-spacing:.14em">MISIÓN</span><span style="font-size:12px;font-weight:900;color:'+(pct===100?C.greenBright:s.color)+'">'+done+'/'+s.blocks.length+' · '+pct+'%</span></div>'+
@@ -464,7 +569,19 @@ function renderHoy(){
     '<div onclick="event.stopPropagation();toggleDay(\''+tk+'\','+cw+','+dow+')" style="display:flex;align-items:center;gap:9px;margin-top:11px;padding:10px 12px;border:1px solid '+(dayDone?C.greenBright:s.color)+'4d;border-radius:9px;background:'+(dayDone?C.greenBright+'14':"transparent")+';cursor:pointer;user-select:none"><div class="checkbox'+(dayDone?" done":"")+'" style="color:'+(dayDone?C.greenBright:s.color)+'">'+(dayDone?checkSVG():"")+'</div><span style="font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:'+(dayDone?C.greenBright:C.textDim)+'">'+(dayDone?"Día completo":"Completar día")+'</span></div>'+
     '<div style="margin-top:12px">'+s.blocks.map(b=>{const d=!!checks[b.id];return '<div class="block-item'+(d?" done":"")+'" onclick="toggleCheck(\''+tk+'\',\''+b.id+'\')" style="'+(d?'border-color:'+s.color+'40;':"")+'"><div class="checkbox'+(d?" done":"")+'" style="color:'+s.color+'">'+(d?checkSVG():"")+'</div><div style="flex:1;min-width:0"><div class="block-label'+(d?" done":"")+'">'+escHtml(b.label)+'</div>'+(b.detail?'<div class="block-detail'+(d?" done":"")+'">'+escHtml(b.detail)+'</div>':"")+'</div></div>';}).join("")+'</div>'+
     '<div class="sec-title">📋 Informe del día</div><textarea class="note-input" rows="3" placeholder="PRs, sensaciones, ajustes..." oninput="schedNote(this.value,\''+tk+'\')">'+escHtml(note)+'</textarea><div id="note-saved" style="text-align:center;color:'+C.greenBright+';font-size:11px;margin-top:4px;font-weight:700;letter-spacing:.1em;visibility:hidden">✓ GUARDADO</div>'+
-    (pct===100?'<div class="banner-done"><div style="font-size:24px;margin-bottom:6px">🧱</div><div style="font-weight:900;font-size:15px;color:'+C.greenBright+';text-transform:uppercase;letter-spacing:.12em">Ladrillo colocado</div><div style="font-size:12px;color:'+C.textDim+';margin-top:4px">Misión completa.</div></div>':"");
+    +'<div class="sec-title" style="margin-top:16px">💊 Suplementación de hoy</div>'+
+    '<div style="background:'+C.bgCard+';border:1px solid '+(suppPct===100?C.greenBright+'44':C.border)+';border-radius:4px;padding:12px 14px;margin-bottom:10px">'+
+      '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">'+
+        '<span style="font-size:12px;font-weight:700;color:'+(suppPct===100?C.greenBright:C.textDim)+'">'+suppDone+'/'+suppTotal+' · '+suppPct+'%</span>'+
+        '<button onclick="switchTab(\'suplementos\')" style="background:none;border:none;color:'+C.olive+';font-size:11px;font-weight:700;text-decoration:underline;cursor:pointer">Ver detalle →</button>'+
+      '</div>'+
+      '<div class="pbar"><div class="pfill" style="width:'+suppPct+'%;background:'+(suppPct===100?C.greenBright:C.blue)+'"></div></div>'+
+      '<div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:10px">'+
+        allSupps.map(function(x){const on=!!sp[x[0]];const sid=x[0];return '<div onclick="toggleSupp(\''+tk+'\',\''+sid+'\');renderHoy()" style="display:flex;align-items:center;gap:5px;padding:5px 9px;border-radius:20px;background:'+(on?C.blue+'22':C.bgAlt)+';border:1px solid '+(on?C.blue+'55':C.border)+';cursor:pointer"><div style="width:8px;height:8px;border-radius:50%;background:'+(on?C.blue:C.textMuted)+'"></div><span style="font-size:11px;font-weight:700;color:'+(on?C.white:C.textMuted)+'">'+escHtml(x[1])+'</span></div>';}).join("")+
+      '</div>'+
+    '</div>'+
+    (tomS&&tomS.name!=="DESCANSO"?'<div style="background:'+C.bgCard+';border:1px solid '+C.border+';border-radius:4px;padding:11px 14px;margin-bottom:10px;display:flex;align-items:center;gap:10px"><span style="font-size:18px">'+tomS.emoji+'</span><div><div style="font-size:9px;color:'+C.textMuted+';font-weight:700;text-transform:uppercase;letter-spacing:.14em">Mañana</div><div style="font-size:12px;font-weight:900;color:'+C.textDim+';text-transform:uppercase">'+tomS.name+'</div>'+(tomS.dur?'<div style="font-size:10px;color:'+C.textMuted+';font-family:monospace;margin-top:1px">⏱ '+tomS.dur+'</div>':"")+'</div></div>':"")+
+        (pct===100?'<div class="banner-done"><div style="font-size:24px;margin-bottom:6px">🧱</div><div style="font-weight:900;font-size:15px;color:'+C.greenBright+';text-transform:uppercase;letter-spacing:.12em">Ladrillo colocado</div><div style="font-size:12px;color:'+C.textDim+';margin-top:4px">Misión completa.</div></div>':"");
 }
 function schedNote(val,dk){clearTimeout(saveTimer);saveTimer=setTimeout(function(){STORAGE.notes[dk]=val;saveNotes();const e=document.getElementById("note-saved");if(e){e.style.visibility="visible";setTimeout(function(){if(e)e.style.visibility="hidden";},1500);}},500);}
 function renderSemana(){
@@ -476,7 +593,8 @@ function renderSemana(){
   let wd=0,wt=0;
   days.forEach(function(d){const s=getSession(vw,d.getDay());const c=STORAGE.checks[dateKey(d)]||{};wd+=s.blocks.filter(b=>c[b.id]).length;wt+=s.blocks.length;});
   const wp=wt>0?Math.round(wd/wt*100):0;
-  html+='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px"><span style="font-size:10px;color:'+C.textMuted+';font-weight:700;text-transform:uppercase;letter-spacing:.14em">PROGRESO SEMANAL</span><span style="font-size:12px;font-weight:900;color:'+(wp===100?C.greenBright:C.oliveL)+'">'+wd+'/'+wt+' · '+wp+'%</span></div><div class="pbar" style="margin-bottom:12px"><div class="pfill" style="width:'+wp+'%;background:'+(wp===100?C.greenBright:C.oliveL)+'"></div></div>';
+  html+='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px"><span style="font-size:10px;color:'+C.textMuted+';font-weight:700;text-transform:uppercase;letter-spacing:.14em">PROGRESO SEMANAL</span><span style="font-size:12px;font-weight:900;color:'+(wp===100?C.greenBright:C.oliveL)+'">'+wd+'/'+wt+' · '+wp+'%</span></div><div class="pbar" style="margin-bottom:12px"><div class="pfill" style="width:'+wp+'%;background:'+(wp===100?C.greenBright:C.oliveL)+'"></div></div>'+
+    (STATE.weekOffset===0&&wp===100?'<div style="padding:10px 13px;background:'+C.greenBright+'12;border:1px solid '+C.greenBright+'33;border-radius:4px;margin-bottom:10px;text-align:center"><div style="font-size:13px;font-weight:900;color:'+C.greenBright+'">🧱 Semana completa — todos los ladrillos colocados</div></div>':"");
   days.forEach(function(d){
     const dow=d.getDay();const s=getSession(vw,dow);const dk=dateKey(d);const c=STORAGE.checks[dk]||{};
     const done=s.blocks.filter(b=>c[b.id]).length;const tot=s.blocks.length;const pct=Math.round(done/tot*100);const dayDoneW=tot>0&&done===tot;
@@ -514,149 +632,178 @@ function renderMetas(){
   html+='<div class="card" style="text-align:center;margin-top:4px;border-color:'+C.oliveDim+'"><div style="font-size:28px;margin-bottom:6px">🧱</div><div style="font-size:12px;color:'+C.textDim+';line-height:1.7;font-style:italic">"Ladrillo a ladrillo,<br>se construye la muralla."</div></div>';
   document.getElementById("tab-metas").innerHTML=html;
 }
-function renderSupps(){
-  const tk=todayKey();const sp=STORAGE.supps[tk]||{};const today=new Date();const dow=today.getDay();
-  const all=SUPPS.AM.concat(SUPPS.PM);const tot=all.length;const done=all.filter(function(x){return sp[x[0]];}).length;const pct=Math.round(done/tot*100);
-  function group(title,emoji,items,col){
-    return '<div class="sec-title">'+emoji+' '+title+'</div>'+items.map(function(it){const d=!!sp[it[0]];return '<div class="block-item'+(d?" done":"")+'" onclick="toggleSupp(\''+tk+'\',\''+it[0]+'\')" style="'+(d?"border-color:"+col+"40;":"")+'"><div class="checkbox'+(d?" done":"")+'" style="color:'+col+'">'+(d?checkSVG():"")+'</div><div style="flex:1;min-width:0"><div class="block-label'+(d?" done":"")+'">'+escHtml(it[1])+'</div></div></div>';}).join("");
+function suppDateKey(){
+  const d=new Date();d.setDate(d.getDate()+STATE.suppOffset);
+  return d.toISOString().slice(0,10);
+}
+function switchSuppDay(delta){
+  STATE.suppOffset=Math.min(0,Math.max(-6,STATE.suppOffset+delta));
+  render();
+}
+function toggleSuppGroup(dk,ids){
+  if(!STORAGE.supps[dk])STORAGE.supps[dk]={};
+  const sp=STORAGE.supps[dk];
+  const allDone=ids.every(function(id){return sp[id];});
+  ids.forEach(function(id){sp[id]=!allDone;});
+  saveSupps();
+  if(!allDone){
+    haptic([40,20,60]);
+    const allS=SUPPS.AM.concat(SUPPS.PM);
+    if(allS.every(function(x){return sp[x[0]];}))showToast("💊 Suplementación completa",C.blue);
   }
-  let strip="";
-  for(let i=6;i>=0;i--){const d=new Date(today);d.setDate(today.getDate()-i);const dk=dateKey(d);const dsp=STORAGE.supps[dk]||{};const dn=all.filter(function(x){return dsp[x[0]];}).length;const full=dn===tot;const some=dn>0&&!full;const isT=dk===tk;const bg=full?C.greenBright:(some?C.olive:C.textMuted);strip+='<div style="flex:1;text-align:center"><div style="height:26px;border-radius:3px;background:'+bg+(full?"":"22")+';border:1px solid '+(isT?C.oliveL:C.border)+';display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:900;color:'+(full?C.bg:C.textDim)+'">'+(full?"✓":(some?dn:""))+'</div><div style="font-size:8px;color:'+(isT?C.oliveL:C.textMuted)+';margin-top:3px;font-weight:700">'+DAY_NAMES[d.getDay()]+'</div></div>';}
-  let html='<div class="sess-hdr" style="background:'+C.purple+'0d;border-color:'+C.purple+'2a;border-left-color:'+C.purple+'"><span class="sess-emoji">💊</span><div style="flex:1"><div style="font-size:10px;color:'+C.textMuted+';text-transform:uppercase;letter-spacing:.14em;font-weight:700;margin-bottom:2px">'+DAY_NAMES[dow]+' '+today.getDate()+' '+MONTHS[today.getMonth()]+'</div><div class="sess-name" style="color:'+C.purple+'">Suplementos</div></div></div>';
-  html+='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px"><span style="font-size:10px;color:'+C.textMuted+';font-weight:700;text-transform:uppercase;letter-spacing:.14em">HOY</span><span style="font-size:12px;font-weight:900;color:'+(pct===100?C.greenBright:C.purple)+'">'+done+'/'+tot+' · '+pct+'%</span></div><div class="pbar"><div class="pfill" style="width:'+pct+'%;background:'+(pct===100?C.greenBright:C.purple)+'"></div></div>';
-  html+='<div style="margin-top:12px">'+group("Mañana","🌅",SUPPS.AM,C.sand)+group("Noche","🌙",SUPPS.PM,C.blue)+'</div>';
-  html+='<div class="sec-title">📊 Últimos 7 días</div><div class="card"><div style="display:flex;gap:4px">'+strip+'</div></div>';
-  html+=(pct===100?'<div class="banner-done"><div style="font-size:24px;margin-bottom:6px">💊</div><div style="font-weight:900;font-size:15px;color:'+C.greenBright+';text-transform:uppercase;letter-spacing:.12em">Stack completo</div></div>':"");
+  render();
+}
+function renderSupps(){
+  const dk=suppDateKey();
+  const sp=STORAGE.supps[dk]||{};
+  const viewDate=parseLocalDate(dk);
+  const isToday=STATE.suppOffset===0;
+  const dayLabel=isToday?"Hoy":DAY_NAMES[viewDate.getDay()]+" "+viewDate.getDate()+" "+MONTHS[viewDate.getMonth()];
+  const all=SUPPS.AM.concat(SUPPS.PM);
+  const tot=all.length;
+  const done=all.filter(function(x){return sp[x[0]];}).length;
+  const pct=Math.round(done/tot*100);
+  function group(title,emoji,items,col){
+    const groupDone=items.every(function(x){return sp[x[0]];});
+    const ids=JSON.stringify(items.map(function(x){return x[0];}));
+    return '<div class="card" style="border-color:'+(groupDone?col+'55':C.border)+';margin-bottom:10px">'+
+      '<div onclick="toggleSuppGroup(\''+dk+'\','+escHtml(ids)+')" style="display:flex;align-items:center;gap:9px;padding:9px 11px;border:1px solid '+(groupDone?col+'4d':'var(--border)')+';border-radius:7px;background:'+(groupDone?col+'12':'transparent')+';cursor:pointer;margin-bottom:10px;user-select:none">'+
+        '<div class="checkbox'+(groupDone?" done":"")+'" style="color:'+col+'">'+(groupDone?checkSVG():"")+'</div>'+
+        '<div style="flex:1"><div style="font-size:10px;font-weight:900;color:'+col+';text-transform:uppercase;letter-spacing:.18em">'+emoji+' '+title+'</div>'+
+          '<div style="font-size:10px;color:'+(groupDone?col:C.textMuted)+';margin-top:1px">'+(groupDone?"Toca para desmarcar todo":"Completar "+title+" de un toque")+'</div>'+
+        '</div>'+
+      '</div>'+
+      items.map(function(x){const on=!!sp[x[0]];return(
+        '<div style="display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid '+C.border+';cursor:pointer" onclick="toggleSupp(\''+dk+'\',\''+x[0]+'\')">'+
+          '<div class="checkbox'+(on?" done":"")+'" style="color:'+col+'">'+(on?checkSVG():"")+'</div>'+
+          '<span style="font-size:13px;font-weight:700;color:'+(on?C.text:C.textDim)+'">'+escHtml(x[1])+'</span>'+
+        '</div>'
+      );}).join("")+
+    '</div>';
+  }
+  let html='<div class="sec-title">💊 Suplementación</div>';
+  // Day navigation
+  html+='<div class="week-nav" style="margin-bottom:14px">'+
+    '<button onclick="switchSuppDay(-1)" '+(STATE.suppOffset<=-6?"disabled":"")+'>◀</button>'+
+    '<div class="week-nav-center"><div style="font-size:16px;font-weight:900;color:'+C.white+'">'+dayLabel+'</div>'+
+      '<div style="font-size:10px;color:'+C.textMuted+';margin-top:2px">'+pct+'% · '+done+'/'+tot+' suplementos</div>'+
+      (!isToday?'<div style="margin-top:4px"><button onclick="switchSuppDay('+(-STATE.suppOffset)+')" style="background:none;border:none;color:'+C.olive+';font-size:11px;font-weight:700;text-decoration:underline">→ volver a hoy</button></div>':"")+
+    '</div>'+
+    '<button onclick="switchSuppDay(1)" '+(STATE.suppOffset>=0?"disabled":"")+'>▶</button>'+
+  '</div>';
+  // Progress bar
+  html+='<div class="pbar" style="margin-bottom:14px"><div class="pfill" style="width:'+pct+'%;background:'+(pct===100?C.greenBright:C.blue)+'"></div></div>';
+  // Groups
+  html+=group("Mañana","🌅",SUPPS.AM,C.oliveL);
+  html+=group("Tarde/Noche","🌙",SUPPS.PM,C.purple);
+  // 7-day history
+  html+='<div class="sec-title" style="margin-top:18px">📅 Historial 7 días</div><div class="card" style="padding:10px 12px">';
+  for(let i=-6;i<=0;i++){
+    const hd=new Date();hd.setDate(hd.getDate()+i);
+    const hdk=hd.toISOString().slice(0,10);
+    const hsp=STORAGE.supps[hdk]||{};
+    const hdone=all.filter(function(x){return hsp[x[0]];}).length;
+    const hpct=Math.round(hdone/tot*100);
+    const hisToday=i===0;
+    html+='<div style="display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid '+(i<0?C.border:"transparent")+';cursor:pointer" onclick="STATE.suppOffset='+i+';render()">'+
+      '<div style="font-size:10px;font-weight:700;color:'+(hisToday?C.oliveL:C.textMuted)+';min-width:28px;text-transform:uppercase">'+DAY_NAMES[hd.getDay()]+'</div>'+
+      '<div style="font-size:10px;color:'+C.textDim+';min-width:42px">'+hd.getDate()+' '+MONTHS[hd.getMonth()]+'</div>'+
+      '<div style="flex:1;height:6px;background:'+C.border+';border-radius:3px;overflow:hidden"><div style="width:'+hpct+'%;height:100%;background:'+(hpct===100?C.greenBright:hpct>0?C.blue:C.border)+';border-radius:3px"></div></div>'+
+      '<div style="font-size:10px;font-weight:700;color:'+(hpct===100?C.greenBright:C.textMuted)+';min-width:30px;text-align:right">'+hpct+'%</div>'+
+    '</div>';
+  }
+  html+='</div>';
   document.getElementById("tab-suplementos").innerHTML=html;
 }
 function renderDatos(){
-  let last="sin auto-guardado aún";
-  try{const raw=localStorage.getItem(BACKUP_AUTO_KEY);if(raw){const p=JSON.parse(raw);if(p&&p.savedAt){const d=new Date(p.savedAt);last=d.toLocaleDateString("es-CL")+" · "+d.toLocaleTimeString("es-CL",{hour:"2-digit",minute:"2-digit"});}}}catch(e){}
-  const btn="display:flex;align-items:center;justify-content:center;gap:8px;width:100%;font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;padding:12px;border-radius:6px;cursor:pointer";
-  const hint="font-size:10px;color:"+C.textMuted+";line-height:1.5;margin:6px 2px 0";
-  document.getElementById("tab-datos").innerHTML=
-    '<div class="sec-title">💾 Respaldo de datos</div>'+
-    '<div class="card"><div style="font-size:11px;color:'+C.textDim+';line-height:1.6;margin-bottom:14px">Tu progreso se guarda solo en este dispositivo. Llévate una copia o restaurala cuando quieras.</div>'+
-      '<button onclick="exportBackup()" style="'+btn+';background:'+C.olive+'1a;border:1px solid '+C.olive+';color:'+C.oliveL+'">⬇ Exportar respaldo</button>'+
-      '<div style="'+hint+';margin-bottom:14px">Descarga un archivo .json con todo tu progreso, con la fecha en el nombre. Guárdalo donde quieras.</div>'+
-      '<button onclick="document.getElementById(\'import-file\').click()" style="'+btn+';background:'+C.olive+'1a;border:1px solid '+C.olive+';color:'+C.oliveL+'">⬆ Importar respaldo</button>'+
-      '<div style="'+hint+'">Carga un .json exportado antes y reemplaza tu progreso actual. Te pide confirmación primero.</div>'+
-      '<input type="file" id="import-file" accept=".json,application/json" style="display:none" onchange="importBackup(this.files[0]); this.value=\'\';">'+
-    '</div>'+
-    '<div class="sec-title">🛟 Emergencia</div>'+
-    '<div class="card" style="border-color:'+C.red+'44">'+
-      '<div style="font-size:10px;color:'+C.textMuted+';line-height:1.6;margin-bottom:12px">La app guarda una copia interna cada vez que marcas algo.<br>Último auto-guardado: <span style="color:'+C.sand+';font-family:monospace">'+last+'</span></div>'+
-      '<button onclick="restoreAutoBackup()" style="'+btn+';background:'+C.red+'14;border:1px solid '+C.red+'66;color:'+C.sand+'">↩ Recuperar auto-guardado</button>'+
-      '<div style="'+hint+'">Vuelve al último estado auto-guardado. Útil si importaste algo por error o desmarcaste sin querer.</div>'+
-    '</div>';
-}
-function switchTab(t){STATE.tab=t;if(t==="semana")STATE.weekOffset=0;STATE.expandedDay=null;render();}
-function changeWeek(delta){const cw=getCurrentWeek();const nv=cw+STATE.weekOffset+delta;if(nv<4||nv>PLAN_WEEKS)return;STATE.weekOffset+=delta;STATE.expandedDay=null;render();}
-function toggleExpand(dk){STATE.expandedDay=STATE.expandedDay===dk?null:dk;render();}
-function nextQuote(){STATE.quoteIdx=(STATE.quoteIdx+1)%QUOTES.length;render();}
-
-// ===================== RESPALDO (export / import / auto / emergencia) =====================
-const BACKUP_AUTO_KEY="ladrillo_backup_auto";
-const BACKUP_VERSION=1;
-const LL_PREFIX="ll_v6_";
-
-// Reúne TODO el estado: claves canónicas de KEYS + barrido de cualquier ll_v6_* futura.
-function collectBackup(){
-  const data={};
-  Object.values(KEYS).forEach(function(k){const v=localStorage.getItem(k);if(v!==null)data[k]=v;});
-  for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k&&k.indexOf(LL_PREFIX)===0&&!(k in data))data[k]=localStorage.getItem(k);}
-  return {app:"ladrillo-2026",version:BACKUP_VERSION,savedAt:new Date().toISOString(),keys:data};
-}
-// Copia interna en cada cambio. NO descarga archivo.
-function autoBackup(){try{localStorage.setItem(BACKUP_AUTO_KEY,JSON.stringify(collectBackup()));}catch(e){}}
-// Descarga manual del .json con fecha en el nombre.
-function exportBackup(){
-  try{
-    const blob=new Blob([JSON.stringify(collectBackup(),null,2)],{type:"application/json"});
-    const d=new Date();
-    const stamp=d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
-    const a=document.createElement("a");
-    a.href=URL.createObjectURL(blob);
-    a.download="ladrillo-respaldo-"+stamp+".json";
-    document.body.appendChild(a);a.click();document.body.removeChild(a);
-    setTimeout(function(){URL.revokeObjectURL(a.href);},1000);
-  }catch(e){alert("No se pudo exportar: "+e.message);}
-}
-// Aplica un objeto keys{} restaurado al localStorage (limpia el namespace ll_v6_ primero).
-function applyRestore(keys){
-  const borrar=[];
-  for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k&&k.indexOf(LL_PREFIX)===0)borrar.push(k);}
-  borrar.forEach(function(k){localStorage.removeItem(k);});
-  Object.keys(keys).forEach(function(k){if(k.indexOf(LL_PREFIX)===0)localStorage.setItem(k,keys[k]);});
-}
-// Refresca memoria + pantalla sin recargar la página.
-function refreshFromStorage(){
-  STORAGE.checks={};STORAGE.notes={};STORAGE.supps={}; // limpia memoria antes de releer (loadStorage solo sobrescribe si la clave existe)
-  loadStorage();
-  render();
-}
-// Importar (selector + validación + confirmación + refresco).
-function importBackup(file){
-  if(!file)return;
-  const reader=new FileReader();
-  reader.onerror=function(){alert("\u274c No se pudo leer el archivo. Tu progreso actual no se tocó.");};
-  reader.onload=function(ev){
-    let parsed;
-    try{parsed=JSON.parse(ev.target.result);}
-    catch(e){alert("\u274c Archivo inválido: no es un JSON válido. No se tocó nada.");return;}
-    if(!parsed||typeof parsed!=="object"||!parsed.keys||typeof parsed.keys!=="object"){
-      alert("\u274c El archivo no tiene la estructura de un respaldo Ladrillo. No se tocó nada.");return;}
-    if(!Object.values(KEYS).some(function(k){return k in parsed.keys;})){
-      alert("\u274c El respaldo no contiene datos reconocibles de Ladrillo. No se tocó nada.");return;}
-    let ok=true;
-    Object.keys(parsed.keys).forEach(function(k){try{JSON.parse(parsed.keys[k]);}catch(e){ok=false;}});
-    if(!ok){alert("\u274c El respaldo está corrupto (valores ilegibles). No se tocó nada.");return;}
-    if(!confirm("Esto reemplazará tu progreso actual con el del respaldo ("+(parsed.savedAt||"fecha desconocida")+"). ¿Continuar?"))return;
-    try{
-      autoBackup(); // snapshot del estado ACTUAL antes de pisarlo
-      applyRestore(parsed.keys);
-    }catch(e){alert("Error al restaurar: "+e.message);return;}
-    refreshFromStorage();
-    alert("\u2705 Respaldo restaurado.");
-  };
-  reader.readAsText(file);
-}
-// Botón de emergencia: recuperar el último auto-guardado. NO hace autoBackup antes (pisaría lo que se quiere recuperar).
-function restoreAutoBackup(){
-  let raw;
-  try{raw=localStorage.getItem(BACKUP_AUTO_KEY);}catch(e){raw=null;}
-  if(!raw){alert("No hay auto-guardado disponible todavía.");return;}
-  let parsed;
-  try{parsed=JSON.parse(raw);}catch(e){alert("El auto-guardado está corrupto y no se puede leer.");return;}
-  if(!parsed||!parsed.keys||typeof parsed.keys!=="object"){alert("El auto-guardado no tiene un formato válido.");return;}
-  if(!confirm("Esto reemplazará tu progreso actual con el ÚLTIMO auto-guardado ("+(parsed.savedAt||"fecha desconocida")+"). ¿Continuar?"))return;
-  try{applyRestore(parsed.keys);}catch(e){alert("Error al restaurar: "+e.message);return;}
-  refreshFromStorage();
-  alert("\u2705 Auto-guardado restaurado.");
-}
-
-// Relleno inicial UNA SOLA VEZ: marca como completados todos los días ESTRICTAMENTE anteriores a hoy.
-// La bandera ll_v6_backfill_done evita que vuelva a correr y pise marcados/desmarcados manuales posteriores.
-function runBackfillOnce(){
-  try{ if(localStorage.getItem("ll_v6_backfill_done")) return; }catch(e){ return; }
-  const todK=todayKey();
-  for(let w=4;w<=PLAN_WEEKS;w++){
-    getWeekDaysFor(w).forEach(function(d){
+  const cw=getCurrentWeek();
+  // Count stats
+  let totalBlocks=0,doneBlocks=0,completeSessions=0,suppDays=0;
+  const allS=SUPPS.AM.concat(SUPPS.PM);
+  for(let w=4;w<=cw;w++){
+    const days=getWeekDaysFor(w);
+    days.forEach(function(d){
       const dk=dateKey(d);
-      if(dk>=todK) return; // estrictamente anteriores a hoy: excluye hoy y días futuros
       const s=getSession(w,d.getDay());
-      if(!s||!s.blocks||!s.blocks.length) return;
-      if(!STORAGE.checks[dk]) STORAGE.checks[dk]={};
-      s.blocks.forEach(function(b){ STORAGE.checks[dk][b.id]=true; });
+      const ck=STORAGE.checks[dk]||{};
+      const db=s.blocks.filter(function(b){return ck[b.id];}).length;
+      doneBlocks+=db;totalBlocks+=s.blocks.length;
+      if(s.blocks.length>0&&db===s.blocks.length)completeSessions++;
+      // supps
+      const sp=STORAGE.supps[dk]||{};
+      if(allS.every(function(x){return sp[x[0]];}))suppDays++;
     });
   }
-  try{ localStorage.setItem("ll_v6_backfill_done","1"); }catch(e){}
-  saveChecks();
-  render();
+  const pct=totalBlocks>0?Math.round(doneBlocks/totalBlocks*100):0;
+  // localStorage usage
+  let lsBytes=0;
+  try{Object.keys(localStorage).forEach(function(k){lsBytes+=(localStorage.getItem(k)||"").length*2;});}catch(e){}
+  const lsKB=(lsBytes/1024).toFixed(1);
+  let html='<div class="sec-title">📊 Estadísticas del plan</div>';
+  html+='<div class="load-grid" style="margin-bottom:12px">'+
+    '<div class="load-cell"><div class="load-cell-label">Bloques hechos</div><div class="load-cell-val">'+doneBlocks+'</div></div>'+
+    '<div class="load-cell"><div class="load-cell-label">Sesiones completas</div><div class="load-cell-val">'+completeSessions+'</div></div>'+
+    '<div class="load-cell"><div class="load-cell-label">Días supl. completos</div><div class="load-cell-val">'+suppDays+'</div></div>'+
+    '<div class="load-cell"><div class="load-cell-label">Semana actual</div><div class="load-cell-val">S'+cw+'</div></div>'+
+  '</div>';
+  html+='<div class="card" style="margin-bottom:10px"><div style="display:flex;justify-content:space-between;margin-bottom:6px"><span style="font-size:11px;color:'+C.textDim+'">Progreso total del plan</span><span style="font-size:12px;font-weight:900;color:'+C.oliveL+'">'+pct+'%</span></div><div class="pbar"><div class="pfill" style="width:'+pct+'%;background:'+C.olive+'"></div></div></div>';
+  html+='<div class="sec-title">💾 Almacenamiento local</div>';
+  html+='<div class="card" style="margin-bottom:10px"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px"><span style="font-size:13px;color:'+C.textDim+'">Uso localStorage</span><span style="font-size:14px;font-weight:900;color:'+C.oliveL+'">'+lsKB+' KB</span></div><div style="font-size:11px;color:'+C.textMuted+';line-height:1.5">Tus datos se guardan solo en este dispositivo. Nada se envía a servidores. Exporta un backup regularmente.</div></div>';
+  html+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px">'+
+    '<button onclick="exportData()" style="padding:13px;background:'+C.oliveDim+';border:1px solid '+C.olive+';color:'+C.oliveL+';font-size:12px;font-weight:900;border-radius:4px;letter-spacing:.06em;text-transform:uppercase">⬇ Exportar</button>'+
+    '<button onclick="importData()" style="padding:13px;background:'+C.bgCard+';border:1px solid '+C.border+';color:'+C.textDim+';font-size:12px;font-weight:900;border-radius:4px;letter-spacing:.06em;text-transform:uppercase">⬆ Importar</button>'+
+  '</div>';
+  
+  html+='<div class="sec-title">🎨 Tipos de semana</div><div class="card" style="padding:10px 14px">'+
+    Object.entries({normal:"Construcción",pico:"Pico / Superpico",descarga:"Descarga −30%",taper:"Taper pre-carrera",carrera:"Semana de carrera",recuperacion:"Recuperación",especifico:"HYROX Específico"}).map(function(e){
+      const col=WEEK_COLORS[e[0]]||C.olive;
+      return '<div style="display:flex;align-items:center;gap:10px;padding:6px 0;border-bottom:1px solid '+C.border+'">'+
+        '<div style="width:12px;height:12px;border-radius:2px;background:'+col+';flex-shrink:0"></div>'+
+        '<div style="font-size:12px;font-weight:700;color:'+C.text+'">'+e[1]+'</div>'+
+        '<div style="font-size:10px;color:'+C.textMuted+';margin-left:auto;font-family:monospace">'+e[0]+'</div>'+
+      '</div>';
+    }).join("")+
+  '</div>';
+  html+='<div class="card" style="border-color:'+C.oliveDim+'"><div style="font-size:10px;color:'+C.olive+';font-weight:700;text-transform:uppercase;letter-spacing:.12em;margin-bottom:6px">📦 Sobre Ladrillo</div><div style="font-size:11px;color:'+C.textDim+';line-height:1.6">App personal, single-device. Sin cuenta, sin servidor, sin publicidad. Todos los datos viven en tu localStorage. Versión de plan: Híbrido 2026 (S4-S26).</div></div>';
+  document.getElementById("tab-datos").innerHTML=html;
 }
-loadStorage();
-runBackfillOnce();
-render();
+function importData(){
+  const inp=document.createElement("input");
+  inp.type="file";inp.accept=".json";
+  inp.onchange=function(e){
+    const file=e.target.files[0];if(!file)return;
+    const reader=new FileReader();
+    reader.onload=function(ev){
+      try{
+        const data=JSON.parse(ev.target.result);
+        if(data.checks)STORAGE.checks=data.checks;
+        if(data.notes)STORAGE.notes=data.notes;
+        if(data.supps)STORAGE.supps=data.supps;
+        saveChecks();saveNotes();saveSupps();
+        showToast("✓ Backup importado",C.greenBright);
+        render();
+      }catch(err){showToast("⚠ Error al importar",C.red);}
+    };
+    reader.readAsText(file);
+  };
+  inp.click();
+}
+function exportData(){
+  const data={checks:STORAGE.checks,notes:STORAGE.notes,supps:STORAGE.supps,exported:new Date().toISOString()};
+  const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement("a");a.href=url;a.download="ladrillo-backup-"+todayKey()+".json";a.click();
+  URL.revokeObjectURL(url);
+}
+function autoBackup(){
+  try{localStorage.setItem("ll_v6_backup",JSON.stringify({ts:Date.now(),checks:STORAGE.checks,notes:STORAGE.notes,supps:STORAGE.supps}));}catch(e){}
+}
+function switchTab(t){STATE.tab=t;render();}
+function nextQuote(){STATE.quoteIdx=(STATE.quoteIdx+1)%QUOTES.length;render();}
+function changeWeek(d){STATE.weekOffset=Math.max(4-getCurrentWeek(),Math.min(PLAN_WEEKS-getCurrentWeek(),STATE.weekOffset+d));render();}
+function toggleExpand(dk){STATE.expandedDay=STATE.expandedDay===dk?null:dk;render();}
+loadStorage();render();
 </script>
 </body>
 </html>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                       
