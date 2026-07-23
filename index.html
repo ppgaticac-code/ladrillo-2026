@@ -361,18 +361,26 @@ function getWeekDaysFor(w){const monday=new Date(PLAN_START.getTime()+(w-4)*7*86
 function rowsToBlocks(rows,prefix){return rows.map((r,i)=>({id:prefix+i,label:r[0],detail:r.slice(1).filter(Boolean).join(" · ")}));}
 function coreBlock(day,t){if(t==="carrera")return null;let tier;if(t==="pico")tier="pico";else if(t==="descarga"||t==="taper")tier="light";else tier="normal";const CORE={lun:{pico:"3 rondas · holds largos:\n• Plancha 45s\n• Pallof press banda 12 c/l\n• Dead bug 10 c/l\n• Bird dog 10 c/l",normal:"2-3 rondas:\n• Plancha 30-40s\n• Pallof press banda 10 c/l\n• Dead bug 8 c/l\n• Bird dog 8 c/l",light:"1-2 rondas suave:\n• Plancha 25s\n• Pallof press banda 8 c/l\n• Dead bug 6 c/l\n• Bird dog 6 c/l"},jue:{pico:"3 rondas · holds largos:\n• Plancha lateral 40s c/l\n• Hollow hold 35s\n• Lanzamiento rotacional slam ball 6kg 12 c/l\n• Suitcase carry KB16 25m c/l",normal:"2-3 rondas:\n• Plancha lateral 25-35s c/l\n• Hollow hold 20-30s\n• Russian twist / lanz. rotacional slam ball 6kg 10 c/l\n• Suitcase carry KB16 20m c/l",light:"1-2 rondas suave:\n• Plancha lateral 20s c/l\n• Hollow hold 20s\n• Russian twist slam ball 6kg 8 c/l\n• Suitcase carry KB16 15m c/l"}};return{id:"core",label:day==="lun"?"Core · anti-movimiento":"Core · endurance + HYROX",detail:CORE[day][tier]};}
 const CORE_START_WEEK=8;
-function plioBlocks(t){
+function plioBlocks(t,day){
   const light=t==="descarga"||t==="taper"||t==="carrera";
   const pico=t==="pico";
   const sets=light?"1×":pico?"3×":"2×";
   const reps20=light?"15":pico?"25":"20";
   const reps5=light?"4":pico?"6":"5";
   const time=light?"15s":pico?"25s":"20s";
-  return [
-    {id:"coord",label:"Coordinación 2 min",
-     detail:"• Equilibrio en un pie — 30s c/lado\n• Saltitos suaves 2 pies en el sitio — 30s"},
+  const coord={id:"coord",label:"Coordinación 2 min",
+    detail:"• Equilibrio en un pie — 30s c/lado\n• Saltitos suaves 2 pies en el sitio — 30s"};
+  if(day==="jue"){
+    // Variante B — jueves: broad jump + lateral doble pie + line hops lateral
+    return [coord,
+      {id:"plio",label:"Pliometría · desc 45s entre ejercicios",
+       detail:"• Pogo hops — "+sets+reps20+"\n  (solo tobillos, contacto corto, talón casi no toca)\n• Broad jump con stick — "+sets+reps5+"\n  (salto largo máximo, aterriza y congela 2s)\n• Salto lateral doble pie con stick — "+sets+reps5+" c/lado\n  (impulso lateral, aterriza y congela 2s)\n• Line hops lateral — "+sets+time+"\n  (derecha-izquierda, rápido y silencioso)\n⚠ Aterrizajes SILENCIOSOS siempre. Técnica > cardio."},
+    ];
+  }
+  // Variante A — lunes: squat jump + lateral un pie + line hops adelante-atrás
+  return [coord,
     {id:"plio",label:"Pliometría · desc 45s entre ejercicios",
-     detail:"• Pogo hops — "+sets+reps20+"\n  (solo tobillos, contacto corto, talón casi no toca)\n• Squat jump con stick — "+sets+reps5+"\n  (aterriza suave, congela 2s)\n• Salto lateral con stick — "+sets+reps5+" c/lado\n  (un pie, congela 2s)\n• Line hops adelante-atrás — "+sets+time+"\n  (rápido y silencioso)\n⚠ Aterrizajes SILENCIOSOS siempre. Técnica > cardio."},
+     detail:"• Pogo hops — "+sets+reps20+"\n  (solo tobillos, contacto corto, talón casi no toca)\n• Squat jump con stick — "+sets+reps5+"\n  (aterriza suave, congela 2s)\n• Salto lateral un pie con stick — "+sets+reps5+" c/lado\n  (un pie, congela 2s)\n• Line hops adelante-atrás — "+sets+time+"\n  (rápido y silencioso)\n⚠ Aterrizajes SILENCIOSOS siempre. Técnica > cardio."},
   ];
 }
 function lunJueSession(combaDetail,day,t){
@@ -382,7 +390,7 @@ function lunJueSession(combaDetail,day,t){
     {id:"mov",label:"Movilidad 5 min",
      detail:"• Marcha en el sitio, rodillas arriba — 1 min\n• Círculos de cadera — 10 c/lado\n• Balanceos de pierna adelante-atrás — 10 c/lado\n• Balanceos de tobillo + puntillas — 10 c/lado\n• Sentadilla profunda sostenida — 2×20s"},
     {id:"m",label:"Comba",detail:combaDetail},
-    ...plioBlocks(t),
+    ...plioBlocks(t,day),
   ];
   if(core)blocks.push(core);
   return{name:"COMBA + PLIO + CORE",emoji:"🪢",color:C.sand,dur:light?"25-30 min":"35-40 min",blocks:blocks};
@@ -393,34 +401,43 @@ function runSession(detail){return{name:"RODAJE LARGO",emoji:"🏃",color:C.oliv
 function getSession(week,dow){
   const W=WEEKS[week];
   if(!W)return restSession();
-  if(W.mode==="text"){const d=W.days[dow];if(!d)return restSession();return{name:d.n.toUpperCase(),emoji:d.e,color:d.c,dur:"",blocks:[{id:"x",label:d.n,detail:d.d}]};}
-  if(W.mode==="hyrox"){
-    if(dow===1)return{name:"CAMINATA ACTIVA",emoji:"🚶",color:C.green,dur:"30 min",blocks:[{id:"x",label:"Caminata activa",detail:W.lun}]};
-    if(dow===2){const b=[{id:"mov",label:"Movilidad 5 min",detail:MOV_LEG},{id:"act",label:"Activación",detail:ACT},...rowsToBlocks(W.mar,"e")];return{name:"FUERZA + ESTACIONES",emoji:"⚡",color:C.sand,dur:"60-75 min",blocks:b};}
-    if(dow===3)return{name:"COMPROMISED RUN",emoji:"🏃",color:C.oliveL,dur:"",blocks:[{id:"mov",label:"Movilidad 5 min",detail:MOV_FULL},{id:"act",label:"Activación",detail:ACT},{id:"x",label:"Compromised run",detail:W.mie}]};
-    if(dow===4)return{name:"CAMINATA ACTIVA",emoji:"🚶",color:C.green,dur:"30 min",blocks:[{id:"x",label:"Caminata activa",detail:"Caminata activa 30 min · descomprimir"}]};
-    if(dow===5){const isCirc=W.vie.length>=8;const b=[{id:"mov",label:"Movilidad 5 min",detail:MOV_FULL},{id:"act",label:"Activación",detail:ACT},...rowsToBlocks(W.vie,"e")];return{name:isCirc?"CIRCUITO HYROX COMPLETO":"ESTACIONES",emoji:"🔥",color:C.red,dur:isCirc?"50-65 min":"35-45 min",blocks:b};}
-    if(dow===6)return restSession();
-    if(dow===0)return runSession(W.dom);
-    return restSession();
+  // mode:"text": semanas de carrera/recuperación con días personalizados.
+  // Domingo = evento de carrera. Resto de días: cada ítem separado por · es un bloque con checkbox propio.
+  if(W.mode==="text"){
+    const d=W.days[dow];if(!d)return restSession();
+    const items=d.d.split(/\s*·\s*/).map(function(s){return s.trim();}).filter(Boolean);
+    const blocks=items.length>1
+      ?items.map(function(item,i){return{id:"x"+i,label:item,detail:""};})
+      :[{id:"x",label:d.n,detail:d.d}];
+    return{name:d.n.toUpperCase(),emoji:d.e,color:d.c,dur:"",blocks:blocks};
   }
   if(dow===1){
-    if(W.lun&&W.lun.includes("sin comba"))
-      return{name:"MOVILIDAD",emoji:"🧘",color:C.green,dur:"15 min",
-             blocks:[{id:"mov",label:"Movilidad dinámica",detail:W.lun}]};
+    if(!W.lun)return restSession();
+    if(W.lun.includes("sin comba")||W.lun.toLowerCase().includes("caminata"))
+      return{name:"MOVILIDAD / CAMINATA",emoji:"🚶",color:C.green,dur:"20-30 min",
+             blocks:[{id:"mov",label:"Recuperación activa",detail:W.lun}]};
     return lunJueSession(W.lun,"lun",W.t);
   }
   if(dow===4){
-    if(W.jue&&W.jue.includes("sin comba"))
-      return{name:"MOVILIDAD",emoji:"🧘",color:C.green,dur:"15 min",
-             blocks:[{id:"mov",label:"Movilidad dinámica",detail:W.jue}]};
+    if(!W.jue)return{name:"MOVILIDAD / CAMINATA",emoji:"🚶",color:C.green,dur:"20-30 min",
+             blocks:[{id:"mov",label:"Recuperación activa",detail:"Caminata activa 30 min · foam roller · movilidad ligera"}]};
+    if(W.jue.includes("sin comba")||W.jue.toLowerCase().includes("caminata"))
+      return{name:"MOVILIDAD / CAMINATA",emoji:"🚶",color:C.green,dur:"20-30 min",
+             blocks:[{id:"mov",label:"Recuperación activa",detail:W.jue}]};
     return lunJueSession(W.jue,"jue",W.t);
   }
   if(dow===6)return restSession();
   if(dow===0){if(W.domRace)return{name:W.domRace.name,emoji:W.domRace.emoji,color:W.domRace.color,dur:"",blocks:[{id:"race",label:W.domRace.name,detail:W.domRace.detail}]};return runSession(W.dom);}
-  if(dow===2){const b=[{id:"mov",label:"Movilidad 5 min",detail:MOV_LEG},{id:"act",label:"Activación",detail:ACT},...rowsToBlocks(W.mar,"e")];if(W.marNote)b.push({id:"note",label:"⏱ Tope de sesión",detail:W.marNote});if(W.amrap)b.push({id:"amrap",label:"AMRAP",detail:W.amrap});return{name:"PIERNAS Y GLÚTEOS",emoji:"🦵",color:C.red,dur:(W.t==="descarga"||W.t==="taper")?"45-60 min":"70-85 min",blocks:b};}
-  if(dow===3){const b=[{id:"mov",label:"Movilidad 5 min",detail:W.mieIsRun?MOV_FULL:MOV_UP},{id:"act",label:"Activación",detail:W.mieIsRun?ACT:ACT_UP},...rowsToBlocks(W.mie,"e")];if(W.run)b.push({id:"run",label:W.mieIsRun?"Activación running":"Carrera",detail:W.run});return{name:W.mieIsRun?"ACTIVACIÓN RUNNING":"TREN SUPERIOR + CARRERA",emoji:"💪",color:C.oliveL,dur:"60-75 min",blocks:b};}
-  if(dow===5){const b=[{id:"mov",label:"Movilidad 5 min",detail:MOV_FULL},{id:"act",label:"Activación",detail:ACT},...rowsToBlocks(W.vie,"e")];if(W.vieNote)b.push({id:"note",label:"⏱ Tope de sesión",detail:W.vieNote});if(W.fin)b.push({id:"fin",label:"Finisher",detail:W.fin});return{name:W.fin?"TODO EL CUERPO + FINISHER":"TODO EL CUERPO",emoji:"🔥",color:C.red,dur:W.t==="taper"?"45-55 min":"65-80 min",blocks:b};}
+  if(dow===2){if(!W.mar)return restSession();const b=[{id:"mov",label:"Movilidad 5 min",detail:MOV_LEG},{id:"act",label:"Activación",detail:ACT},...rowsToBlocks(W.mar,"e")];if(W.marNote)b.push({id:"note",label:"⏱ Tope de sesión",detail:W.marNote});if(W.amrap)b.push({id:"amrap",label:"AMRAP",detail:W.amrap});return{name:"PIERNAS Y GLÚTEOS",emoji:"🦵",color:C.red,dur:(W.t==="descarga"||W.t==="taper")?"45-60 min":"70-85 min",blocks:b};}
+  if(dow===3){
+    const mieIsRun=!!W.mieIsRun;
+    const mieSrc=W.mie;
+    const mieBlocks=Array.isArray(mieSrc)?rowsToBlocks(mieSrc,"e"):(mieSrc?[{id:"e0",label:mieIsRun?"Activación running":"Estaciones / Carrera",detail:mieSrc}]:[]);
+    const b=[{id:"mov",label:"Movilidad 5 min",detail:mieIsRun?MOV_FULL:MOV_UP},{id:"act",label:"Activación",detail:mieIsRun?ACT:ACT_UP},...mieBlocks];
+    if(W.run)b.push({id:"run",label:mieIsRun?"Activación running":"Carrera",detail:W.run});
+    return{name:mieIsRun?"ACTIVACIÓN RUNNING":"TREN SUPERIOR + CARRERA",emoji:"💪",color:C.oliveL,dur:"60-75 min",blocks:b};
+  }
+  if(dow===5){if(!W.vie)return restSession();const b=[{id:"mov",label:"Movilidad 5 min",detail:MOV_FULL},{id:"act",label:"Activación",detail:ACT},...rowsToBlocks(W.vie,"e")];if(W.vieNote)b.push({id:"note",label:"⏱ Tope de sesión",detail:W.vieNote});if(W.fin)b.push({id:"fin",label:"Finisher",detail:W.fin});return{name:W.fin?"TODO EL CUERPO + FINISHER":"TODO EL CUERPO",emoji:"🔥",color:C.red,dur:W.t==="taper"?"45-55 min":"65-80 min",blocks:b};}
   return restSession();
 }
 const KEYS={checks:"ll_v6_checks",notes:"ll_v6_notes",supps:"ll_v6_supps"};
@@ -635,7 +652,7 @@ function renderMetas(){
 }
 function suppDateKey(){
   const d=new Date();d.setDate(d.getDate()+STATE.suppOffset);
-  return d.toISOString().slice(0,10);
+  return dateKey(d);
 }
 function switchSuppDay(delta){
   STATE.suppOffset=Math.min(0,Math.max(-6,STATE.suppOffset+delta));
