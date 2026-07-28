@@ -325,7 +325,7 @@ const WEEKS={
    jue:"Caminata 30 min + movilidad 15 min · sin comba",
    mar:[["Sentadilla barra","2×8","40kg · RPE 5-6","Desc 90s · activar, no entrenar"],["Peso muerto convencional","2×8","50kg · RPE 5-6","Desc 2min · espalda recta, cero prisa"]],
    amrap:null,
-   mie:[["Press banca barra","2×8","45kg · RPE 6","Desc 90s · el tren superior aguanta más que las piernas"],["Jalón agarre neutro","2×10","polea alta · RPE 6","Suave"],["Elevación lateral manc","2×12","2×5kg · RPE 6","Control"]],
+   mie:[["Press banca barra","2×8","45kg · RPE 6","Desc 90s · el tren superior aguanta más que las piernas"],["Press hombros manc agarre neutro","2×10","2×5kg · RPE 6","Palmas enfrentadas · muy suave · el jalón se movió al viernes para no mezclar tracción en un día de empuje"],["Elevación lateral manc","2×12","2×5kg · RPE 6","Control"]],
    run:"Trote 25-30 min · Zona 1 · FC <140 · ~7:00-7:45/km · conversacional · si el cuerpo dice caminata, es caminata",
    mieIsRun:false,
    vie:[["Remo barra","2×8","35kg · RPE 6","Desc 90s · patrón tracción horizontal, suave"],["Jalón TRX","2×10","TRX · RPE 6","Espalda recta"],["Curl bíceps barra","2×10","20kg · RPE 6","Ligero"]],
@@ -643,7 +643,7 @@ function getSession(week,dow){
   if(dow===2){if(!W.mar)return restSession();const b=[{id:"mov",label:"Movilidad 5 min",detail:MOV_LEG},{id:"act",label:"Activación",detail:ACT},...rowsToBlocks(W.mar,"e")];if(W.marNote)b.push({id:"note",label:"⏱ Tope de sesión",detail:W.marNote});if(W.amrap)b.push({id:"amrap",label:"AMRAP",detail:W.amrap});return{name:"PIERNAS Y GLÚTEOS",emoji:"🦵",color:C.red,dur:(W.t==="descarga"||W.t==="taper")?"45-60 min":"70-85 min",blocks:b};}
   if(dow===3){
     const mieIsRun=!!W.mieIsRun;
-    const isPP=week>=15&&week<=19;
+    const isPP=week>=16&&week<=19;
     const mieSrc=W.mie;
     const mieIsStr=!Array.isArray(mieSrc)&&typeof mieSrc==="string"&&mieSrc.length>0;
     const mieBlocks=Array.isArray(mieSrc)?rowsToBlocks(mieSrc,"e"):(mieSrc?[{id:"e0",label:mieIsRun?"Activación running":"Estaciones / Carrera",detail:mieSrc}]:[]);
@@ -655,7 +655,7 @@ function getSession(week,dow){
   }
   if(dow===5){
     if(!W.vie)return restSession();
-    const isPP=week>=15&&week<=19;
+    const isPP=week>=16&&week<=19;
     const movVie=isPP?MOV_UP:MOV_FULL;
     const actVie=isPP?ACT_UP:ACT;
     const b=[{id:"mov",label:"Movilidad 5 min",detail:movVie},{id:"act",label:"Activación",detail:actVie},...rowsToBlocks(W.vie,"e")];
