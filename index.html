@@ -137,9 +137,9 @@ function parseLocalDate(s){return new Date(s+"T00:00:00");}
 const PLAN_START=new Date("2026-05-18T00:00:00");
 const PLAN_WEEKS=26;
 const RACES=[
- {name:"Golden Run 21K", date:"2026-08-02", emoji:"🥇", color:C.sand,   tag:"Carrera B"},
- {name:"21K Santiago",   date:"2026-08-30", emoji:"🏃", color:C.oliveL, tag:"Carrera A — principal"},
- {name:"HYROX Amateur",  date:"2026-10-25", emoji:"⚡", color:C.red,    tag:"Carrera A"},
+ {name:"Golden Run 21K", date:"2026-08-02", emoji:"🥇", color:C.sand,   tag:"Carrera B — rodaje con dorsal"},
+ {name:"21K Santiago",   date:"2026-08-30", emoji:"🏃", color:C.oliveL, tag:"Carrera A — terminar bien"},
+ {name:"Hybrid Race",    date:"2026-10-25", emoji:"⚡", color:C.red,    tag:"Carrera A — Amateur Hombre"},
 ];
 const ACT="Comba 30s + Goblet KB16 ×8 — 2 series";
 const ACT_UP="Flexiones ×10 + Band pull-apart ×15 — 2 series";
@@ -257,106 +257,159 @@ const WEEKS={
    vie:[["Peso muerto convencional","3×5","67kg","Desc 2min"],["Press banca barra","3×6","47kg","Desc 90s"],["Remo barra + Búlgara manc","3×8 + 3×8 c/l","40kg + 2×5kg","-30%"],["Farmers carry","2 series × 5 vueltas 10m","Manc 15kg c/u"],["Wall balls slam ball","3×15","6kg","Sentadilla + overhead"]],
    fin:"3 rondas SUAVE (desc 90s) · 8 swings KB16 · 8 wall balls 6kg · 8 burpees · 30seg comba · sin presión (descarga)",
    domRace:{name:"GOLDEN RUN 21K",emoji:"🥇",color:C.sand,detail:"CARRERA B · ritmo controlado ~6:00-6:15/km · FC 150-165 (no vaciarse) — preparación para el A del 30 ago · gel km 8 y km 15"}},
- 15:{t:"taper",lbl:"Taper HM 1",note:"Taper -20% · Llegar fresco al 21K · Evidencia (Wang et al. 2023): la estrategia óptima reduce volumen 41-60% MANTENIENDO intensidad y frecuencia sin cambiarlas · Fuerza siempre antes del running en el mismo día (Feng et al. 2026) · La comba como calentamiento mejora RSI y rendimiento en carrera (García-Pinillos et al. 2020)",mode:"std",
-   lun:"5 min muy suave básico + alternado · mantener patrón, sin esfuerzo",
-   jue:"5 min muy suave básico + alternado",
-   mar:[["Sentadilla barra","3×5","55kg","Desc 90s"],["Peso muerto convencional","3×4","72kg","Desc 2min"],["Zancadas barra + Ext. cuádriceps","3×8 c/l + 3×15","37kg + ext. cuádriceps por RPE","Sin pausa"],["Step-ups manc","3×8 c/l","2×10kg"],["Búlgara split manc","3×8 c/l","2×10kg"],["Farmers carry","3 series × 5 vueltas 10m","Manc 15kg c/u"]],
-   amrap:"10 sentadillas · 8 step-ups · 8 swings KB16 · 10seg plancha · 6 min · RPE 6 · taper: volumen -33% vs pico · no al límite",
-   mie:[["Press banca barra","3×5","52kg · RPE 7-8","Desc 90s · patrón empuje horizontal · fuerza ANTES del running"],["Press Arnold manc","3×10","2×10kg · RPE 7","Patrón empuje vertical · rotación de palmas al subir"],["Press inclinado manc","3×10","2×10kg · RPE 7","Banco ~30° · patrón empuje horizontal variante · pectoral superior + deltoides anterior"],["Elevación lateral manc","3×12","2×5kg · RPE 7","Pausa 1s arriba · sin balanceo"],["Ext. tríceps con cuerda","3×12","polea alta · RPE 7","Codo fijo · abrir la cuerda al final · aislamiento tríceps"]],
-   run:"Tempo trotadora · 5' + 18' + 5' · 8.5 km/h (~7:05/km) · Zona 2 · FC 145-155 · intensidad se mantiene aunque el volumen baje (taper evidence)",
-   vie:[["Remo barra","3×8","45kg · RPE 7-8","Desc 90s · patrón tracción horizontal primario · espalda paralela"],["Jalón agarre neutro cerrado","3×8","polea alta · RPE 7-8","Patrón tracción vertical · codos pegados al cuerpo al bajar · tensión escapular"],["Face pull polea alta","3×15","polea alta · RPE 7","Patrón tracción horizontal · codos arriba · tirar a la cara · pausa 1s · salud hombro + manguito rotador"],["Remo KB unilateral","3×10 c/l","KB16 · RPE 7","Brazo libre sobre rodilla · espalda paralela · pausa en contracción · progresión bilateral→unilateral (NSCA)"],["Curl bíceps barra","3×8","27kg · RPE 7","Sin pausa → curl manc alternado"],["Curl manc alternado","3×8 c/l","10kg · RPE 7","Supinación al subir · nuevo peso · control excéntrico"],["Farmers carry","3 series × 5 vueltas 10m","Manc 15kg c/u · RPE 7","Espalda recta · core activo · carga funcional"]],
-   fin:"3 rondas suave (desc 90s) · 8 swings KB16 · 8 wall balls 6kg · 8 burpees · 30seg comba · RPE 6 · taper: no al máximo",
-   dom:"Rodaje 75 min · Zona 1 (FC 130-145 · conversacional) · ritmo ref ~6:35-7:05/km · no perseguir el ritmo · gel a los 45 min · modelo polarizado: los rodajes largos son siempre Zona 1"},
- 16:{t:"taper",lbl:"Taper HM 2",note:"Taper -30% · Ya no construimos nada · Solo mantener señal neuromuscular · Clave (Wang et al. 2023): los intervalos del miércoles se mantienen intensos — solo menos series · Fuerza ANTES del running (Feng et al. 2026)",mode:"std",
-   lun:"5 min muy suave básico + alternado",
-   jue:"5 min muy suave básico + alternado",
-   mar:[["Sentadilla barra","3×4","47kg · RPE 7","Desc 90s · misma intensidad que semana pasada"],["Peso muerto convencional","2×4","62kg · RPE 7","Desc 2min · taper: bajar series, NO el peso"],["Zancadas barra + Ext. cuádriceps","3×6 c/l + 2×15","35kg + ext. cuádriceps por RPE","Sin pausa"],["Step-ups manc","2×8 c/l","2×10kg · RPE 7","Control de descenso"],["Búlgara split manc","2×6 c/l","2×10kg · RPE 7","Reducir reps vs S15 · patrón unilateral"]],
+
+ 15:{t:"normal",lbl:"Reintro post-Golden",note:"Semana de reintroducción, NO es taper. Aquí sí se bajan los kilos, y el motivo es otro: acabas de correr 21K el domingo. La regla de 'no bajar el peso' de la sección 9 aplica al taper (llegar fresco a una carrera), no a la recuperación (reparar tejido después de una). Son dos cosas distintas y el plan anterior las mezclaba. · Rol 3: el lunes no hay impacto.",mode:"std",
+   lun:"Sin comba esta semana — movilidad 15 min + foam roller piernas · es el día después del 21K, cero impacto",
+   jue:"3 min básico suave, cortado en series de 45s · volver a sentir el patrón, sin buscar continuidad",
+   mar:[["Sentadilla barra","3×6","52kg · RPE 6-7","Desc 90s · muy por debajo de tu 62 — la pierna viene de 21km"],["Peso muerto convencional","3×5","70kg · RPE 6-7","Desc 2min · técnica, no carga"],["Zancadas barra","3×8 c/l","35kg · RPE 6","Control en la bajada · sin buscar profundidad máxima"],["Step-ups manc","3×8 c/l","2×10kg · RPE 6","Subida controlada · bajada lenta"],["Farmers carry","2 series × 5 vueltas 10m","Manc 15kg c/u","Agarre y postura, sin fatiga"]],
    amrap:null,
-   mie:[["Press banca barra","2×5","47kg","Desc 90s · patrón empuje horizontal · -30% taper"],["Press Arnold manc","2×10","2×10kg","Patrón empuje vertical · rotación de palmas al subir · taper"],["Flexiones con pausa","2×AMRAP","peso corporal","Patrón empuje horizontal bodyweight · baja 2s · pausa 1s en el fondo · mínimo 8 reps limpias · codos a 45°"],["Ext. tríceps con cuerda","2×12","polea alta · RPE 7","Codo fijo · aislamiento tríceps · taper"]],
-   run:"3 series × 1 km · 5:30-5:40/km · desc 90s · Zona 3 · FC 155-165 · modelo polarizado: sesiones de calidad se mantienen intensas aunque el volumen total baje",
-   vie:[["Remo barra","2×8","40kg · RPE 7","Desc 90s · patrón tracción horizontal primario · taper -30%"],["Jalón agarre ancho pronado","2×8","polea alta · RPE 7-8","Patrón tracción vertical · retraer escápulas al bajar"],["Face pull polea alta","2×15","polea alta · RPE 7","Patrón tracción horizontal · codos arriba · tirar a la cara · pausa 1s · salud hombro"],["Curl bíceps barra","2×8","25kg · RPE 7","Sin pausa → curl manc · aislamiento bíceps"],["Curl manc alternado","2×8 c/l","10kg · RPE 7","Supinación al subir · control excéntrico · taper"],["Farmers carry","2 series × 5 vueltas 10m","Manc 15kg c/u","Volumen reducido · taper · carga funcional"]],
+   mie:[["Press banca barra","3×6","52kg · RPE 7","Desc 90s · el tren superior no corrió el domingo, puede trabajar normal"],["Jalón agarre neutro","3×10","polea alta · RPE 7","Patrón tracción vertical"],["Press Arnold manc","3×10","2×10kg · RPE 7","Patrón empuje vertical · rotación de palmas al subir"],["Face pull polea alta","3×15","polea alta · RPE 7","Codos arriba · pausa 1s · salud de hombro"],["Curl bíceps barra","3×10","22kg · RPE 7","Sin balanceo"]],
+   run:"Trote suave 30 min · Zona 1 · FC <145 · ~7:00-7:30/km · si algo molesta, caminas y no pasa nada",
+   vie:[["Remo barra","3×8","40kg · RPE 7","Desc 90s · patrón tracción horizontal"],["Peso muerto convencional","2×5","70kg · RPE 6","Segunda dosis ligera de bisagra"],["Press banca barra","2×6","52kg · RPE 7","Desc 90s"],["Remo KB unilateral","3×10 c/l","KB16 · RPE 7","Brazo libre sobre la rodilla · espalda paralela"],["Wall balls slam ball","3×15","6kg","Sentadilla completa + empuje overhead · mantener el patrón vivo"]],
    fin:null,
-   dom:"Rodaje 58 min · Zona 1 (FC 130-145 · conversacional) · ritmo ref ~6:35-7:05/km · no perseguir ritmo · modelo polarizado: rodaje largo = siempre Zona 1"},
- 17:{t:"taper",lbl:"Taper HM 3",note:"Carga mínima · Las piernas llegan frescas al domingo · Taper completo ≥50% reducción · Evidencia (Wang et al. 2023): taper progresivo de ≤21 días con reducción 41-60% del volumen es la estrategia más efectiva para atletas de resistencia · Solo activación neural, no acumular fatiga",mode:"std",
-   lun:"Solo movilidad dinámica 15 min · sin comba esta semana",
-   jue:"Solo movilidad dinámica 15 min · sin comba",
-   mar:[["Movilidad","10 min","—","Sin activación intensa"],["Sentadilla barra","2×4","42kg","Desc 90s"],["Peso muerto convencional","2×4","55kg","Desc 2min"],["Remo barra","2×8","37kg","Solo mantener patrón"]],
-   marNote:"MÁX 35 MIN TOTAL — salir si ya pasaste 35 min",
+   dom:"Rodaje 60 min · Zona 1-2 · FC 135-150 · ~6:45-7:05/km · primera vuelta al rodaje largo, sin ambición"},
+
+ 16:{t:"pico",lbl:"Calidad HM",note:"LA semana de entrenamiento real antes del 21K de Santiago. Entre Golden Run (2 ago) y Santiago (30 ago) hay 4 semanas: una de reintroducción, una de calidad y dos de taper. Esta es la única donde se construye algo. · Referencia de volumen del bloque: 55 series de fuerza y 125 min de carrera. Todo el taper se calcula contra esta semana.",mode:"std",
+   lun:"6 min continuos · básico 2min → alternado 2min → básico 2min · si cortas, retomas y sigues",
+   jue:"5 min continuos + 3× (30s a ritmo rápido, desc 30s) · el ritmo rápido es el estímulo, no la duración",
+   mar:[["Sentadilla barra","4×5","62kg · RPE 7-8","Desc 90s · vuelves a tu carga de pico"],["Peso muerto convencional","3×4","85kg · RPE 8","Desc 2min · a un escalón del máximo armable de la barra (87kg)"],["Zancadas barra + Ext. cuádriceps","3×10 c/l + 3×15","45kg + ext. cuádriceps por RPE 7","Sin pausa entre los dos"],["Step-ups manc","3×10 c/l","2×15kg · RPE 7","Controlar la bajada"],["Búlgara split manc","3×10 c/l","2×15kg · RPE 7-8","Patrón unilateral · rodilla alineada con el pie"],["Farmers carry","3 series × 5 vueltas 10m","Manc 15kg c/u · RPE 7","Espalda recta · core activo"]],
+   amrap:"10 sentadillas · 8 step-ups · 8 swings KB16 · 20s plancha · 8 min · meta 8+ rondas",
+   mie:[["Press banca barra","3×5","60kg · RPE 7-8","Desc 90s · fuerza SIEMPRE antes del running en el mismo día"],["Press Arnold manc","3×10","2×10kg · RPE 7","Patrón empuje vertical"],["Press inclinado manc","3×10","2×10kg · RPE 7","Banco ~30° · pectoral superior + deltoides anterior"],["Elevación lateral manc","3×12","2×5kg · RPE 7","Pausa 1s arriba · sin balanceo"],["Ext. tríceps con cuerda","3×12","polea alta · RPE 7","Codo fijo · abrir la cuerda al final"]],
+   run:"6 series × 1 km · 5:20-5:30/km · desc 90s · FC 155-168 · esta es la sesión de calidad de la semana",
+   vie:[["Remo barra","3×8","47kg · RPE 7-8","Desc 90s · patrón tracción horizontal primario"],["Jalón agarre neutro cerrado","3×8","polea alta · RPE 7-8","Codos pegados al cuerpo al bajar"],["Face pull polea alta","3×15","polea alta · RPE 7","Codos arriba · pausa 1s"],["Remo KB unilateral","3×10 c/l","KB16 · RPE 7","Pausa en contracción"],["Curl bíceps barra","3×8","27kg · RPE 7-8","Sin pausa → curl manc alternado"],["Curl manc alternado","3×8 c/l","10kg · RPE 7","Supinación al subir · control excéntrico"],["Farmers carry","3 series × 5 vueltas 10m","Manc 15kg c/u · RPE 7","Carga funcional"]],
+   fin:"4 rondas (desc 60s): 10 wall balls 6kg · 8 burpees · 45s comba",
+   dom:"Rodaje largo 80 min · Zona 1-2 · FC 135-152 · ~6:35-7:05/km · gel a los 45 min · el rodaje manda por pulso, el ritmo es referencia"},
+
+ 17:{t:"taper",lbl:"Taper HM 1",note:"Empieza el taper de 14 días hacia el 30 ago. Volumen -42% (32 series vs 55 de S16 · 73 min de carrera vs 125). LOS KILOS SON IDÉNTICOS A S16: sentadilla 62, peso muerto 85, banca 60, remo 47. Lo que baja son series y reps. · Evidencia: meta-análisis de tapering (PLOS One 2023) — reducir el volumen 41-60% manteniendo intensidad y frecuencia; reducir la intensidad NO mejora el rendimiento. Esto corrige el error de la versión anterior, que te bajaba la sentadilla de 62 a 47 kg.",mode:"std",
+   lun:"4 min continuos + 30s de doble contacto al final · complejidad se mantiene, duración baja",
+   jue:"3 min continuos suaves · solo mantener el patrón",
+   mar:[["Sentadilla barra","3×5","62kg · RPE 7-8","Desc 90s · MISMO PESO que S16 · lo que baja es la serie que falta"],["Peso muerto convencional","2×4","85kg · RPE 8","Desc 2min · MISMO PESO · de 3 series a 2"],["Zancadas barra","2×8 c/l","45kg · RPE 7","Mismo peso, menos reps"],["Step-ups manc","2×8 c/l","2×15kg · RPE 7","Mismas mancuernas"],["Búlgara split manc","2×8 c/l","2×15kg · RPE 7","Mismas mancuernas"],["Farmers carry","2 series × 5 vueltas 10m","Manc 15kg c/u · RPE 7","Misma carga · una serie menos"]],
    amrap:null,
-   mie:[["Trote suave","8 min","~7:30-8:00/km · FC <140","Calentar sin cansar"],["Ritmo Z1-Z2","8 min","FC 120-140 · ~7:00-7:45/km","—"],["5 strides","15s @85% + 45s caminata","—","Activar las piernas"],["Caminata","5 min","—","Enfriar"]],
-   mieIsRun:true,run:null,
-   vie:[["Movilidad","10 min","—","Activar sin cansar"],["Goblet squat KB16","2×6","KB16","Solo movimiento · activar piernas"],["Remo KB16","2×10","KB16","Unilateral · espalda paralela al suelo"],["Jalón TRX / banda","2×10","TRX o banda · RPE 6","Activar espalda · sin forzar"]],
+   mie:[["Press banca barra","3×5","60kg · RPE 7-8","Desc 90s · MISMO PESO que S16"],["Press Arnold manc","2×10","2×10kg · RPE 7","Mismas mancuernas"],["Press inclinado manc","2×10","2×10kg · RPE 7","Mismas mancuernas"],["Elevación lateral manc","2×12","2×5kg · RPE 7","Pausa 1s arriba"]],
+   run:"3 series × 1 km · 5:20-5:30/km · desc 2 min · FC 155-168 · MISMO RITMO que S16, una serie menos de la mitad: la intensidad es lo último que se toca",
+   vie:[["Remo barra","3×8","47kg · RPE 7-8","Desc 90s · MISMO PESO que S16"],["Jalón agarre neutro cerrado","2×8","polea alta · RPE 7-8","Misma resistencia"],["Face pull polea alta","2×15","polea alta · RPE 7","Salud de hombro"],["Curl bíceps barra","2×8","27kg · RPE 7","Mismo peso"],["Farmers carry","1 serie × 5 vueltas 10m","Manc 15kg c/u · RPE 7","Misma carga · una sola serie"]],
+   fin:null,
+   dom:"Rodaje 45 min · Zona 1-2 · FC 135-150 · ~6:40-7:05/km · sin gel, sin ambición"},
+
+ 18:{t:"carrera",lbl:"21K Santiago",note:"Semana de carrera. Volumen mínimo (13 series). Los kilos siguen siendo los mismos de S16 — solo quedan 2 series de cada cosa. La media del bloque de taper (S17+S18) da 22,5 series = -59% sobre S16, dentro de la banda 41-60% de la sección 9. · OBJETIVO ACTUALIZADO: terminar bien, no marca. La versión anterior decía 'Meta PR ~5:00-5:10/km', que contradecía tu sección 1.",mode:"std",
+   lun:"2 min muy suave, básico · solo despertar los tobillos · nada explosivo",
+   jue:"2 min muy suave · último contacto con la comba antes del domingo",
+   mar:[["Sentadilla barra","2×4","62kg · RPE 7","Desc 90s · MISMO PESO · solo recordarle el patrón al sistema nervioso"],["Peso muerto convencional","2×3","85kg · RPE 7","Desc 2min · MISMO PESO · técnica perfecta, cero fatiga"],["Step-ups manc","2×6 c/l","2×15kg · RPE 6","Control · sin buscar nada"]],
+   marNote:"MÁX 30 MIN TOTAL — si pasaste los 30 min, te vas",
+   amrap:null,
+   mie:[],mieIsRun:true,
+   run:"8' trote suave ~7:15-7:40/km FC <140 · 8' a ritmo objetivo de carrera ~5:25/km · 4 strides 15s @85% (45s caminata) · 5' caminata",
+   vie:[["Remo barra","2×6","47kg · RPE 6-7","Desc 90s · MISMO PESO · mantener el patrón de tracción"],["Jalón agarre neutro","2×8","polea alta · RPE 6","Suave"],["Face pull polea alta","2×12","polea alta · RPE 6","Hombros listos para el domingo"],["Farmers carry","1 serie × 5 vueltas 10m","Manc 15kg c/u · RPE 6","Una sola serie · activación"]],
    vieNote:"MÁX 30 MIN TOTAL",fin:null,
-   dom:"Rodaje suave 45 min · Zona 1 (FC 130-140 · conversacional · modelo polarizado) · ritmo ref ~6:40-7:10/km · no perseguir ritmo · conservar energía para el domingo"},
- 18:{t:"carrera",lbl:"Carrera HM",note:"Semana de la Media Maratón Santiago — carrera A principal. Carga mínima: el domingo es la carrera.",mode:"std",
-   lun:"3 min muy suave básico · sin explosivos · llega fresco",
-   jue:"3 min muy suave básico · sin explosivos · conservar energía",
-   mar:[["Sentadilla barra","2×4","42kg","Desc 90s · solo activar patrón"],["Peso muerto convencional","2×4","55kg","Desc 2min · técnica sin fatiga"]],
+   dom:"",
+   domRace:{name:"21K SANTIAGO",emoji:"🏃",color:C.oliveL,detail:"CARRERA A · OBJETIVO: TERMINAR BIEN, no marca (sección 1) · km 1-5 a ~5:35/km aunque te sobren piernas — te van a sobrar, es la trampa · km 5-16 a ~5:25/km · km 16-21 lo que quede, y si hay, aprietas · llegada estimada 1:52-1:57, cómodo bajo tus 2:00 · gel km 8 y km 15 · agua en todos los puestos · FC de referencia 155-168, si pasas de 172 antes del km 15 estás corriendo la carrera de otro · tu PB de 1:39 no se defiende hoy, se disfruta el domingo"}},
+
+/* ==========================================================================
+   BLOQUE HYBRID RACE (25 oct) — CATEGORÍA AMATEUR HOMBRE
+   --------------------------------------------------------------------------
+   Parámetros oficiales confirmados en el reglamento 2026 (tabla de la pág. 4):
+     Sled Drag 70kg 2×25m · SkiErg 1000m · Sled Push 100kg 2×25m
+     Burpees Broad Jump 80m · Corebag Lunges 20kg 100m · Row 1000m
+     Farmer Carry 2×24kg 200m · Wall Balls 100 reps 6kg a 2,70m
+   El detalle que decide la categoría: las wall balls Amateur son de 6 kg, que
+   es EXACTAMENTE tu slam ball. En Pro son 9 kg y no tienes forma de replicarlo.
+   La estación de más repeticiones de toda la carrera pasa de "no entrenable" a
+   "entrenable con la carga exacta". (Rol 1 + sección 4)
+
+   Sección 6 respetada: los patrones se entrenan por separado mar/mié y el
+   formato de estaciones encadenadas existe UN solo día, el viernes.
+   ========================================================================== */
+
+ 19:{t:"recuperacion",lbl:"Recuperación post-21K",note:"Acabas de correr un 21K. Esta semana no hay nada que demostrar. Sin pliometría (nivel 0): el tejido está reparando y meter impacto aquí es el error clásico. · Rol 3 manda sobre cualquier otra consideración esta semana.",mode:"std",
+   lun:"Caminata 25-30 min + foam roller piernas · sin comba",
+   jue:"Caminata 30 min + movilidad 15 min · sin comba",
+   mar:[["Sentadilla barra","2×8","40kg · RPE 5-6","Desc 90s · activar, no entrenar"],["Peso muerto convencional","2×8","50kg · RPE 5-6","Desc 2min · espalda recta, cero prisa"]],
+   amrap:null,
+   mie:[["Press banca barra","2×8","45kg · RPE 6","Desc 90s · el tren superior aguanta más que las piernas"],["Jalón agarre neutro","2×10","polea alta · RPE 6","Suave"],["Elevación lateral manc","2×12","2×5kg · RPE 6","Control"]],
+   run:"Trote 25-30 min · Zona 1 · FC <140 · ~7:00-7:45/km · conversacional · si el cuerpo dice caminata, es caminata",
+   mieIsRun:false,
+   vie:[["Remo barra","2×8","35kg · RPE 6","Desc 90s · patrón tracción horizontal, suave"],["Jalón TRX","2×10","TRX · RPE 6","Espalda recta"],["Curl bíceps barra","2×10","20kg · RPE 6","Ligero"]],
+   fin:null,
+   dom:"Trote 30-40 min · Zona 1 · FC <140 · ~7:00-7:45/km · si te sientes bien adelante, si no caminas · las dos son válidas"},
+
+ 20:{t:"normal",lbl:"Hybrid 1 · Patrones",note:"Arranca el bloque hacia la Hybrid Race del 25 oct. Sección 6: los patrones se entrenan por separado toda la semana y las estaciones encadenadas aparecen SOLO el viernes. · CAMBIO DE CRITERIO: SkiErg y Row ya no se prescriben por repeticiones sino por TIEMPO y RPE. Es el criterio de sustitución que usan los coaches de HYROX (RMR): 1000 m de SkiErg o de Row equivalen a 4-5 min a RPE 7, y lo que hay que igualar es el tiempo y el esfuerzo, no la unidad. Prescribirlo en reps era invento mío.",mode:"std",
+   lun:"5 min continuos · básico 2min → alternado 2min → carrera en el sitio 1min",
+   jue:"4 min continuos + 4× (20s rápido, desc 40s)",
+   mar:[["Sentadilla barra","4×5","62kg · RPE 7","Desc 90s · sin acceso a trineo, subir el suelo de fuerza es el único lever que queda para el sled push"],["Peso muerto convencional","3×4","80kg · RPE 7","Desc 2min · patrón bisagra"],["Zancadas con barra sobre los hombros","3×20 pasos","20kg · RPE 7","= CorebagLunges Amateur (20kg · 100m) · el reglamento admite sujeción SOBRE HOMBROS, así que esto es carga y agarre legales · rodilla trasera TOCA el suelo · extensión completa al terminar"],["Wall balls slam ball","5×20 (100 reps)","6kg · CRONOMETRAR","= carga y repeticiones oficiales EXACTAS de Amateur · cadera POR DEBAJO de la rodilla · anota el tiempo, es tu línea base"],["Farmers carry","3 series × 8 vueltas 10m","Manc 15kg c/u","80m por serie · la carga es el 62% de la oficial, se compensa con distancia"]],
+   amrap:null,
+   mie:[["Jalón recto polea alta (patrón SkiErg)","3 × 3 min · RPE 7","polea alta","1000m SkiErg ≈ 4-5 min a RPE 7 · brazos casi extendidos, tirar de arriba a la cadera · dorsal y tríceps"],["Remo sentado polea baja (patrón Row)","3 × 3 min · RPE 7","polea baja","1000m Row ≈ 4-5 min a RPE 7 · empuje de piernas primero, después el tirón"],["Press banca barra","3×5","57kg · RPE 7","Desc 90s · fuerza general de empuje"],["Sujeción isométrica en barra","3×30s","65kg","AGARRE para el farmer carry · 65kg = 135% de los 48kg oficiales · la ÚNICA estación donde puedes entrenar por encima de la demanda real, así que se explota al máximo"],["Face pull polea alta","3×15","polea alta · RPE 7","Salud de hombro con tanto tirón acumulado"]],
+   run:"Compromised run 35 min: wall balls 2×20 → 1,5 km @6:00/km → farmers 2 series → 1,5 km @6:00/km · FC 150-165 · aprender a correr con las piernas ya cargadas",
+   vie:[["SIMULACRO · 4 rondas","cronometrar total","—","Formato reducido: 800m + estación, cuatro veces"],["Ronda 1 · 800m + Zancadas barra","800m + 20 pasos","20kg","Corebag · réplica legal"],["Ronda 2 · 800m + Jalón recto polea","800m + 3 min RPE 7","polea alta","SkiErg · por tiempo y RPE"],["Ronda 3 · 800m + Burpees broad jump","800m + 20 m","—","Burpee · pecho y muslos al suelo · sin pasos intermedios"],["Ronda 4 · 800m + Wall balls","800m + 30 reps","6kg","Wall Balls · anota el tiempo TOTAL del simulacro"]],
+   fin:null,
+   dom:"Rodaje 60 min · Zona 2 · FC 145-160 · ~6:15-6:35/km · aproximadamente tu ritmo entre estaciones el día de la carrera"},
+
+ 21:{t:"normal",lbl:"Hybrid 2 · Carga",note:"Sube la carga y baja el número de series de las wall balls: 4×25 en vez de 5×20. Mismas 100 repeticiones oficiales, menos pausas. Progresar una estación es reducir las paradas, no añadir repeticiones. · El farmer carry sube distancia: la carga no se puede subir (2×15kg es tu tope) así que la única variable disponible es el metraje.",mode:"std",
+   lun:"6 min continuos · básico → alternado → cruzado 30s → básico",
+   jue:"5 min continuos + 4× (25s rápido, desc 35s)",
+   mar:[["Sentadilla barra","4×5","65kg · RPE 7-8","Desc 90s · progresión más agresiva de lo habitual: tu sentadilla está en 0,74× tu peso y la población HYROX está en 1,0-1,5×"],["Peso muerto convencional","3×4","85kg · RPE 8","Desc 2min · a un escalón del máximo de la barra"],["Zancadas con barra sobre los hombros","3×25 pasos","20kg · RPE 7","Carga oficial Corebag · rodilla trasera al suelo en cada rep"],["Wall balls slam ball","4×25 (100 reps)","6kg · CRONOMETRAR","Menos series, mismas 100 reps · meta: bajar el tiempo de S20"],["Farmers carry","3 series × 10 vueltas 10m","Manc 15kg c/u","100m por serie"],["Burpees broad jump","3×15","— · RPE 7","Estándar de competencia · pecho y muslos al suelo"]],
+   amrap:null,
+   mie:[["Jalón recto polea alta (patrón SkiErg)","3 × 4 min · RPE 7-8","polea alta","Sube a 4 min = duración real de la estación"],["Remo sentado polea baja (patrón Row)","3 × 4 min · RPE 7-8","polea baja","Duración real de la estación"],["Press banca barra","3×5","60kg · RPE 7-8","Desc 90s"],["Sujeción isométrica en barra","3×40s","75kg","156% de la carga oficial de la estación · el fallo en el farmer carry es de agarre, no de piernas"],["Face pull polea alta","3×15","polea alta · RPE 7","Salud de hombro"]],
+   run:"Compromised run 40 min: wall balls 2×25 → 2 km @5:55/km → farmers 2 series + burpees 15 → 2 km @5:55/km · FC 150-165",
+   vie:[["SIMULACRO · 5 rondas","cronometrar total","—","Una ronda más que S20"],["Ronda 1 · 800m + Zancadas barra","800m + 25 pasos","20kg","Corebag"],["Ronda 2 · 800m + Jalón recto polea","800m + 4 min RPE 7-8","polea alta","SkiErg"],["Ronda 3 · 800m + Remo polea baja","800m + 4 min RPE 7-8","polea baja","Row"],["Ronda 4 · 800m + Burpees broad jump","800m + 30 m","—","Burpee Broad Jump"],["Ronda 5 · 800m + Wall balls","800m + 35 reps","6kg","Wall Balls · anota el tiempo TOTAL"]],
+   fin:null,
+   dom:"Rodaje 65 min · Zona 2 · FC 145-160 · ~6:15-6:30/km"},
+
+ 22:{t:"pico",lbl:"Hybrid Pico",note:"Semana de mayor carga del bloque. El peso muerto llega a 87 kg = el MÁXIMO ARMABLE con tus discos. A partir de aquí no puedes añadir peso: se progresa con tempo, pausa abajo o repeticiones. Es una limitación de la sección 4, no una decisión de programación. · Primer simulacro completo de 8 estaciones: los trineos entran como AMRAP alternando cadencia de piernas y bracing, que es el protocolo de sustitución de RMR — no como 'aguantar una polea', que era mi versión anterior.",mode:"std",
+   lun:"7 min continuos · básico → alternado → rodilla alta 30s → intento de dobles 30s → básico",
+   jue:"6 min continuos + 5× (25s rápido, desc 35s)",
+   mar:[["Sentadilla barra","4×5","67kg · RPE 8","Desc 90s · pico del bloque · 0,80× tu peso corporal"],["Peso muerto convencional","3×4","87kg · RPE 8","Desc 2min · MÁXIMO ARMABLE · desde aquí se progresa con tempo o pausa, no con disco"],["Zancadas con barra sobre los hombros","3×30 pasos","20kg · RPE 7-8","Carga oficial Corebag · 100m acumulados por serie"],["Wall balls slam ball","3×34 (102 reps)","6kg · CRONOMETRAR","Solo dos pausas en toda la estación · meta: bajar el tiempo de S21"],["Farmers carry","3 series × 12 vueltas 10m","Manc 15kg c/u","120m por serie"],["Burpees broad jump","3×20","— · RPE 8","Pico de potencia · aterrizaje controlado, rodilla alineada con el pie"]],
+   amrap:null,
+   mie:[["Jalón recto polea alta (patrón SkiErg)","4 × 4 min · RPE 8","polea alta","Continuo · así se siente el 1000m"],["Remo sentado polea baja (patrón Row)","4 × 4 min · RPE 8","polea baja","Continuo"],["Press banca barra","3×5","60kg · RPE 7-8","Desc 90s"],["Sujeción isométrica en barra","3×45s","82kg","171% de la carga oficial y ~98% de tu peso corporal · pico de agarre"],["Face pull polea alta","3×15","polea alta · RPE 7","Salud de hombro"]],
+   run:"Compromised run 45 min: wall balls 34 + zancadas barra 30 pasos → 2 km @5:50/km → farmers 2 series + burpees 20 → 2 km @5:50/km · FC 150-168 · la sesión más específica del plan",
+   vie:[["SIMULACRO COMPLETO · 8 rondas","cronometrar total","—","Formato oficial completo por primera vez. Reserva 75-90 min. Este número es tu predicción de tiempo de carrera"],["Ronda 1 · 800m + Sled Drag (sustituto)","800m + AMRAP 3 min","bici + barra 60kg","Alternar 12 cal bici spinning ↔ 8 peso muerto 60kg · protocolo RMR para 'sin trineo' · añade 2×15 remo de pie en polea baja por el tirón de brazos que exige el reglamento"],["Ronda 2 · 800m + SkiErg (sustituto)","800m + 4 min RPE 7-8","polea alta","Jalón recto continuo · 1000m ski ≈ 4-5 min RPE 7"],["Ronda 3 · 800m + Sled Push (sustituto)","800m + AMRAP 3 min","bici + barra 50kg","Alternar 12 cal bici spinning ↔ 8 sentadilla 50kg · protocolo RMR · NO usar la opción de jump squats/jumping lunges: rodilla izquierda"],["Ronda 4 · 800m + Burpees broad jump","800m + 80 m","—","ESTACIÓN EXACTA · misma distancia oficial"],["Ronda 5 · 800m + Corebag Lunges","800m + 100 m zancadas barra","20kg","ESTACIÓN EXACTA · carga oficial Amateur"],["Ronda 6 · 800m + Row (sustituto)","800m + 4 min RPE 7-8","bici + polea baja","2 min bici spinning alta + 2 min remo polea baja"],["Ronda 7 · 800m + Farmer Carry","800m + 200 m","Manc 15kg c/u","Distancia oficial · 62% de la carga oficial"],["Ronda 8 · 800m + Wall Balls","800m + 100 reps","6kg","ESTACIÓN EXACTA · carga y reps oficiales"]],
+   fin:null,
+   dom:"Rodaje 70 min · Zona 2 · FC 145-160 · ~6:10-6:30/km · gel a los 45 min"},
+
+ 23:{t:"pico",lbl:"Hybrid Último Pico",note:"Última semana fuerte. El peso muerto sigue en 87 kg pero con 2s de pausa abajo: es cómo se progresa cuando la barra ya no admite más disco. · Wall balls a 2×50, una sola pausa. Si cierras esto, las 100 reps del día de la carrera no te van a sorprender. · Evidencia: el meta-análisis de tapering (PLOS One 2023) muestra que el taper precedido de una semana de sobrecarga produce mejoras MAYORES que el taper convencional. Esta semana es ese estímulo.",mode:"std",
+   lun:"8 min continuos con dobles intercalados · 6× (5 dobles, seguir en básico)",
+   jue:"6 min continuos + burpee broad jump 3×8 intercalados entre bloques de comba",
+   mar:[["Sentadilla barra","4×5","67kg · RPE 8","Desc 90s · última semana a esta carga"],["Peso muerto convencional","3×3","87kg · RPE 8 · 2s pausa abajo","Desc 2min · la barra está en su tope: se progresa con la pausa"],["Zancadas con barra sobre los hombros","3×30 pasos","20kg · RPE 8","Carga oficial Corebag"],["Wall balls slam ball","2×50 (100 reps)","6kg · CRONOMETRAR","UNA sola pausa · referencia final antes del taper"],["Farmers carry","3 series × 200 m corridos","Manc 15kg c/u","DISTANCIA OFICIAL de una vez · aquí sabrás si el agarre aguanta"],["Burpees broad jump","2×30","— · RPE 8","Última dosis alta"]],
+   amrap:null,
+   mie:[["Jalón recto polea alta (patrón SkiErg)","3 × 5 min · RPE 8","polea alta","Máxima continuidad · borde superior de la duración real"],["Remo sentado polea baja (patrón Row)","3 × 5 min · RPE 8","polea baja","Máxima continuidad"],["Press banca barra","3×5","60kg · RPE 7-8","Desc 90s"],["Sujeción isométrica en barra","3×45s","82kg","Último bloque de agarre pesado · 171% de la carga oficial"],["Face pull polea alta","3×15","polea alta · RPE 7","Salud de hombro"]],
+   run:"Compromised run 45 min: wall balls 50 → 2 km @5:45/km → farmers 200m + burpees 30 → 2 km @5:45/km · FC 155-168 · último esfuerzo fuerte del plan",
+   vie:[["SIMULACRO COMPLETO · 8 rondas","cronometrar total","—","Segunda y última vez con el formato completo. La diferencia con S22 es tu progreso real"],["Ronda 1 · 800m + Sled Drag (sustituto)","800m + AMRAP 3 min","bici + barra 65kg","12 cal bici ↔ 8 peso muerto 65kg + 2×20 remo de pie polea baja"],["Ronda 2 · 800m + SkiErg (sustituto)","800m + 5 min RPE 8","polea alta","Jalón recto continuo"],["Ronda 3 · 800m + Sled Push (sustituto)","800m + AMRAP 3 min","bici + barra 55kg","12 cal bici ↔ 8 sentadilla 55kg · sin saltos"],["Ronda 4 · 800m + Burpees broad jump","800m + 80 m","—","ESTACIÓN EXACTA"],["Ronda 5 · 800m + Corebag Lunges","800m + 100 m zancadas barra","20kg","ESTACIÓN EXACTA"],["Ronda 6 · 800m + Row (sustituto)","800m + 5 min RPE 8","bici + polea baja","2,5 min bici + 2,5 min remo polea"],["Ronda 7 · 800m + Farmer Carry","800m + 200 m","Manc 15kg c/u","Distancia oficial"],["Ronda 8 · 800m + Wall Balls","800m + 100 reps","6kg","ESTACIÓN EXACTA · este tiempo total es tu objetivo a batir el 25 oct"]],
+   fin:null,
+   dom:"Rodaje 65 min · Zona 2 · FC 145-158 · ~6:15-6:30/km · guardar algo en el tanque"},
+
+ 24:{t:"normal",lbl:"Mantenimiento pre-taper",note:"CAMBIO IMPORTANTE respecto a la versión anterior: esta semana ya NO es taper, es mantenimiento (-22% de volumen). El taper empieza la semana que viene. · Motivo: el consenso específico de HYROX sitúa el taper óptimo en 8-14 días (ENDUROX/Dr. Dan Plews · RMR/Ryan Kent 10-14 días · Rox Lyfe 7-14 días), y el subgrupo de 8-14 días del meta-análisis de tapering (PLOS One 2023) es el que muestra el efecto MAYOR sobre el rendimiento (SMD -1,47 frente a -0,78 del subgrupo de 15-21 días). Los 20 días de taper que tenía el plan eran demasiados. Ahora son 13. · Los kilos no se mueven: sentadilla 67, peso muerto 87, banca 60.",mode:"std",
+   lun:"5 min continuos con 5 dobles intercalados",
+   jue:"4 min continuos + burpee broad jump 2×8",
+   mar:[["Sentadilla barra","3×4","67kg · RPE 7-8","Desc 90s · MISMO PESO que S23"],["Peso muerto convencional","3×4","87kg · RPE 7-8","Desc 2min · MISMO PESO · sin pausa, menos fatiga"],["Wall balls slam ball","3×25","6kg","Misma carga oficial · sin cronometrar, sin presión"],["Farmers carry","3 series × 100 m","Manc 15kg c/u","Misma carga · menos distancia"],["Burpees broad jump","3×15","— · RPE 7","Mantener el patrón"]],
+   amrap:null,
+   mie:[["Jalón recto polea alta (patrón SkiErg)","4 × 4 min · RPE 7-8","polea alta","MISMA intensidad que S23"],["Remo sentado polea baja (patrón Row)","4 × 4 min · RPE 7-8","polea baja","MISMA intensidad"],["Press banca barra","3×5","60kg · RPE 7-8","Desc 90s · MISMO PESO"],["Sujeción isométrica en barra","3×40s","82kg","MISMO PESO que S23 · el agarre no se destapera"]],
+   run:"Compromised run 35 min: wall balls 25 → 2 km @5:55/km → farmers 1 serie → 2 km @5:55/km · FC 150-165 · MISMO RITMO",
+   vie:[["SIMULACRO · 5 rondas","cronometrar total","—","Formato medio · mismas estaciones, misma intensidad"],["Ronda 1 · 800m + Zancadas barra","800m + 25 pasos","20kg","Corebag"],["Ronda 2 · 800m + Jalón recto polea","800m + 4 min RPE 7-8","polea alta","SkiErg"],["Ronda 3 · 800m + Burpees broad jump","800m + 40 m","—","Burpee Broad Jump"],["Ronda 4 · 800m + Farmer carry","800m + 100 m","Manc 15kg c/u","Farmer"],["Ronda 5 · 800m + Wall balls","800m + 50 reps","6kg","Wall Balls"]],
+   fin:null,
+   dom:"Rodaje 55 min · Zona 2 · FC 145-158 · ~6:20-6:35/km"},
+
+ 25:{t:"taper",lbl:"Taper Hybrid",note:"AQUÍ empieza el taper de verdad: 13 días hasta el 25 oct, dentro de la ventana de 8-14 días que recomienda todo el consenso híbrido. Volumen -56% (20 series vs 45 de S22), dentro de la banda 40-60% que coinciden en señalar el meta-análisis (PLOS One 2023) y ENDUROX. · LOS KILOS NO SE MUEVEN: sentadilla 67, peso muerto 87, banca 60, wall balls 6kg. Bajan las series, nunca la carga. · Vas a sentir que te falta entrenar. Eso es exactamente lo que se busca y no es señal de que haya que añadir nada.",mode:"std",
+   lun:"3 min continuos suaves · básico y alternado, sin dobles",
+   jue:"2 min continuos muy suaves · último contacto con la comba",
+   mar:[["Sentadilla barra","2×4","67kg · RPE 7","Desc 90s · MISMO PESO que S24"],["Peso muerto convencional","2×3","87kg · RPE 7","Desc 2min · MISMO PESO · técnica perfecta"],["Wall balls slam ball","2×15","6kg","Misma carga · solo recordarle el patrón al cuerpo"]],
+   marNote:"MÁX 40 MIN TOTAL",
+   amrap:null,
+   mie:[["Jalón recto polea alta (patrón SkiErg)","2 × 3 min · RPE 7","polea alta","MISMA intensidad, la mitad del tiempo"],["Remo sentado polea baja (patrón Row)","2 × 3 min · RPE 7","polea baja","MISMA intensidad"],["Press banca barra","2×4","60kg · RPE 7","Desc 90s · MISMO PESO"]],
+   run:"Activación 20 min: 10' trote suave ~7:00-7:30/km FC <145 + 5 strides 15s @85% (45s caminata) + 5' caminata",
+   vie:[["Zancadas con barra sobre los hombros","2×20 pasos","20kg · RPE 6","Carga oficial · activación"],["Farmers carry","2 series × 50 m","Manc 15kg c/u · RPE 6","Agarre despierto, sin fatiga"],["Burpees broad jump","2×10","— · RPE 6","Patrón vivo"],["Wall balls slam ball","2×12","6kg · RPE 6","Suave"]],
+   vieNote:"MÁX 35 MIN TOTAL",fin:null,
+   dom:"Rodaje 30 min · Zona 1 · FC 135-148 · ~6:40-7:10/km · activar, no cansar"},
+
+ 26:{t:"carrera",lbl:"Hybrid Race",note:"Semana de carrera (domingo 25 oct · Amateur Hombre). Carga mínima y la MISMA estructura de días de siempre: lunes y jueves sigue habiendo comba y pliometría de nivel 1, en dosis testimonial. · LO QUE NO HAY QUE HACER esta semana, según el consenso de coaches: no estrenar rutinas, ejercicios ni herramientas de recuperación que no uses habitualmente; nada de masajes ni baños de hielo nuevos; no intentar 'recuperar' entrenamiento perdido; y no recortar calorías — los hidratos siguen importando. El día antes: descanso o 10-15 min de trote muy suave, nada más.",mode:"std",
+   lun:"2 min muy suave básico · despertar tobillos · nada explosivo",
+   jue:"90 segundos muy suave · último contacto",
+   mar:[["Sentadilla barra","2×4","67kg · RPE 6-7","Desc 90s · MISMO PESO · solo activar el patrón"],["Wall balls slam ball","2×12","6kg","Recordarle el movimiento al cuerpo · cadera bajo la rodilla"],["Zancadas con barra sobre los hombros","2×15 pasos","20kg","Patrón Corebag · sin fatiga"]],
    marNote:"MÁX 30 MIN TOTAL",amrap:null,
    mie:[],mieIsRun:true,
-   run:"8' trote suave ~7:30/km FC <140 + 8' ritmo Z1-Z2 ~7:00-7:30/km FC 120-140 + 5 strides 10s @85% (45s caminata) + 5' caminata · sin pasarse",
-   vie:[["Remo KB16","2×8","KB16","Unilateral · mantener patrón tracción · sin fatiga"],["Jalón TRX / banda","2×8","TRX o banda · RPE 6","Activar espalda suavemente"]],
+   run:"10' trote muy suave ~7:15-7:45/km FC <140 + 3 strides 15s @85% (45s caminata) + 5' caminata · activar las piernas sin gastarlas",
+   vie:[["Movilidad general","10 min","—","Cadena posterior, cadera y hombros"],["Farmers carry","1 serie × 40 m","Manc 15kg c/u · RPE 5","Un solo recorrido, despertar el agarre"],["Jalón recto polea alta","2 × 1 min","polea alta · RPE 5","Muy suave"]],
    vieNote:"MÁX 25 MIN TOTAL",fin:null,
    dom:"",
-   domRace:{name:"21K SANTIAGO",emoji:"🏃",color:C.oliveL,detail:"CARRERA A · Meta PR · km 1-3 conservador ~5:00-5:10/km · ritmo objetivo PB desde km 3 · gel km 8 y km 15 · FC 160-175"}},
- 19:{t:"recuperacion",lbl:"Recuperación post-21K",note:"Recuperación completa · El cuerpo acaba de hacer un PR — escúchalo · Evidencia (Huiberts et al. 2024): la interferencia del entrenamiento concurrente es mínima en atletas entrenados pero el tejido necesita reparación activa post-carrera · Los días no consecutivos de fuerza y running minimizan la interferencia (Prieto-González 2022) · Esta semana todo es Zona 1 · No hay nada que probar aquí",mode:"std",
-   lun:"Caminata 20-30 min + foam roller piernas · sin comba esta semana",
-   jue:"Caminata 30 min + movilidad 15 min · sin comba",
-   mar:[["Sentadilla barra","2×8","35kg","Desc 90s · muy suave · activar sin forzar"],["Peso muerto convencional","2×8","45kg","Desc 2min · espalda recta"]],
-   amrap:null,
-   mie:[["Press banca barra","2×8","35kg","Desc 90s · muy suave"],["Elevación lateral manc","2×10","2×5kg","Control · activar hombros sin fatiga"]],
-   run:"Trote suave 30-35 min · ~7:00-7:45/km · Zona 1 · FC <140 · conversacional · si no te sientes bien → caminata sin culpa",
-   mieIsRun:false,
-   vie:[["Remo barra","2×8","30kg · RPE 6","Desc 90s · suave · patrón tracción horizontal"],["Jalón TRX / banda","2×10","TRX o banda · RPE 6","Espalda recta · patrón tracción vertical"],["Curl bíceps barra","2×8","20kg · RPE 6","Sin pausa → ligero · aislamiento bíceps"]],
-   fin:null,
-   dom:"Trote suave 30-40 min · ~7:00-7:45/km · Zona 1 · FC <140 · conversacional · si te sientes bien, adelante; si no, caminata — ambas son opciones válidas"},
- 20:{t:"especifico",lbl:"HYROX Específico 1",note:"Empieza la fase HYROX · Wall balls = estación clave · Evidencia (Xiao et al. 2021): entrenamiento funcional mejora velocidad, fuerza, potencia, equilibrio y agilidad · Los circuitos del viernes simulan las 8 estaciones HYROX · Fuerza siempre antes del running (Feng et al. 2026) · Plyometría en lun/jue mejora RSI y velocidad de sprint (Kons et al. 2023 · García-Pinillos et al. 2020)",mode:"hyrox",
-   lun:"Caminata activa 30 min + foam roller",
-   mar:[["Sentadilla barra","3×5","50kg · RPE 7-8","Desc 90s · patrón sentadilla · base HYROX"],["Peso muerto convencional","3×4","70kg · RPE 7-8","Desc 2min · patrón bisagra de cadera · fuerza fundamental"],["Press banca barra","3×5","50kg · RPE 7-8","Desc 90s · patrón empuje horizontal · fuerza general"],["Wall balls slam ball","100 reps (4×25)","6kg","Sentadilla profunda + empuje overhead · estación más importante HYROX · cronometrar tiempo"],["Farmers carry","3 series × 5 vueltas 10m","Manc 15kg c/u · RPE 7","Espalda recta · simula estación farmers HYROX"],["Cable pull-through","3×15","polea baja · RPE 7","Bisagra cadera — patrón funcional complementario al peso muerto"],["Elevación lateral en polea baja","3×12 c/l","polea baja · RPE 7","Tensión constante · estabilizador hombro para la carrera"]],
-   mie:"COMPROMISED RUN 40-45 min: estaciones (wall balls 4×25 + farmers 2 series) → correr 1km → estaciones (burpees 20 + bici 3min) → correr 1km · ritmo 6:00/km · FC 150-165 · simula correr cansado",
-   vie:[["1 · Bici spinning 5min + comba 60s","6 min","—","Estación 1"],["2 · Empuje barra baja 10 + zancadas 20m","3 series","Barra 50kg","Estación 2"],["3 · Remo barra baja 15 + jalón 12","3 series","Barra 50kg","Estación 3"],["4 · Burpees con salto adelante","80 reps","—","Estación 4"],["5 · Bici spinning 5min + remo KB 15","6 min","KB16","Estación 5"],["6 · Farmers carry 200m","4 series × 5 vueltas 10m","Manc 15kg c/u","Estación 6"],["7 · Zancadas barra 100m","50 pasos c/l","Barra 20kg","Estación 7"],["8 · Wall balls slam ball","100 reps (5×20)","6kg","Estación 8 · CRONOMETRAR tiempo total"]],
-   dom:"Rodaje HYROX 60-65 min · 5:45-6:00/km · Zona 2 · FC 140-155 · este es el ritmo entre estaciones · construir la base aeróbica para los km de carrera HYROX"},
- 21:{t:"especifico",lbl:"HYROX Específico 2",note:"Subir intensidad · Intentar bajar 2 min del tiempo de sem 20 · Evidencia (Xiao et al. 2021): la mejora de potencia funcional requiere progresión de carga y velocidad de ejecución · Mantener la secuencia: fuerza → compromised run → circuito (Feng et al. 2026)",mode:"hyrox",
-   lun:"Caminata activa 30 min + foam roller",
-   mar:[["Sentadilla barra","3×5","50kg · RPE 7-8","Desc 90s · patrón sentadilla"],["Peso muerto convencional","3×4","70kg · RPE 7-8","Desc 2min · patrón bisagra"],["Press banca barra","3×5","50kg · RPE 7-8","Desc 90s · patrón empuje"],["Wall balls slam ball","100 reps (5×20)","6kg","Cronometrar · bajar tiempo vs S20 · sentadilla profunda + empuje explosivo"],["Farmers carry","3 series × 5 vueltas 10m","Manc 15kg c/u · RPE 7","Espalda recta"],["Burpees broad jump","3×20","— · RPE 7","Ritmo sostenible · potencia pliométrica en cada salto"],["Remo de pie en polea baja","3×15","polea baja · RPE 7-8","2 brazos · patrón tracción horizontal · simula tirón de sled HYROX"]],
-   mie:"COMPROMISED RUN · FC 150-165: wall balls 5×20 + farmers 2 series → correr 2km @6:00/km → burpees 20 + bici 3min → correr 2km @5:55/km",
-   vie:[["1 · Bici spinning 5min alta + comba 60s","6 min","—","Estación 1"],["2 · Empuje barra baja 10 + zancadas explosivas 20m","3 series","Barra 50kg","Estación 2"],["3 · Remo barra baja 15 + jalón banda/TRX 12","3 series","Barra 50kg","Estación 3"],["4 · Burpees con salto adelante","80 reps","—","Estación 4"],["5 · Bici spinning 5min + remo KB 15","6 min","KB16","Estación 5"],["6 · Farmers carry 200m","4 series × 5 vueltas 10m","Manc 15kg c/u","Estación 6"],["7 · Zancadas barra 100m","50 pasos c/l","Barra 20kg","Estación 7"],["8 · Wall balls slam ball","100 reps (5×20)","6kg","Estación 8 · CRONOMETRAR"]],
-   dom:"Rodaje 65-70 min · 5:45-6:00/km · Zona 2 · FC 130-150 · mantener ritmo de carrera HYROX"},
- 22:{t:"especifico",lbl:"HYROX Pico",note:"Semana más exigente de la fase HYROX · Circuito completo + compromised run · Evidencia (Kons et al. 2023): plyometría + entrenamiento funcional producen efectos grandes en velocidad de sprint y potencia muscular · Pico de volumen y carga: semana que viene comienza el taper",mode:"hyrox",
-   lun:"Caminata activa 30 min",
-   mar:[["Sentadilla barra","3×5","52kg · RPE 8","Desc 90s · PICO de carga · patrón sentadilla"],["Peso muerto convencional","3×4","72kg · RPE 8","Desc 2min · PICO de carga · patrón bisagra"],["Press banca barra","3×5","52kg · RPE 8","Desc 90s · PICO de carga · patrón empuje"],["Wall balls slam ball","100 reps (5×20)","6kg","Meta: bajar tiempo vs S21 · cronometrar · pico de volumen funcional"],["Farmers carry","3 series × 5 vueltas 10m","Manc 15kg c/u · RPE 7","Espalda recta"],["Burpees broad jump","3×25","— · RPE 7-8","Pico de potencia pliométrica · salto explosivo hacia adelante"],["Cable pull-through","3×15","polea baja · RPE 7","Bisagra cadera · patrón funcional"],["Elevación lateral en polea baja","3×12 c/l","polea baja · RPE 7","Tensión constante · estabilizador hombro"]],
-   mie:"COMPROMISED RUN LARGO · FC 150-165: wall balls 5×20 + farmers 2 + burpees 25 → correr 2km @5:55/km → remo KB 15 + bici 4min + zancadas barra 50m → correr 2km @5:50/km",
-   vie:[["1 · Bici spinning 5min + comba 60s","6 min","—","Estación 1"],["2 · Empuje barra baja 10 + zancadas 20m","3 series","Barra 50kg","Estación 2"],["3 · Remo barra baja 15 + jalón banda/TRX 12","3 series","Barra 50kg","Estación 3"],["4 · Burpees con salto adelante","80 reps","—","Estación 4 — PICO"],["5 · Bici spinning 5min + remo KB 15","6 min","KB16","Estación 5"],["6 · Farmers carry 200m","4 series × 5 vueltas 10m","Manc 15kg c/u","Estación 6"],["7 · Zancadas barra 100m","50 pasos c/l","Barra 20kg","Estación 7"],["8 · Wall balls slam ball","100 reps (5×20)","6kg","Estación 8 · meta: bajar 3 min vs sem 21"]],
-   dom:"Rodaje PICO 70 min · 5:45-5:55/km · Zona 2-3 · FC 140-155 · gel a los 45 min · ritmo de carrera HYROX objetivo · pico de volumen aeróbico"},
- 23:{t:"especifico",lbl:"Último Pico HYROX",note:"Última semana de alta intensidad · La semana que viene empieza el taper · Evidencia (Wang et al. 2023): el taper post-sobrecarga produce mejoras mayores en rendimiento que el taper convencional · Esta semana de pico es el estímulo que el taper potenciará",mode:"hyrox",
-   lun:"Caminata activa 30 min",
-   mar:[["Sentadilla barra","3×5","52kg · RPE 7-8","Desc 90s · último pico de fuerza antes del taper"],["Peso muerto convencional","3×4","72kg · RPE 7-8","Desc 2min · último pico bisagra · técnica perfecta"],["Press banca barra","3×5","52kg · RPE 7-8","Desc 90s · último pico empuje"],["Wall balls slam ball","100 reps (5×20)","6kg","Última vez a máxima intensidad · cronometrar · referencia final de rendimiento"],["Farmers carry","3 series × 5 vueltas 10m","Manc 15kg c/u · RPE 7","Último bloque de carga funcional"],["Remo de pie en polea baja","3×12","polea baja · RPE 7-8","Último bloque de tracción funcional antes del taper · 2 brazos"]],
-   mie:"COMPROMISED RUN · FC 150-165: wall balls 4×20 + farmers 2 → correr 2km @5:50/km → burpees 20 + bici 3min → correr 2km @5:45/km · último esfuerzo fuerte de la fase",
-   vie:[["1 · Bici spinning 5min + comba 60s","6 min","—","Estación 1"],["2 · Empuje barra baja 10 + zancadas 20m","3 series","Barra 50kg","Estación 2"],["3 · Remo barra baja 15 + jalón banda/TRX 12","3 series","Barra 50kg","Estación 3"],["4 · Burpees con salto adelante","80 reps","—","Estación 4"],["5 · Bici spinning 5min + remo KB 15","6 min","KB16","Estación 5"],["6 · Farmers carry 200m","4 series × 5 vueltas 10m","Manc 15kg c/u","Estación 6"],["7 · Zancadas barra 100m","50 pasos c/l","Barra 20kg","Estación 7"],["8 · Wall balls slam ball","100 reps (5×20)","6kg","Estación 8 · ÚLTIMO CIRCUITO COMPLETO antes del taper"]],
-   dom:"Rodaje 65-70 min · 5:50-6:00/km · Zona 2 · FC 140-155 · último rodaje de alta carga · guardar algo en el tanque"},
- 24:{t:"taper",lbl:"Taper HYROX 1",note:"Taper -30% · Mantener los movimientos HYROX pero sin agotarse · Evidencia (Wang et al. 2023): reducir volumen 41-60% MANTENIENDO intensidad y frecuencia · Los pesos de los ejercicios se mantienen — solo bajan las series · El circuito del viernes sigue siendo intenso pero más corto",mode:"hyrox",
-   lun:"Caminata 30 min",
-   mar:[["Sentadilla barra","3×4","52kg · RPE 7-8","Desc 90s · MISMO PESO que S23 · solo menos series · mantener intensidad en taper (evidence-based)"],["Peso muerto convencional","3×4","72kg · RPE 7-8","Desc 2min · MISMO PESO que S23 · solo menos series · no bajar el peso en taper"],["Press banca barra","3×4","52kg · RPE 7-8","Desc 90s · MISMO PESO · volumen -30% · taper evidence"],["Wall balls slam ball","3×20","6kg","Misma carga · -40% reps · mantener patrón HYROX · sin cronometrar, sin presión"],["Farmers carry","3 series × 5 vueltas 10m","Manc 15kg c/u · RPE 7","Misma carga · mismo patrón"]],
-   mie:"COMPROMISED RUN CORTO 30-35 min · FC 150-165: estaciones ligeras (wall balls 3×20 + farmers 1 serie) → correr 1km → estaciones → correr 1km · ritmo 6:00/km",
-   vie:[["Wall balls slam ball","3×25","6kg","Solo mantener el patrón"],["Farmers carry","3 series × 5 vueltas 10m","Manc 15kg c/u"],["Burpees","40 reps","—","A ritmo sostenible"]],
-   dom:"Rodaje suave 45 min · 6:00-6:15/km · Zona 1-2 · FC 130-150 · conservar energía · acumular frescura"},
- 25:{t:"taper",lbl:"Taper HYROX 2",note:"Taper -50% · Acumular frescura · Las piernas llegan listas · Evidencia (Wang et al. 2023): taper progresivo de 14-21 días con reducción 41-60% del volumen MANTIENE intensidad · Esta semana: MISMOS pesos que S24, solo MENOS series · El cuerpo está en proceso de supercompensación",mode:"hyrox",
-   lun:"Caminata 20 min + foam roller",
-   mar:[["Movilidad","10 min","—","Activación articular suave"],["Sentadilla barra","2×4","52kg · RPE 7","Desc 90s · MISMO PESO que S24 · evidencia (Wang et al. 2023): NO bajar el peso en taper, solo las series · el cuerpo está en supercompensación"],["Peso muerto convencional","2×4","72kg · RPE 7","Desc 2min · MISMO PESO que S24 · técnica perfecta · máximo 2 series"],["Wall balls slam ball","2×15","6kg","Misma carga · menos reps · solo recordarle el patrón al cuerpo"]],
-   mie:"ACTIVACIÓN RUNNING 20 min: 10' trote suave ~7:00-7:30/km FC <140 + 5 strides 10s @85% (45s caminata) + 5' caminata",
-   vie:[["Farmers carry","2 series × 5 vueltas 10m","Manc 15kg c/u · RPE 6","Taper: solo 2 series · misma carga · activación sin fatiga"],["Wall balls slam ball","2×12","6kg","Solo recordarle el patrón al cuerpo · suave · sin esfuerzo"]],
-   dom:"Rodaje suave 30 min · ~6:45-7:30/km · Zona 1 · FC 130-140 · conversacional · no ir rápido — el objetivo es activar, no cansar"},
- 26:{t:"carrera",lbl:"Carrera HYROX",note:"Semana de la Hybrid Race HYROX — carrera A. Carga mínima: el domingo es la carrera.",mode:"std",
-   lun:"Movilidad 15 min + caminata 15 min · foam roller piernas · sin comba",
-   jue:"Caminata activa 20 min · foam roller cadena posterior · sin comba",
-   mar:[["Sentadilla barra","2×4","42kg","Desc 90s · activar patrón HYROX"],["Wall balls slam ball","3×15","6kg","Solo recordarle el movimiento al cuerpo"],["Farmers carry","2 series × 5 vueltas 10m","Manc 15kg c/u","Técnica recta · sin fatigarse"]],
-   marNote:"MÁX 30 MIN TOTAL",amrap:null,
-   mie:[],mieIsRun:true,
-   run:"10' caminata + 3 strides 10s @85% (45s caminata) + 5' caminata · FC <130 · activar piernas sin gastar",
-   vie:[["Movilidad","10 min","—","Cadena posterior y hombros"],["Jalón TRX / banda","2×8","TRX o banda · RPE 6","Activar espalda · muy suave"]],
-   vieNote:"MÁX 20 MIN TOTAL",fin:null,
-   dom:"",
-   domRace:{name:"HYBRID RACE HYROX",emoji:"⚡",color:C.red,detail:"CARRERA A · FC 155-170 · km 1 y primeras estaciones MÁS conservador de lo que crees · acelerar segunda mitad · cada km de carrera = recuperación"}},
+   domRace:{name:"HYBRID RACE · AMATEUR H",emoji:"⚡",color:C.red,detail:"CARRERA A · 8×800m + 8 estaciones · OBJETIVO: terminar bien y disfrutar (sección 1) · TU PERFIL: eres un corredor que hace fuerza, no al revés — tu sentadilla está en 0,80× tu peso y la población HYROX está en 1,0-1,5×. Los 800m son tu ventaja real y las estaciones tu incógnita — corre los primeros 3-4 tramos MÁS lento de lo que puedes (~6:00/km) y guarda para el Farmer Carry y las Wall Balls · SLED DRAG (70kg = 0,83× tu peso) y SLED PUSH (100kg = 1,19× tu peso) son las dos que no pudiste entrenar NUNCA: ve sin expectativa de tiempo, mantente DE PIE en todo momento (arrodillarse invalida) y acepta perder ahí. Lo bueno: pesar 84kg juega A FAVOR en los trineos — la masa corporal es la que genera el empuje, y no eres liviano. Pasos cortos y continuos, no tirones · FARMER CARRY 2×24kg en 200m: ES TU ESTACIÓN DE MAYOR RIESGO. Entrenaste a 15kg (36% de tu peso) y la carga oficial es 48kg (57%). Lo que sí entrenaste por encima de la demanda es el AGARRE: 82kg de sujeción isométrica = 171% de la carga de la estación. Planifica 2 o 3 pausas ANTES de empezar (a los 70m y a los 140m), es legal, y es mucho mejor que soltar las mancuernas de golpe a los 120m · WALL BALLS 100 reps a 6kg es tu estación fuerte, exactamente lo que entrenaste: cadera POR DEBAJO de la rodilla o no cuenta · BURPEES BROAD JUMP: pecho y muslos al suelo, sin pasos intermedios · CORE BAG 20kg: rodilla trasera toca el suelo en cada zancada · gel antes de la ronda 5 · llévate la lista de estaciones aprendida de memoria para no perder tiempo decidiendo"}}
 };
 const WEEK_COLORS={normal:C.olive,pico:C.red,descarga:C.blue,taper:C.purple,carrera:C.oliveL,recuperacion:C.green,especifico:C.sand};
 function getCurrentWeek(){const now=new Date();const diff=Math.floor((now-PLAN_START)/(1000*60*60*24*7));return Math.max(4,Math.min(PLAN_WEEKS,diff+4));}
@@ -367,36 +420,199 @@ function getWeekDaysFor(w){const monday=new Date(PLAN_START.getTime()+(w-4)*7*86
 function rowsToBlocks(rows,prefix){return rows.map((r,i)=>({id:prefix+i,label:r[0],detail:r.slice(1).filter(Boolean).join(" · ")}));}
 function coreBlock(day,t){if(t==="carrera")return null;let tier;if(t==="pico")tier="pico";else if(t==="descarga"||t==="taper")tier="light";else tier="normal";const CORE={lun:{pico:"3 rondas · holds largos:\n• Plancha 45s\n• Pallof press banda 12 c/l\n• Dead bug 10 c/l\n• Bird dog 10 c/l",normal:"2-3 rondas:\n• Plancha 30-40s\n• Pallof press banda 10 c/l\n• Dead bug 8 c/l\n• Bird dog 8 c/l",light:"1-2 rondas suave:\n• Plancha 25s\n• Pallof press banda 8 c/l\n• Dead bug 6 c/l\n• Bird dog 6 c/l"},jue:{pico:"3 rondas · holds largos:\n• Plancha lateral 40s c/l\n• Hollow hold 35s\n• Lanzamiento rotacional slam ball 6kg 12 c/l\n• Suitcase carry KB16 25m c/l",normal:"2-3 rondas:\n• Plancha lateral 25-35s c/l\n• Hollow hold 20-30s\n• Russian twist / lanz. rotacional slam ball 6kg 10 c/l\n• Suitcase carry KB16 20m c/l",light:"1-2 rondas suave:\n• Plancha lateral 20s c/l\n• Hollow hold 20s\n• Russian twist slam ball 6kg 8 c/l\n• Suitcase carry KB16 15m c/l"}};return{id:"core",label:day==="lun"?"Core · anti-movimiento":"Core · endurance + HYROX",detail:CORE[day][tier]};}
 const CORE_START_WEEK=8;
-function plioBlocks(t,day){
-  const light=t==="descarga"||t==="taper"||t==="carrera";
-  const pico=t==="pico";
-  const sets=light?"1×":pico?"3×":"2×";
-  const reps20=light?"15":pico?"25":"20";
-  const reps5=light?"4":pico?"6":"5";
-  const time=light?"15s":pico?"25s":"20s";
-  const coord={id:"coord",label:"Coordinación 2 min",
-    detail:"• Equilibrio en un pie — 30s c/lado\n• Saltitos suaves 2 pies en el sitio — 30s"};
-  if(day==="jue"){
-    // Variante B — jueves: broad jump + lateral doble pie + line hops lateral
-    return [coord,
-      {id:"plio",label:"Pliometría · desc 45s entre ejercicios",
-       detail:"• Pogo hops — "+sets+reps20+"\n  (solo tobillos, contacto corto, talón casi no toca)\n• Broad jump con stick — "+sets+reps5+"\n  (salto largo máximo, aterriza y congela 2s)\n• Salto lateral doble pie con stick — "+sets+reps5+" c/lado\n  (impulso lateral, aterriza y congela 2s)\n• Line hops lateral — "+sets+time+"\n  (derecha-izquierda, rápido y silencioso)\n⚠ Aterrizajes SILENCIOSOS siempre. Técnica > cardio."},
-    ];
+/* ============================================================================
+   LADRILLO 2026 — PATCH 02: PLIOMETRÍA CON PROGRESIÓN POR COMPLEJIDAD
+   ----------------------------------------------------------------------------
+   REEMPLAZA la función plioBlocks() actual (líneas ~370-390 de index.html).
+   Requiere además dos cambios de una línea en getSession() y lunJueSession()
+   para que el número de semana llegue hasta aquí (ver PASO 2 y PASO 3 abajo).
+
+   POR QUÉ: la plioBlocks() actual entrega EXACTAMENTE el mismo contenido todas
+   las semanas del plan; lo único que cambia es el número de series según el
+   tipo de semana. Eso incumple la sección 6 ("debe variar y progresar de sesión
+   a sesión, con lógica de progresión por complejidad").
+
+   Rol 1: Ramirez-Campillo et al. (2025) — la pliometría mejora fuerza, potencia
+   y agilidad en adultos entrenados, pero el estímulo depende de progresar la
+   demanda del ciclo estiramiento-acortamiento, no de repetir el mismo salto.
+   Rol 3 (PRIMA SOBRE TODO LO DEMÁS): rodilla izquierda y fractura antigua de
+   pie. Por eso la escalera va stick -> reactivo -> unilateral -> encadenado, y
+   nunca al revés; los depth jumps se topan en 25 cm; y la pierna izquierda
+   nunca hace más repeticiones que la derecha.
+   ========================================================================== */
+
+/* Nivel de complejidad por semana. 0 = sin pliometría (impacto contraindicado).
+   S15 = lunes siguiente al Golden Run · S19 = post 21K Santiago.              */
+var PLIO_NIVEL = {
+  15: 1,  // reintroducción tras 21K del domingo anterior
+  16: 3,  // única semana de calidad real antes del taper
+  17: 2,  // taper: se mantiene la señal neuromuscular, baja el volumen
+  18: 1,  // semana de carrera
+  19: 0,  // recuperación post-21K: sin impacto
+  20: 2,  // arranca bloque Hybrid Race
+  21: 3,
+  22: 4,
+  23: 5,  // específico: burpee broad jump encadenado
+  24: 3,  // taper Hybrid 1
+  25: 2,  // taper Hybrid 2
+  26: 1   // semana de carrera
+};
+
+var PLIO_AVISO =
+  "\n⚠ Regla de rodilla (no negociable):\n" +
+  "  • Aterrizaje SILENCIOSO siempre. Si suena, el salto fue demasiado.\n" +
+  "  • Rodilla alineada con la punta del pie. Si colapsa hacia dentro, parar la serie.\n" +
+  "  • La pierna IZQUIERDA nunca hace más reps que la derecha. Si va justa, hace menos.\n" +
+  "  • Cualquier molestia en rodilla o pie = se termina el bloque ese día. Sin negociar.";
+
+var PLIO_CONTENIDO = {
+  1: { // Nivel 1 — absorción y aterrizaje. Bilateral, todo con stick.
+    lun: [
+      ["Pogo hops suaves", "solo tobillos, contacto corto, talón casi no toca el suelo"],
+      ["Squat jump con stick", "aterriza y CONGELA 2s antes del siguiente"],
+      ["Drop-and-stick desde escalón 20cm", "te dejas caer, absorbes y congelas. No saltas hacia arriba"],
+      ["Equilibrio en un pie", "brazos libres", " c/lado"]
+    ],
+    jue: [
+      ["Pogo hops suaves", "solo tobillos, silencioso"],
+      ["Salto vertical con stick", "sube lo que quieras, la clave es el aterrizaje"],
+      ["Salto horizontal CORTO con stick", "medio metro, congelar 2s"],
+      ["Equilibrio en un pie con ojos cerrados", "sin apoyo visual", " c/lado"]
+    ]
+  },
+  2: { // Nivel 2 — bilateral con contramovimiento y algo de continuidad.
+    lun: [
+      ["Pogo hops", "contacto corto y rítmico"],
+      ["Squat jump continuo", "encadenados, sin pausa entre saltos"],
+      ["Broad jump con stick", "salto largo máximo, aterriza y congela 2s"],
+      ["Line hops adelante-atrás", "rápido y silencioso sobre una línea"]
+    ],
+    jue: [
+      ["Pogo hops", "contacto corto y rítmico"],
+      ["Tuck jump bajo", "rodillas al pecho sin exagerar la altura"],
+      ["Salto lateral doble pie con stick", "impulso lateral, congela 2s", " c/lado"],
+      ["Line hops lateral", "derecha-izquierda, rápido y silencioso"]
+    ]
+  },
+  3: { // Nivel 3 — entra lo unilateral, todavía con stick obligatorio.
+    lun: [
+      ["Pogo hops unilateral", "un pie, contacto corto. Empezar por la DERECHA"],
+      ["Broad jump largo con stick", "máxima distancia, congela 2s"],
+      ["Hop unilateral adelante con stick", "un pie, aterriza y congela. Izquierda ≤ derecha", " c/lado"],
+      ["Skipping alto", "rodilla alta, contacto activo"]
+    ],
+    jue: [
+      ["Pogo hops unilateral", "un pie, silencioso"],
+      ["Salto lateral a un pie con stick", "congela 2s en cada aterrizaje", " c/lado"],
+      ["Hop unilateral lateral con stick", "control de rodilla, no buscar distancia", " c/lado"],
+      ["Line hops lateral rápido", "frecuencia alta, contacto mínimo"]
+    ]
+  },
+  4: { // Nivel 4 — reactivo, ciclo estiramiento-acortamiento corto.
+    lun: [
+      ["Pogo hops reactivos", "buscar rebote, no altura"],
+      ["Broad jumps ENCADENADOS ×3", "tres saltos seguidos sin pausa, medir distancia total"],
+      ["Bounding (zancada saltada)", "20 m, buscar amplitud"],
+      ["Line hops rápidos", "máxima frecuencia 20s"]
+    ],
+    jue: [
+      ["Pogo hops reactivos", "buscar rebote"],
+      ["Hops unilaterales continuos", "sin stick, continuos. Izquierda ≤ derecha", " c/lado"],
+      ["Salto lateral reactivo", "sin congelar, rebote inmediato"],
+      ["Depth jump desde escalón ≤25cm con stick", "TOPE 25 cm. Caes, absorbes, saltas una vez, congelas"]
+    ]
+  },
+  5: { // Nivel 5 — específico Hybrid Race (estación Burpee Broad Jump, 80 m).
+    lun: [
+      ["Broad jumps encadenados ×6", "medir distancia total, es tu métrica de la estación"],
+      ["Burpee broad jump", "pecho y muslos AL SUELO, salto con ambos pies, sin pasos intermedios"],
+      ["Pogo hops reactivos", "recuperación activa entre series"],
+      ["Equilibrio en un pie post-fatiga", "control con las piernas cansadas", " c/lado"]
+    ],
+    jue: [
+      ["Burpee broad jump por distancia", "2×20 m cronometrado, estándar de competencia"],
+      ["Broad jump máximo", "un salto, máxima distancia, con stick"],
+      ["Line hops", "frecuencia, 20s"],
+      ["Movilidad de tobillo contra pared", "cierra el bloque", " c/lado"]
+    ]
   }
-  // Variante A — lunes: squat jump + lateral un pie + line hops adelante-atrás
-  return [coord,
-    {id:"plio",label:"Pliometría · desc 45s entre ejercicios",
-     detail:"• Pogo hops — "+sets+reps20+"\n  (solo tobillos, contacto corto, talón casi no toca)\n• Squat jump con stick — "+sets+reps5+"\n  (aterriza suave, congela 2s)\n• Salto lateral un pie con stick — "+sets+reps5+" c/lado\n  (un pie, congela 2s)\n• Line hops adelante-atrás — "+sets+time+"\n  (rápido y silencioso)\n⚠ Aterrizajes SILENCIOSOS siempre. Técnica > cardio."},
-  ];
+};
+
+/* Contenido HEREDADO, idéntico al de la versión anterior de la app.
+   Se usa para las semanas 4-14, que ya ocurrieron o están en curso. La escalera
+   nueva arranca en la S15. Motivo: hoy es martes de la S14 y el Golden Run es el
+   domingo — cambiar el contenido del jueves a mitad de semana de carrera es
+   exactamente lo que la sección 6 dice que rompe la adherencia. El pasado no se
+   reescribe. (Rol 4)                                                          */
+var PLIO_LEGACY = {
+  lun: [
+    ["Pogo hops", "solo tobillos, contacto corto, talón casi no toca"],
+    ["Squat jump con stick", "aterriza suave, congela 2s"],
+    ["Salto lateral un pie con stick", "un pie, congela 2s", " c/lado"],
+    ["Line hops adelante-atrás", "rápido y silencioso"]
+  ],
+  jue: [
+    ["Pogo hops", "solo tobillos, contacto corto, talón casi no toca"],
+    ["Broad jump con stick", "salto largo máximo, aterriza y congela 2s"],
+    ["Salto lateral doble pie con stick", "impulso lateral, aterriza y congela 2s", " c/lado"],
+    ["Line hops lateral", "derecha-izquierda, rápido y silencioso"]
+  ]
+};
+
+function plioBlocks(t, day, week){
+  var legacy = (week < 15);
+  var nivel = legacy ? null : PLIO_NIVEL[week];
+  if(!legacy && nivel === undefined) nivel = 2;
+
+  var coord = { id: "coord", label: "Coordinación 2 min",
+    detail: "• Equilibrio en un pie — 30s c/lado\n• Saltitos suaves 2 pies en el sitio — 30s" };
+
+  /* Nivel 0: impacto contraindicado (semana post-carrera). */
+  if(nivel === 0){
+    return [{ id: "plio", label: "Sin pliometría esta semana",
+      detail: "Recuperación post-carrera: no hay saltos.\n" +
+              "• Movilidad de tobillo contra pared — 10 c/lado\n" +
+              "• Equilibrio en un pie — 45s c/lado\n" +
+              "• Elevaciones de talón lentas — 2×15\n" +
+              "Rol 3: el tejido está reparando. Meter impacto aquí es el error clásico." }];
+  }
+
+  var light = (t === "descarga" || t === "taper" || t === "carrera");
+  var pico  = (t === "pico");
+  var sets  = light ? "1×" : pico ? "3×" : "2×";
+  var repsA = light ? "15" : pico ? "25" : "20";   // pogo / line hops
+  var repsB = light ? "4"  : pico ? "6"  : "5";    // saltos de calidad
+  var tiempo= light ? "15s": pico ? "25s": "20s";
+
+  var fuente = legacy ? PLIO_LEGACY : PLIO_CONTENIDO[nivel];
+  var lista = fuente[day === "jue" ? "jue" : "lun"];
+  var texto = lista.map(function(ej, i){
+    var dosis;
+    if(i === 0) dosis = sets + repsA;
+    else if(i === lista.length - 1) dosis = sets + tiempo;
+    else dosis = sets + repsB;
+    if(ej[2]) dosis += ej[2];          // sufijo de dosis, p.ej. " c/lado"
+    return "• " + ej[0] + " — " + dosis + "\n  (" + ej[1] + ")";
+  }).join("\n");
+
+  return [coord, {
+    id: "plio",
+    label: legacy
+      ? "Pliometría · desc 45s entre ejercicios"
+      : "Pliometría · Nivel " + nivel + " · desc 45s entre ejercicios",
+    detail: texto + "\n" + (legacy
+      ? "⚠ Aterrizajes SILENCIOSOS siempre. Técnica > cardio."
+      : PLIO_AVISO)
+  }];
 }
-function lunJueSession(combaDetail,day,t){
+function lunJueSession(combaDetail,day,t,week){
   const light=t==="descarga"||t==="taper"||t==="carrera";
   const core=coreBlock(day,t);
   const blocks=[
     {id:"mov",label:"Movilidad 5 min",
      detail:"• Marcha en el sitio, rodillas arriba — 1 min\n• Círculos de cadera — 10 c/lado\n• Balanceos de pierna adelante-atrás — 10 c/lado\n• Balanceos de tobillo + puntillas — 10 c/lado\n• Sentadilla profunda sostenida — 2×20s"},
     {id:"m",label:"Comba",detail:combaDetail},
-    ...plioBlocks(t,day),
+    ...plioBlocks(t,day,week),
   ];
   if(core)blocks.push(core);
   return{name:"COMBA + PLIO + CORE",emoji:"🪢",color:C.sand,dur:light?"25-30 min":"35-40 min",blocks:blocks};
@@ -407,22 +623,12 @@ function runSession(detail){return{name:"RODAJE LARGO",emoji:"🏃",color:C.oliv
 function getSession(week,dow){
   const W=WEEKS[week];
   if(!W)return restSession();
-  // mode:"text": semanas de carrera/recuperación con días personalizados.
-  // Domingo = evento de carrera. Resto de días: cada ítem separado por · es un bloque con checkbox propio.
-  if(W.mode==="text"){
-    const d=W.days[dow];if(!d)return restSession();
-    const items=d.d.split(/\s*·\s*/).map(function(s){return s.trim();}).filter(Boolean);
-    const blocks=items.length>1
-      ?items.map(function(item,i){return{id:"x"+i,label:item,detail:""};})
-      :[{id:"x",label:d.n,detail:d.d}];
-    return{name:d.n.toUpperCase(),emoji:d.e,color:d.c,dur:"",blocks:blocks};
-  }
   if(dow===1){
     if(!W.lun)return restSession();
     if(W.lun.includes("sin comba")||W.lun.toLowerCase().includes("caminata"))
       return{name:"MOVILIDAD / CAMINATA",emoji:"🚶",color:C.green,dur:"20-30 min",
              blocks:[{id:"mov",label:"Recuperación activa",detail:W.lun}]};
-    return lunJueSession(W.lun,"lun",W.t);
+    return lunJueSession(W.lun,"lun",W.t,week);
   }
   if(dow===4){
     if(!W.jue)return{name:"MOVILIDAD / CAMINATA",emoji:"🚶",color:C.green,dur:"20-30 min",
@@ -430,7 +636,7 @@ function getSession(week,dow){
     if(W.jue.includes("sin comba")||W.jue.toLowerCase().includes("caminata"))
       return{name:"MOVILIDAD / CAMINATA",emoji:"🚶",color:C.green,dur:"20-30 min",
              blocks:[{id:"mov",label:"Recuperación activa",detail:W.jue}]};
-    return lunJueSession(W.jue,"jue",W.t);
+    return lunJueSession(W.jue,"jue",W.t,week);
   }
   if(dow===6)return restSession();
   if(dow===0){if(W.domRace)return{name:W.domRace.name,emoji:W.domRace.emoji,color:W.domRace.color,dur:"",blocks:[{id:"race",label:W.domRace.name,detail:W.domRace.detail}]};return runSession(W.dom);}
@@ -465,7 +671,304 @@ function getSession(week,dow){
 const KEYS={checks:"ll_v6_checks",notes:"ll_v6_notes",supps:"ll_v6_supps"};
 let STORAGE={checks:{},notes:{},supps:{}};
 let saveTimer=null;
-function loadStorage(){try{const c=localStorage.getItem(KEYS.checks),n=localStorage.getItem(KEYS.notes),sp=localStorage.getItem(KEYS.supps);if(c)STORAGE.checks=JSON.parse(c);if(n)STORAGE.notes=JSON.parse(n);if(sp)STORAGE.supps=JSON.parse(sp);}catch(e){}}
+
+/* ============================================================================
+   LADRILLO 2026 — PATCH 01: AUTORREGULACIÓN Y PROGRESIÓN DE CARGA
+   ----------------------------------------------------------------------------
+   Pegar DESPUÉS del objeto WEEKS y ANTES de getSession().
+   No toca ninguna clave existente de localStorage (ll_v6_checks/notes/supps).
+
+   Rol 2 (diseñador de autorregulación) + Rol 1 (científico del ejercicio).
+   Evidencia: "Autoregulated resistance training for maximal strength
+   enhancement: a systematic review and network meta-analysis" (2025) — la
+   prescripción por RIR/RPE iguala o supera al %1RM fijo, y RIR 1-3 es la zona
+   donde se acumula estímulo sin fatiga innecesaria. Por eso la sensación 3
+   (RIR 2-3) dispara progresión normal y la 5 (RIR 0) no dispara nada: llegar a
+   RIR 0 ya fue la carga máxima tolerable de ese día.
+   ========================================================================== */
+
+/* --- Escalones REALMENTE disponibles en El Búnker (sección 4) ---------------
+   Barra 20 kg + 4x10 + 4x5 + 2x2.5 + 2x1  ->  por lado: 10, 10, 5, 5, 2.5, 1.
+
+   OJO: la rejilla NO avanza de 2 en 2. Las 28 cargas armables son:
+     20 22 25 27 30 32 35 37 40 42 45 47 50 52 55 57 60 62 65 67 70 72 75 77
+     80 82 85 87
+   Desde 60 el siguiente escalón es 62 (+2), pero desde 62 el siguiente es
+   65 (+3) — 64 kg NO SE PUEDE ARMAR. Cualquier regla de "+2 kg fijo" produce
+   pesos imposibles la mitad de las veces, así que la progresión se calcula
+   saltando por esta lista y no sumando una constante.                         */
+var BARRA_GRID = (function(){
+  var porLado = [10, 10, 5, 5, 2.5, 1];
+  var sums = [0];
+  porLado.forEach(function(d){
+    sums = sums.concat(sums.map(function(s){ return s + d; }));
+  });
+  var visto = {}, out = [];
+  sums.forEach(function(s){
+    var w = 20 + 2 * s;
+    if(w <= 87 && !visto[w]){ visto[w] = 1; out.push(w); }
+  });
+  return out.sort(function(a, b){ return a - b; });
+})();
+
+var BARRA_MAX = BARRA_GRID[BARRA_GRID.length - 1];   // 87
+var BARRA_MIN = BARRA_GRID[0];                        // 20 (barra vacía)
+
+/* Índice del peso en la rejilla. Si el peso no es armable, devuelve el índice
+   del escalón armable inmediatamente inferior. */
+function idxBarra(peso){
+  var i = BARRA_GRID.indexOf(peso);
+  if(i !== -1) return i;
+  for(var j = BARRA_GRID.length - 1; j >= 0; j--){
+    if(BARRA_GRID[j] <= peso) return j;
+  }
+  return 0;
+}
+
+/* Escaleras discretas. Progresar por PESO aquí es inviable:
+   2.5->5 = +100% · 5->10 = +100% · 10->15 = +50% · KB 14->16 sin par.        */
+var ESCALERA_MANC = [2.5, 5, 10, 15];
+var ESCALERA_KB   = [14, 16];          // 16 kg NO tiene par -> solo unilateral
+
+var TIPO = {
+  BARRA:      "barra",       // progresión por carga
+  POLEA:      "polea",       // progresión por carga (placas del stack)
+  MANCUERNA:  "mancuerna",   // progresión por repeticiones (doble progresión)
+  KETTLEBELL: "kettlebell",  // progresión por repeticiones
+  CORPORAL:   "corporal"     // progresión por repeticiones
+};
+
+function progresaPorCarga(tipo){
+  return tipo === TIPO.BARRA || tipo === TIPO.POLEA;
+}
+
+function siguienteEscalon(tipo, peso, saltos){
+  saltos = saltos || 1;
+  if(tipo === TIPO.BARRA){
+    var i = Math.min(BARRA_GRID.length - 1, idxBarra(peso) + saltos);
+    return BARRA_GRID[i];
+  }
+  if(tipo === TIPO.POLEA) return peso + saltos;   // +N placas
+  return peso;                                     // manc/KB/corporal: no se toca
+}
+
+function escalonAnterior(tipo, peso){
+  if(tipo === TIPO.BARRA) return BARRA_GRID[Math.max(0, idxBarra(peso) - 1)];
+  if(tipo === TIPO.POLEA) return Math.max(1, peso - 1);
+  return peso;
+}
+
+function saltarEscalera(tipo, peso){
+  var esc = (tipo === TIPO.KETTLEBELL) ? ESCALERA_KB : ESCALERA_MANC;
+  var i = esc.indexOf(peso);
+  if(i === -1 || i === esc.length - 1) return peso;
+  return esc[i + 1];
+}
+
+/* Techo de reps antes de saltar de mancuerna/KB: cuanto más brutal es el salto
+   de peso, más arriba hay que estirar las repeticiones antes de darlo.        */
+function techoReps(tipo, peso, repMax){
+  var esc = (tipo === TIPO.KETTLEBELL) ? ESCALERA_KB : ESCALERA_MANC;
+  var i = esc.indexOf(peso);
+  if(i === -1 || i === esc.length - 1) return repMax + 8;   // ya en el tope físico
+  var saltoPct = (esc[i + 1] - esc[i]) / esc[i];
+  return (saltoPct > 0.6) ? repMax + 8 : repMax + 4;
+}
+
+/* ---------------------------------------------------------------------------
+   siguienteCarga(s) -> qué proponer la próxima sesión.
+
+   s = {
+     tipo:      "barra" | "polea" | "mancuerna" | "kettlebell" | "corporal",
+     peso:      kg (o nº de placas si es polea),
+     reps:      repeticiones realmente logradas en la última serie,
+     repMin:    piso del rango objetivo,
+     repMax:    techo del rango objetivo,
+     sensacion: 1..5  (escala exacta de la sección 8, sin reinterpretar)
+                5 = saqué el peso justo, no había más   (RIR 0)
+                4 = podía una repetición más            (RIR 1)
+                3 = me sentí bien                       (RIR 2-3)  <- objetivo
+                2 = fácil                               (RIR 4+)
+                1 = muy fácil
+     repsCompletas: true si completó TODAS las series y reps prescritas
+   }
+   -> { peso, reps, accion, mensaje }
+--------------------------------------------------------------------------- */
+function siguienteCarga(s){
+  var tipo = s.tipo, peso = s.peso, reps = s.reps;
+  var repMin = s.repMin, repMax = s.repMax;
+  var sens = s.sensacion;
+  var ok = s.repsCompletas !== false;
+  var porCarga = progresaPorCarga(tipo);
+  var techo = porCarga ? repMax : techoReps(tipo, peso, repMax);
+
+  function R(p, r, accion, msg){
+    return { peso: p, reps: r, accion: accion, mensaje: msg };
+  }
+
+  /* ---- CASO 0: no completó las repeticiones. Nunca se sube. ---------------
+     Se distingue "la carga era demasiada" de "vine mal hoy". Sensación alta +
+     fallo = sobra carga. Sensación baja + fallo = no fue la carga (sueño,
+     estrés de una semana de ventas dura). Rol 4: no castigar una mala jornada
+     con una bajada que después hay que reconstruir.                          */
+  if(!ok){
+    if(sens >= 4){
+      if(porCarga){
+        var pb = escalonAnterior(tipo, peso);
+        return R(pb, repMin, "bajar",
+          "No cerraste las reps y fuiste al límite: bajamos un escalón (" +
+          (tipo === TIPO.BARRA ? "-" + (peso - pb) + "kg, a " + pb + "kg" : "-1 placa") +
+          "). Reconstruimos desde " + repMin + " reps.");
+      }
+      return R(peso, Math.max(repMin, reps - 1), "bajar",
+        "No cerraste las reps y fuiste al límite: misma carga, objetivo baja a " +
+        Math.max(repMin, reps - 1) + " reps.");
+    }
+    return R(peso, reps, "repetir",
+      "No cerraste las reps pero tampoco fue al límite: no fue la carga. " +
+      "Repetimos igual la próxima sesión.");
+  }
+
+  /* ---- CASO 5: RIR 0 — ya estabas al máximo. Sostener. -------------------- */
+  if(sens === 5){
+    return R(peso, reps, "mantener",
+      "RIR 0: ese fue tu tope de hoy. Misma carga y mismas reps la próxima, " +
+      "consolidar antes de subir.");
+  }
+
+  /* ---- CASOS 4 y 3: RIR 1 y RIR 2-3 -> progresión normal ------------------
+     Se tratan igual a propósito. El incremento mínimo real de la barra (+2 kg)
+     sobre una sentadilla de 62 kg ya es +3,2%: la granularidad del equipo es
+     más gruesa que la diferencia entre RIR 1 y RIR 2-3, así que separarlos
+     daría precisión falsa. Rol 1 + sección 4.                                */
+  if(sens === 4 || sens === 3){
+    if(reps >= techo){
+      if(porCarga){
+        var np = siguienteEscalon(tipo, peso, 1);
+        if(np === peso){
+          return R(peso, reps + 1, "tope",
+            "Llegaste al máximo armable (" + BARRA_MAX + "kg). Desde aquí se " +
+            "progresa con tempo, pausas o reps, no con más disco.");
+        }
+        return R(np, repMin, "subir",
+          "Rango cerrado: +" + (np - peso) + "kg. Vuelves a " + repMin + " reps.");
+      }
+      var ne = saltarEscalera(tipo, peso);
+      if(ne === peso){
+        return R(peso, reps + 1, "tope",
+          "Ya estás en la mancuerna/KB más pesada que tienes. Se sigue por reps, " +
+          "tempo o versión unilateral.");
+      }
+      return R(ne, repMin, "subir-escalera",
+        "Agotaste el rango a " + peso + "kg: saltas a " + ne + "kg y reinicias en " +
+        repMin + " reps.");
+    }
+    return R(peso, reps + 1, "sumar-rep",
+      "Zona objetivo. Misma carga, +1 repetición (" + (reps + 1) + ").");
+  }
+
+  /* ---- CASO 2: RIR 4+ — la carga sobra ----------------------------------- */
+  if(sens === 2){
+    if(reps >= techo){
+      if(porCarga){
+        var pg = siguienteEscalon(tipo, peso, 2);
+        return R(pg, repMin, "subir",
+          "Fácil y con el rango cerrado: salto doble" +
+          (tipo === TIPO.BARRA ? " (+" + (pg - peso) + "kg, a " + pg + "kg)" : "") +
+          ". Reinicias en " + repMin + " reps.");
+      }
+      var ne2 = saltarEscalera(tipo, peso);
+      if(ne2 === peso){
+        return R(peso, reps + 2, "tope",
+          "Fácil pero ya estás en tu mancuerna/KB más pesada: sube reps o pasa a unilateral.");
+      }
+      return R(ne2, repMin, "subir-escalera",
+        "Fácil y rango agotado: saltas a " + ne2 + "kg.");
+    }
+    return R(peso, Math.min(techo, reps + 2), "sumar-rep",
+      "Te sobró margen: misma carga, +2 repeticiones (" +
+      Math.min(techo, reps + 2) + ").");
+  }
+
+  /* ---- CASO 1: muy fácil — la carga está claramente corta ----------------- */
+  if(porCarga){
+    var pm = siguienteEscalon(tipo, peso, 2);
+    return R(pm, repMin, "subir",
+      "Muy fácil: salto doble" +
+      (tipo === TIPO.BARRA ? " (+" + (pm - peso) + "kg, a " + pm + "kg)" : "") +
+      ", reinicias en " + repMin + " reps.");
+  }
+  return R(peso, techo, "sumar-rep",
+    "Muy fácil: vas directo al techo de " + techo + " reps. Cuando lo cierres, " +
+    "saltas de peso.");
+}
+
+/* ============================================================================
+   PERSISTENCIA — clave NUEVA. No toca ll_v6_checks / ll_v6_notes / ll_v6_supps.
+
+   ll_v7_loads = {
+     "<ejercicioId>": {
+       tipo, peso, reps, repMin, repMax,
+       sensacion, ok, ts,
+       sugPeso, sugReps, sugMsg, sugAccion
+     }
+   }
+
+   ejercicioId = slug estable del NOMBRE del ejercicio (no del día ni la
+   semana), para que la carga se arrastre aunque el ejercicio cambie de día al
+   rotar el split cada 4-8 semanas (sección 6).
+   ========================================================================== */
+KEYS.loads = "ll_v7_loads";
+STORAGE.loads = {};
+
+function loadLoads(){
+  try{
+    var raw = localStorage.getItem(KEYS.loads);
+    if(raw) STORAGE.loads = JSON.parse(raw);
+  }catch(e){ STORAGE.loads = {}; }
+}
+
+function saveLoads(){
+  try{
+    localStorage.setItem(KEYS.loads, JSON.stringify(STORAGE.loads));
+  }catch(e){
+    showToast("⚠ Almacenamiento lleno — exporta un backup", C.red);
+  }
+}
+
+function slugEjercicio(nombre){
+  return String(nombre).toLowerCase()
+    .normalize("NFD").replace(/[̀-ͯ]/g, "")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "");
+}
+
+/* Llamar al guardar el reporte del día: registra lo logrado y deja calculada
+   la sugerencia para la próxima sesión. */
+function registrarSerie(nombre, tipo, peso, reps, repMin, repMax, sensacion, repsCompletas){
+  var sug = siguienteCarga({
+    tipo: tipo, peso: peso, reps: reps,
+    repMin: repMin, repMax: repMax,
+    sensacion: sensacion, repsCompletas: repsCompletas
+  });
+  STORAGE.loads[slugEjercicio(nombre)] = {
+    tipo: tipo, peso: peso, reps: reps, repMin: repMin, repMax: repMax,
+    sensacion: sensacion, ok: repsCompletas, ts: new Date().toISOString(),
+    sugPeso: sug.peso, sugReps: sug.reps, sugMsg: sug.mensaje, sugAccion: sug.accion
+  };
+  saveLoads();
+  return sug;
+}
+
+/* Qué mostrar como peso sugerido al abrir el ejercicio.
+   Si nunca se registró, cae al texto escrito a mano en WEEKS. */
+function pesoSugerido(nombre, fallbackTexto){
+  var r = STORAGE.loads[slugEjercicio(nombre)];
+  if(!r) return fallbackTexto;
+  return r.sugPeso + "kg × " + r.sugReps + "  ·  " + r.sugMsg;
+}
+
+function loadStorage(){try{const c=localStorage.getItem(KEYS.checks),n=localStorage.getItem(KEYS.notes),sp=localStorage.getItem(KEYS.supps);if(c)STORAGE.checks=JSON.parse(c);if(n)STORAGE.notes=JSON.parse(n);if(sp)STORAGE.supps=JSON.parse(sp);}catch(e){}loadLoads();}
 function saveChecks(){try{localStorage.setItem(KEYS.checks,JSON.stringify(STORAGE.checks));autoBackup();}catch(e){showToast("⚠ Almacenamiento lleno — exporta un backup",C.red);}}
 function saveNotes(){try{localStorage.setItem(KEYS.notes,JSON.stringify(STORAGE.notes));autoBackup();}catch(e){showToast("⚠ Almacenamiento lleno",C.red);}}
 function saveSupps(){try{localStorage.setItem(KEYS.supps,JSON.stringify(STORAGE.supps));autoBackup();}catch(e){showToast("⚠ Almacenamiento lleno",C.red);}}
